@@ -1,0 +1,48 @@
+---
+index: '03'
+title: 'Automate Pro — AI Lead Gatekeeper'
+tagline: 'n8n + Gemini pipeline that saves an agency 20+ hours per week'
+year: 2025
+role: 'Client build · Automation engineering'
+accent: '#9B7BE0'
+demo: '/automate-pro-demo/automate-pro-demo.mp4'
+metrics:
+  - label: Saved
+    value: '20+ hrs/week'
+  - label: Engine
+    value: Gemini 2.5 Flash
+  - label: Pipeline
+    value: n8n
+  - label: Routing
+    value: Slack + Sheets
+---
+
+## Overview
+
+Automate Pro is a lead gatekeeper for an agency drowning in inbound forms. Before it shipped, a human read every submission, scored it by gut feel, and either escalated it to sales or filed it away. The bottleneck was the human.
+
+After: an n8n pipeline scores every lead the moment it lands, routes the top 20% straight into Slack with full context, and quietly drops the bottom 80% into a Sheets nurture queue. The same agency now spends those 20 hours on actual sales calls.
+
+## How it works
+
+```
+Form → React frontend → n8n webhook → Gemini scoring → Slack | Sheets
+```
+
+The React frontend captures lead data with a dynamic form and behavioral tracking — what fields they edited, how long they spent on each — and posts to an n8n webhook. n8n hands the payload to Google Gemini 2.5 Flash with a scoring prompt that weighs project scope, budget signals, and stated urgency, returning a 0–10 quality score plus a one-line rationale.
+
+A router node branches on the score. **8 and up:** Slack message to the sales channel with the lead, the rationale, and a click-to-respond button. **Below 8:** appended to a tiered Google Sheet that feeds the nurture sequence later.
+
+## What I learned
+
+- The model isn't the product. The pipeline is. The Gemini call is 10% of the work; the other 90% is wiring it cleanly into systems the team already trusts.
+- Behavioral signals from the form (dwell time, edits) turned out to be a better quality signal than the form *answers*. Users overstate budget and understate timeline. They don't fake how long they spent.
+- Gemini 2.5 Flash is shockingly cost-effective for high-frequency classification work like this.
+
+## Reflection
+
+This is the project I point at when someone asks "what does AI actually do for a small business." Not magic. Just a tireless reader sitting between the inbox and the team.
+
+## Demo
+
+A short walkthrough video lives in the project assets — open the link below to see the full pipeline running on a real submission.

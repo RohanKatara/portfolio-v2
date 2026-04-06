@@ -1,0 +1,144 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../../../public/images/rohan-profile.jpg';
+import { bioParagraphs, location } from '../../data/bio';
+import { skills } from '../../data/skills';
+---
+<section id="about" class="about">
+  <div class="container">
+    <p class="font-eyebrow" data-fade>About / 003</p>
+    <h2 class="about-heading font-display" data-fade>
+      The <span class="italic">engineer</span> behind the code.
+    </h2>
+    <div class="about-grid">
+      <div class="about-portrait" data-about-portrait>
+        <Image
+          src={portrait}
+          alt="Rohan Katara"
+          widths={[480, 720, 960]}
+          sizes="(min-width: 768px) 480px, 80vw"
+          format="avif"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <p class="portrait-caption font-mono">
+          {location.city}, {location.country} — {new Date().getFullYear()}
+        </p>
+      </div>
+      <div class="about-bio">
+        {bioParagraphs.map((p) => <p class="bio-para" data-about-para>{p}</p>)}
+      </div>
+    </div>
+
+    <div class="skills-block" data-fade>
+      <p class="font-eyebrow skills-label">Stack — what I reach for</p>
+      <div class="skills-marquee">
+        <div class="skills-track" data-skills-track>
+          {[...skills, ...skills].map((s) => (
+            <span class="skill-chip font-mono">{s}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    padding: 160px 0 96px;
+  }
+  .about-heading {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin: 16px 0 64px;
+    color: var(--ink);
+  }
+  .italic {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .about-portrait {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    aspect-ratio: 3 / 4;
+    will-change: clip-path;
+  }
+  .about-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(0.15) contrast(1.05);
+  }
+  .portrait-caption {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    font-size: 11px;
+    color: var(--ink);
+    background: oklch(0% 0 0 / 0.55);
+    padding: 8px 12px;
+    border-radius: 2px;
+    backdrop-filter: blur(4px);
+  }
+  .about-bio {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .bio-para {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--ink);
+    opacity: 1;
+  }
+  .bio-para:nth-of-type(2),
+  .bio-para:nth-of-type(3),
+  .bio-para:nth-of-type(4) {
+    color: var(--muted);
+  }
+  .skills-block {
+    margin-top: 96px;
+  }
+  .skills-label {
+    margin-bottom: 24px;
+  }
+  .skills-marquee {
+    overflow: hidden;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 24px 0;
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+  .skills-track {
+    display: flex;
+    gap: 32px;
+    width: max-content;
+    will-change: transform;
+  }
+  .skill-chip {
+    font-size: 14px;
+    color: var(--muted);
+    padding: 6px 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+</style>

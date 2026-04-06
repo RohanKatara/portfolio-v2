@@ -1,0 +1,93 @@
+---
+import '../styles/global.css';
+import DesktopGate from '../islands/DesktopGate.tsx';
+import SmoothScroll from '../islands/SmoothScroll.tsx';
+import CaseOverlayController from '../islands/CaseOverlayController.tsx';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Rohan Katara | Software Engineer & AI Builder',
+  description = 'Portfolio of Rohan Katara, a B.Tech Computer Engineering graduate based in Ahmedabad, India. Specializing in Generative AI, high-performance web environments, and immersive interactive interfaces.',
+} = Astro.props;
+
+const canonical = 'https://rohankatara.com/';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Rohan Katara" />
+    <meta name="theme-color" content="#1A1B1F" />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://rohankatara.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Rohan Katara Portfolio" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://rohankatara.com/og-image.png" />
+    <meta name="twitter:creator" content="@Rohan2Katara" />
+    <meta name="twitter:site" content="@Rohan2Katara" />
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      'name': 'Rohan Katara',
+      'url': canonical,
+      'jobTitle': 'Software Engineer & AI Builder',
+      'description': description,
+      'address': {
+        '@type': 'PostalAddress',
+        'addressLocality': 'Ahmedabad',
+        'addressCountry': 'India',
+      },
+      'sameAs': [
+        'https://github.com/RohanKatara',
+        'https://www.linkedin.com/in/rohan-katara-5895952b6',
+        'https://x.com/Rohan2Katara',
+      ],
+      'knowsAbout': [
+        'React', 'Next.js', 'TypeScript', 'Generative AI',
+        'Large Language Models', 'Node.js', 'Web Development',
+      ],
+    })} />
+
+    <!-- Pre-paint inline guard: if the URL hash is a known case slug, lock the
+         body so the homepage doesn't flash before CaseOverlayController hydrates. -->
+    <script is:inline>
+      (function () {
+        var slugs = ['mocktalk', 'krishna', 'automate-pro', 'content-engine'];
+        var h = (location.hash || '').replace(/^#/, '');
+        if (slugs.indexOf(h) !== -1) {
+          document.documentElement.setAttribute('data-cold-overlay', h);
+        }
+      })();
+    </script>
+    <style is:inline>
+      html[data-cold-overlay] body { overflow: hidden; }
+      html[data-cold-overlay] [data-page-content] { visibility: hidden; }
+    </style>
+  </head>
+  <body>
+    <DesktopGate client:only="react" />
+    <SmoothScroll client:only="react" />
+    <CaseOverlayController client:only="react" />
+
+    <slot />
+  </body>
+</html>

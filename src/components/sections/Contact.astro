@@ -1,0 +1,164 @@
+---
+import { social, location } from '../../data/bio';
+---
+<section id="contact" class="contact">
+  <div class="container">
+    <p class="font-eyebrow" data-fade>Contact / 004</p>
+    <h2 class="contact-heading font-display" data-fade>
+      Let's <span class="italic">build</span> something.
+    </h2>
+    <p class="contact-status font-mono" data-fade>
+      <span class="status-dot" aria-hidden="true"></span>
+      Available for opportunities · {location.coords}
+    </p>
+
+    <a
+      class="contact-email font-display"
+      href={`mailto:${social.email}`}
+      data-contact-email
+      data-copy-email
+    >{social.email}</a>
+    <p class="contact-email-hint font-mono" data-fade>
+      <span data-copy-status>click to copy</span>
+    </p>
+
+    <div class="social-grid" data-fade>
+      <a class="social-card" href={social.github} target="_blank" rel="noopener">
+        <p class="font-eyebrow social-label">GitHub</p>
+        <p class="social-url font-mono">{social.githubHandle}</p>
+        <span class="social-arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="social-card" href={social.linkedin} target="_blank" rel="noopener">
+        <p class="font-eyebrow social-label">LinkedIn</p>
+        <p class="social-url font-mono">{social.linkedinHandle}</p>
+        <span class="social-arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="social-card" href={social.x} target="_blank" rel="noopener">
+        <p class="font-eyebrow social-label">X / Twitter</p>
+        <p class="social-url font-mono">{social.xHandle}</p>
+        <span class="social-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    padding: 160px 0 96px;
+  }
+  .contact-heading {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin: 16px 0 32px;
+    color: var(--ink);
+  }
+  .italic {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .contact-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 96px;
+  }
+  .contact-status .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--success);
+    animation: hero-pulse 2.4s ease-out infinite;
+  }
+  .contact-email {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(48px, 9vw, 128px);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin: 0;
+    word-break: break-all;
+    transition: color 320ms ease, transform 320ms ease;
+    cursor: pointer;
+    opacity: 0;
+  }
+  .contact-email :global(.char) {
+    display: inline-block;
+    will-change: transform;
+  }
+  .contact-email:hover {
+    color: var(--accent);
+  }
+  .contact-email-hint {
+    margin: 16px 0 96px;
+    font-size: 11px;
+    color: var(--faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 720px) {
+    .social-grid { grid-template-columns: 1fr; }
+  }
+  .social-card {
+    position: relative;
+    padding: 32px 28px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    color: var(--ink);
+    background: oklch(16.75% 0.011 262 / 0.5);
+    transition: border-color 320ms ease, background 320ms ease, transform 320ms ease;
+  }
+  .social-card:hover {
+    border-color: var(--accent);
+    background: oklch(20% 0.014 262 / 0.7);
+    transform: translateY(-2px);
+  }
+  .social-label {
+    margin: 0 0 16px;
+  }
+  .social-url {
+    margin: 0;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .social-arrow {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    font-size: 20px;
+    color: var(--accent);
+    transition: transform 320ms var(--ease-out);
+  }
+  .social-card:hover .social-arrow {
+    transform: translate(4px, -4px);
+  }
+</style>
+
+<script>
+  const email = document.querySelector<HTMLElement>('[data-copy-email]');
+  const status = document.querySelector<HTMLElement>('[data-copy-status]');
+  if (email && status) {
+    email.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const value = email.textContent?.trim() ?? '';
+      try {
+        await navigator.clipboard.writeText(value);
+        status.textContent = 'copied!';
+        setTimeout(() => {
+          status.textContent = 'click to copy';
+        }, 2000);
+      } catch {
+        window.location.href = `mailto:${value}`;
+      }
+    });
+  }
+</script>

@@ -1,0 +1,281 @@
+---
+import CaseMetrics from './CaseMetrics.astro';
+
+interface Metric { label: string; value: string; }
+interface Props {
+  slug: string;
+  index: string;
+  title: string;
+  tagline: string;
+  year: number;
+  role: string;
+  accent: string;
+  metrics: Metric[];
+  cover: string;
+  demo?: string;
+  next?: { slug: string; name: string };
+}
+const { slug, index, title, tagline, year, role, accent, metrics, cover, demo, next } = Astro.props;
+---
+<aside
+  class="case-overlay"
+  data-case-overlay={slug}
+  aria-hidden="true"
+  style={`--case-accent: ${accent};`}
+>
+  <div class="case-backdrop" data-close-case></div>
+  <div class="case-panel">
+    <header class="case-header">
+      <button class="case-back font-mono" data-close-case type="button">
+        <span aria-hidden="true">←</span> Back to Work
+      </button>
+      <button class="case-close" data-close-case type="button" aria-label="Close case study">
+        <span aria-hidden="true">×</span>
+      </button>
+    </header>
+    <div class="case-scroll" data-lenis-prevent>
+      <div class="case-content">
+        <p class="case-index font-mono">{index} / 04</p>
+        <h2 class="case-title font-display">{title}</h2>
+        <p class="case-tagline">{tagline}</p>
+        <div class="case-meta font-mono">
+          <span>{year}</span>
+          <span>·</span>
+          <span>{role}</span>
+        </div>
+
+        <div class="case-cover">
+          <img src={cover} alt={`${title} cover`} loading="lazy" />
+        </div>
+
+        <CaseMetrics metrics={metrics} accent={accent} />
+
+        <div class="case-prose">
+          <slot />
+        </div>
+
+        {demo && (
+          <div class="case-demo">
+            <p class="font-eyebrow">Demo</p>
+            <video controls preload="none" poster={cover}>
+              <source src={demo} type="video/mp4" />
+            </video>
+          </div>
+        )}
+
+        {next && (
+          <a class="case-next" href={`#${next.slug}`} data-open-case={next.slug}>
+            <span class="font-eyebrow">Next case study</span>
+            <span class="case-next-name font-display">{next.name} →</span>
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</aside>
+
+<style>
+  .case-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: none;
+    opacity: 0;
+  }
+  body[data-overlay-open] .case-overlay[data-case-overlay] {
+    /* hidden until specific overlay matches */
+  }
+  body[data-overlay-open="mocktalk"] .case-overlay[data-case-overlay="mocktalk"],
+  body[data-overlay-open="krishna"] .case-overlay[data-case-overlay="krishna"],
+  body[data-overlay-open="automate-pro"] .case-overlay[data-case-overlay="automate-pro"],
+  body[data-overlay-open="content-engine"] .case-overlay[data-case-overlay="content-engine"] {
+    display: block;
+    animation: case-fade 420ms var(--ease-out) forwards;
+  }
+  @keyframes case-fade {
+    from { opacity: 0; transform: scale(0.98); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  .case-backdrop {
+    position: absolute;
+    inset: 0;
+    background: oklch(8% 0.006 262 / 0.92);
+    backdrop-filter: blur(8px);
+  }
+  .case-panel {
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+  }
+  .case-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--line);
+    background: oklch(14.68% 0.01 262 / 0.85);
+    backdrop-filter: blur(12px);
+  }
+  .case-back {
+    color: var(--muted);
+    font-size: 12px;
+    transition: color 240ms ease;
+  }
+  .case-back:hover { color: var(--ink); }
+  .case-close {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 24px;
+    line-height: 1;
+    transition: background 240ms ease, border-color 240ms ease;
+  }
+  .case-close:hover {
+    background: var(--surface-hi);
+    border-color: var(--case-accent, var(--accent));
+  }
+  .case-scroll {
+    flex: 1;
+    overflow-y: auto;
+  }
+  .case-content {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 96px 32px 160px;
+  }
+  .case-index {
+    color: var(--case-accent, var(--accent));
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    margin: 0 0 24px;
+  }
+  .case-title {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin: 0 0 16px;
+  }
+  .case-tagline {
+    font-size: 22px;
+    color: var(--muted);
+    margin: 0 0 16px;
+    line-height: 1.5;
+  }
+  .case-meta {
+    display: flex;
+    gap: 12px;
+    color: var(--faint);
+    font-size: 12px;
+    margin-bottom: 64px;
+  }
+  .case-cover {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 0 32px;
+    background: var(--surface);
+  }
+  .case-cover img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .case-prose {
+    color: var(--ink);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+  .case-prose :global(h2) {
+    font-family: var(--font-display);
+    font-size: 36px;
+    color: var(--ink);
+    margin: 64px 0 16px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .case-prose :global(h3) {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--case-accent, var(--accent));
+    margin: 32px 0 8px;
+  }
+  .case-prose :global(p) {
+    margin: 0 0 20px;
+    color: var(--ink);
+  }
+  .case-prose :global(ul),
+  .case-prose :global(ol) {
+    margin: 0 0 20px;
+    padding-left: 24px;
+    color: var(--muted);
+  }
+  .case-prose :global(li) {
+    margin: 8px 0;
+  }
+  .case-prose :global(strong) {
+    color: var(--case-accent, var(--accent));
+    font-weight: 500;
+  }
+  .case-prose :global(code) {
+    font-family: var(--font-mono);
+    background: var(--surface-hi);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 14px;
+    color: var(--accent-hi);
+  }
+  .case-prose :global(pre) {
+    background: var(--surface-hi);
+    padding: 20px;
+    border-radius: 4px;
+    border: 1px solid var(--line);
+    overflow-x: auto;
+    margin: 24px 0;
+  }
+  .case-prose :global(pre code) {
+    background: none;
+    padding: 0;
+    color: var(--ink);
+  }
+  .case-demo {
+    margin-top: 64px;
+  }
+  .case-demo video {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    margin-top: 16px;
+  }
+  .case-next {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 96px;
+    padding: 32px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    color: var(--ink);
+    transition: border-color 320ms ease, transform 320ms ease;
+  }
+  .case-next:hover {
+    border-color: var(--case-accent, var(--accent));
+    transform: translateY(-2px);
+  }
+  .case-next-name {
+    font-family: var(--font-display);
+    font-size: 32px;
+    color: var(--case-accent, var(--accent));
+    font-style: italic;
+  }
+</style>

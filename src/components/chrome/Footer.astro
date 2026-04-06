@@ -1,0 +1,39 @@
+---
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="container footer-inner">
+    <p class="font-mono">
+      Built with Astro · GSAP · Lenis · OGL — {year} · Rohan Katara
+    </p>
+    <p class="font-mono">
+      <a href="https://github.com/RohanKatara" target="_blank" rel="noopener">github</a>
+      <span aria-hidden="true"> · </span>
+      <a href="https://www.linkedin.com/in/rohan-katara-5895952b6" target="_blank" rel="noopener">linkedin</a>
+      <span aria-hidden="true"> · </span>
+      <a href="https://x.com/Rohan2Katara" target="_blank" rel="noopener">x</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding: 96px 0 64px;
+    border-top: 1px solid var(--line);
+    margin-top: 96px;
+    color: var(--faint);
+    font-size: 12px;
+  }
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer a {
+    color: var(--muted);
+    transition: color 240ms ease;
+  }
+  .footer a:hover { color: var(--ink); }
+</style>

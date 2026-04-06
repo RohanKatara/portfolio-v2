@@ -1,0 +1,18 @@
+export const skills: string[] = [
+  'React',
+  'Next.js',
+  'TypeScript',
+  'Python',
+  'OpenAI Realtime API',
+  'Google Gemini',
+  'n8n',
+  'Three.js',
+  'Astro',
+  'GSAP',
+  'Tailwind',
+  'Node.js',
+  'WebSockets',
+  'LLMs',
+  'Prompt Engineering',
+  'Vercel',
+];

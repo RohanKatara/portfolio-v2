@@ -1,0 +1,119 @@
+---
+import ProjectHoverImage from '../../islands/ProjectHoverImage.tsx';
+import type { Project } from '../../data/projects';
+
+interface Props {
+  project: Project;
+}
+const { project } = Astro.props;
+---
+<a
+  class="project-row"
+  href={`#${project.slug}`}
+  data-project-row
+  data-open-case={project.slug}
+  style={`--row-accent: ${project.accent};`}
+>
+  <span class="row-index font-mono" data-row-meta>{project.index} / 04</span>
+  <div class="row-main">
+    <h3 class="row-title font-display" data-row-title>{project.name}</h3>
+    <p class="row-tagline" data-row-meta>{project.tagline}</p>
+    <span class="row-underline" data-row-underline></span>
+  </div>
+  <div class="row-meta-side">
+    <span class="row-year font-mono" data-row-meta>{project.year}</span>
+    <span class="row-stack font-mono" data-row-meta>{project.stack.slice(0, 2).join(' · ')}</span>
+    <span class="row-arrow" aria-hidden="true">→</span>
+  </div>
+  <ProjectHoverImage client:visible src={project.cover} alt={`${project.name} cover`} />
+</a>
+
+<style>
+  .project-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    gap: 32px;
+    padding: 48px 0;
+    border-top: 1px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 320ms ease, padding 320ms ease;
+    opacity: 0;
+  }
+  .project-row:last-of-type {
+    border-bottom: 1px solid var(--line);
+  }
+  .project-row:hover {
+    padding-left: 16px;
+  }
+  .project-row:hover .row-title {
+    color: var(--row-accent, var(--accent));
+  }
+  .project-row:hover .row-arrow {
+    transform: translateX(8px);
+  }
+  .row-index {
+    font-size: 12px;
+    color: var(--faint);
+    letter-spacing: 0.08em;
+  }
+  .row-main {
+    position: relative;
+  }
+  .row-title {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5.6vw, 76px);
+    line-height: 1;
+    margin: 0 0 12px;
+    color: var(--ink);
+    transition: color 320ms ease;
+    letter-spacing: -0.02em;
+  }
+  .row-title :global(.char) {
+    display: inline-block;
+    will-change: transform;
+  }
+  .row-tagline {
+    margin: 0;
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 480px;
+  }
+  .row-underline {
+    position: absolute;
+    bottom: -16px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--row-accent, var(--accent));
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 600ms var(--ease-out);
+  }
+  .project-row:hover .row-underline {
+    transform: scaleX(1);
+  }
+  .row-meta-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    text-align: right;
+  }
+  .row-year {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .row-stack {
+    font-size: 11px;
+    color: var(--faint);
+  }
+  .row-arrow {
+    margin-top: 8px;
+    font-size: 24px;
+    color: var(--row-accent, var(--accent));
+    transition: transform 320ms var(--ease-out);
+  }
+</style>

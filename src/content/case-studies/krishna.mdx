@@ -1,0 +1,39 @@
+---
+index: '02'
+title: 'Krishna.AI — Bhagavad Gita Guidance'
+tagline: 'Ancient wisdom answered through modern LLM prompt engineering'
+year: 2024
+role: 'Solo build · Engineering & narrative design'
+accent: '#E07B5C'
+metrics:
+  - label: Source
+    value: Bhagavad Gita
+  - label: Model
+    value: ChatGPT API
+  - label: Surface
+    value: Web
+  - label: Audience
+    value: General readers
+---
+
+## Overview
+
+Krishna.AI is a web platform that gives personalized life guidance grounded in the Bhagavad Gita. Users describe what they're wrestling with — financial stress, an ethical bind, a difficult choice — and the system answers in the voice of the scripture, mapped to their actual situation.
+
+The goal was to make 700 verses of dense classical text feel as approachable as a conversation with someone who has already read them.
+
+## How it works
+
+A carefully tuned prompt holds the model inside the worldview of the Gita: it can paraphrase, reference verses, and reason through dharmic frames, but it stays out of generic life-coach territory. The interface strips down to a single input and a single response so nothing competes with the answer.
+
+The hardest design decision was how literal to be. Too literal and it reads like a Wikipedia quote. Too loose and it's just another chatbot wearing a costume. The sweet spot is paraphrase plus a single grounding verse — short enough to actually read, specific enough to feel like the text is talking to *you*.
+
+## What I learned
+
+- Prompt engineering is mostly editing. The first version of the system prompt was a wall of rules. The version that shipped is half the size and twice as obedient.
+- Subject-matter projects live or die on tone. People can smell a generic LLM answer from a mile away — voice has to come first.
+- Accessible doesn't mean dumbed-down. The interface is plain because the *content* is the experience.
+
+## Reflection
+
+A lot of AI projects answer questions that are easy to ask and not particularly meaningful. This one tries to do the opposite. It's small, but it's the one I'm proudest of for the framing.

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" width="1280" height="800">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1F2025"/>
+      <stop offset="1" stop-color="#13141A"/>
+    </linearGradient>
+    <radialGradient id="r" cx="0.3" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#E07B5C" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#E07B5C" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1280" height="800" fill="url(#g)"/>
+  <rect width="1280" height="800" fill="url(#r)"/>
+  <g fill="none" stroke="#E07B5C" stroke-width="2" opacity="0.55">
+    <path d="M 920 200 Q 1020 320 920 440 Q 820 320 920 200 Z"/>
+    <path d="M 920 240 Q 990 320 920 400 Q 850 320 920 240 Z"/>
+    <circle cx="920" cy="320" r="6" fill="#E07B5C"/>
+  </g>
+  <text x="80" y="120" font-family="Fira Code, monospace" font-size="20" fill="#E07B5C" letter-spacing="2">02 / KRISHNA.AI</text>
+  <text x="80" y="640" font-family="Georgia, serif" font-size="96" fill="#E8EAF0" font-style="italic">Krishna.AI</text>
+  <text x="80" y="700" font-family="Inter, sans-serif" font-size="24" fill="#ABADB7">Bhagavad Gita guidance, conversational</text>
+  <text x="80" y="740" font-family="Fira Code, monospace" font-size="14" fill="#767882">2024 — prompt-engineered scripture</text>
+</svg>

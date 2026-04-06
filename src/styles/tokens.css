@@ -1,0 +1,47 @@
+:root {
+  /* Backgrounds */
+  --bg:           oklch(14.68% 0.01 262);
+  --surface:      oklch(16.75% 0.011 262);
+  --surface-hi:   oklch(20.00% 0.012 262);
+
+  /* Ink */
+  --ink:          oklch(93.66% 0.027 262);
+  --muted:        oklch(70.00% 0.025 262);
+  --faint:        oklch(50.00% 0.02 262);
+  --line:         oklch(28.00% 0.012 262);
+
+  /* Accent */
+  --accent:       oklch(61.53% 0.1675 262);
+  --accent-hi:    oklch(70.00% 0.18 262);
+  --accent-soft:  oklch(61.53% 0.1675 262 / 0.18);
+
+  /* Semantic */
+  --success:      oklch(70% 0.15 145);
+  --danger:       oklch(60% 0.18 25);
+
+  /* Type */
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body:    'Inter Variable', system-ui, sans-serif;
+  --font-mono:    'Fira Code', ui-monospace, monospace;
+  --font-num:     'Space Grotesk Variable', system-ui, sans-serif;
+
+  /* Spacing — multiples of 8 */
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-5:  24px;
+  --s-6:  32px;
+  --s-7:  48px;
+  --s-8:  64px;
+  --s-9:  96px;
+  --s-10: 128px;
+
+  /* Layout */
+  --max-w: 1040px;
+  --pad-x: clamp(16px, 4vw, 32px);
+
+  /* Motion */
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+}

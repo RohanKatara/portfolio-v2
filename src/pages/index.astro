@@ -1,0 +1,99 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/chrome/Nav.astro';
+import Footer from '../components/chrome/Footer.astro';
+import Hero from '../components/sections/Hero.astro';
+import Manifesto from '../components/sections/Manifesto.astro';
+import Work from '../components/sections/Work.astro';
+import About from '../components/sections/About.astro';
+import Contact from '../components/sections/Contact.astro';
+import CaseOverlay from '../components/case/CaseOverlay.astro';
+import { projects } from '../data/projects';
+
+const caseStudies = await getCollection('case-studies');
+const order: Record<string, number> = {
+  mocktalk: 0,
+  krishna: 1,
+  'automate-pro': 2,
+  'content-engine': 3,
+};
+caseStudies.sort((a, b) => (order[a.slug] ?? 99) - (order[b.slug] ?? 99));
+
+const projectBySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
+
+// Render every case-study body once at build time so we can slot them into the overlays.
+const renderedCases = await Promise.all(
+  caseStudies.map(async (cs, i) => {
+    const { Content } = await cs.render();
+    const next = caseStudies[(i + 1) % caseStudies.length];
+    return {
+      slug: cs.slug,
+      data: cs.data,
+      Content,
+      project: projectBySlug[cs.slug],
+      next: { slug: next.slug, name: projectBySlug[next.slug]?.name ?? '' },
+    };
+  })
+);
+---
+<BaseLayout>
+  <Nav />
+  <main data-page-content>
+    <Hero />
+    <Manifesto />
+    <Work />
+    <About />
+    <Contact />
+    <Footer />
+  </main>
+
+  {renderedCases.map(({ slug, data, Content, project, next }) => (
+    <CaseOverlay
+      slug={slug}
+      index={data.index}
+      title={data.title}
+      tagline={data.tagline}
+      year={data.year}
+      role={data.role}
+      accent={data.accent}
+      metrics={data.metrics}
+      cover={project?.cover ?? ''}
+      demo={data.demo}
+      next={next}
+    >
+      <Content />
+    </CaseOverlay>
+  ))}
+</BaseLayout>
+
+<script>
+  import {
+    initHeroReveal,
+    initManifestoPin,
+    initWorkRowReveals,
+    initSectionFades,
+    initAboutReveal,
+    initContactReveal,
+    initSkillsMarquee,
+  } from '../lib/reveal';
+
+  const boot = () => {
+    requestAnimationFrame(() => {
+      document.documentElement.removeAttribute('data-cold-overlay');
+    });
+    initHeroReveal();
+    initManifestoPin();
+    initWorkRowReveals();
+    initSectionFades();
+    initAboutReveal();
+    initContactReveal();
+    initSkillsMarquee();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+</script>

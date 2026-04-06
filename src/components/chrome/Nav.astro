@@ -1,0 +1,79 @@
+---
+---
+<nav class="nav">
+  <div class="nav-inner container">
+    <a href="#hero" class="nav-logo">
+      <span class="font-display">RK</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-status">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span class="font-mono">Available</span>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    padding: 20px 0;
+    background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+    pointer-events: none;
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    pointer-events: auto;
+  }
+  .nav-logo {
+    font-size: 28px;
+    font-style: italic;
+    color: var(--ink);
+    letter-spacing: -0.04em;
+  }
+  .nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 32px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .nav-links a {
+    color: var(--muted);
+    transition: color 240ms ease;
+  }
+  .nav-links a:hover {
+    color: var(--ink);
+  }
+  .nav-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 0 0 var(--success);
+    animation: pulse 2.4s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 oklch(70% 0.15 145 / 0.5); }
+    70% { box-shadow: 0 0 0 8px oklch(70% 0.15 145 / 0); }
+    100% { box-shadow: 0 0 0 0 oklch(70% 0.15 145 / 0); }
+  }
+</style>

@@ -1,0 +1,39 @@
+---
+index: '01'
+title: 'MockTalk — Real-Time AI Interview Simulator'
+tagline: 'Voice-to-voice interview prep with sub-200ms response latency'
+year: 2025
+role: 'Solo build · Engineering & design'
+accent: '#5B8DEF'
+metrics:
+  - label: Latency
+    value: '<200 ms'
+  - label: Stack
+    value: Next.js 15
+  - label: Realtime
+    value: OpenAI Realtime API
+  - label: Transport
+    value: WebSockets
+---
+
+## Overview
+
+MockTalk is a low-latency, voice-to-voice web app that simulates high-pressure behavioral interviews. The candidate speaks. A custom-prompted LLM, roleplaying as a strict hiring manager, talks back in real time — pacing, interrupting, and following up exactly the way a human interviewer would.
+
+The hard part isn't the LLM. It's the **audio loop**: getting a microphone stream from the browser, into a model, and back out as speech without breaking the conversational rhythm humans expect.
+
+## How it works
+
+The browser captures audio with `MediaRecorder` and the Web Audio API, chunks it on the fly, base64-encodes each chunk, and pushes it through a secure bidirectional WebSocket to the OpenAI Realtime API. Responses stream back the same way and play through a small audio queue tuned to avoid both stutters and overlap. The serverless route is a thin pass-through — the heavy lifting happens in browser-native APIs to keep round-trips short.
+
+The interviewer "personality" comes from a tightly engineered system prompt that anchors the model to a specific role (Relationship Manager hiring) and gives it permission to interrupt, redirect, and probe. Without that, models default to polite Q&A and the simulation falls flat.
+
+## What I learned
+
+- Conversational latency is a budget, not a number. Every layer — capture, encode, transport, model, decode, playback — eats from the same 200ms.
+- Prompting an LLM to feel human means giving it explicit permission to be impatient.
+- Claude Code CLI flattened a lot of the React-hook boilerplate around audio streaming. I leaned on it for rapid hook prototyping and serverless route scaffolding.
+
+## Reflection
+
+This is the project that convinced me real-time voice is the next interaction surface for AI. The moment the latency dropped under 250ms, the conversation stopped feeling like a chatbot and started feeling like a phone call. That gap is everything.

@@ -1,0 +1,160 @@
+---
+import HeroShader from '../../islands/HeroShader.tsx';
+import { location } from '../../data/bio';
+const year = new Date().getFullYear();
+---
+<section id="hero" class="hero">
+  <HeroShader client:idle />
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="container hero-content">
+    <p class="font-eyebrow hero-eyebrow" data-hero-fade>
+      Portfolio — {year}
+    </p>
+    <h1 class="hero-name font-display" data-hero-name>Rohan Katara</h1>
+    <p class="hero-role" data-hero-fade>
+      Software Engineer &amp; AI Builder
+    </p>
+    <div class="hero-status font-mono" data-hero-status>
+      <span class="status-dot" aria-hidden="true"></span>
+      <span data-clock>—</span>
+      <span class="hero-status-sep">·</span>
+      <span>{location.coords}</span>
+      <span class="hero-status-sep">·</span>
+      <span>Available for opportunities</span>
+    </div>
+  </div>
+  <div class="hero-scroll-hint font-mono" aria-hidden="true">
+    <span>scroll</span>
+    <span class="hero-scroll-line"></span>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, oklch(28% 0.012 262 / 0.4) 1px, transparent 1px),
+      linear-gradient(to bottom, oklch(28% 0.012 262 / 0.4) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding-top: 120px;
+  }
+  .hero-eyebrow {
+    margin: 0 0 24px;
+    color: var(--accent);
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(56px, 9vw, 120px);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    margin: 0 0 32px;
+    color: var(--ink);
+    opacity: 0;
+  }
+  .hero-name :global(.char) {
+    display: inline-block;
+    will-change: transform;
+  }
+  .hero-role {
+    font-size: clamp(20px, 2.4vw, 28px);
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0 0 48px;
+    max-width: 720px;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .hero-role::before {
+    content: '— ';
+    color: var(--accent);
+  }
+  .hero-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--muted);
+    padding: 12px 18px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: oklch(16.75% 0.011 262 / 0.6);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .hero-status-sep {
+    color: var(--faint);
+  }
+  .hero-status .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--success);
+    animation: hero-pulse 2.4s ease-out infinite;
+  }
+  @keyframes hero-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.55; transform: scale(0.9); }
+  }
+  .hero-scroll-hint {
+    position: absolute;
+    bottom: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--faint);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    z-index: 2;
+  }
+  .hero-scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--faint), transparent);
+    animation: scroll-line 2s ease-in-out infinite;
+  }
+  @keyframes scroll-line {
+    0%, 100% { transform: scaleY(1); transform-origin: top; }
+    50% { transform: scaleY(0.4); transform-origin: top; }
+  }
+</style>
+
+<script>
+  // Live IST clock
+  const update = () => {
+    const el = document.querySelector('[data-clock]');
+    if (!el) return;
+    const fmt = new Intl.DateTimeFormat('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+    el.textContent = fmt.format(new Date()) + ' IST';
+  };
+  update();
+  setInterval(update, 30000);
+</script>

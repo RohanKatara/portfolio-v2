@@ -1,0 +1,56 @@
+---
+import { projects } from '../../data/projects';
+import ProjectRow from '../work/ProjectRow.astro';
+---
+<section id="work" class="work">
+  <div class="container">
+    <header class="work-header">
+      <p class="font-eyebrow" data-fade>Selected Work · 04 entries</p>
+      <h2 class="work-heading font-display" data-fade>
+        Things I've shipped<br />
+        <span class="work-heading-italic">on my own</span>
+      </h2>
+      <p class="work-blurb" data-fade>
+        Each project below started as a question I couldn't stop thinking about and
+        ended as something a stranger could click. Open one to see how it was built.
+      </p>
+    </header>
+
+    <div class="project-list">
+      {projects.map((p) => <ProjectRow project={p} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .work {
+    padding: 160px 0 96px;
+    position: relative;
+  }
+  .work-header {
+    margin-bottom: 96px;
+    max-width: 720px;
+  }
+  .work-heading {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin: 16px 0 32px;
+    color: var(--ink);
+  }
+  .work-heading-italic {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .work-blurb {
+    margin: 0;
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 560px;
+  }
+  .project-list {
+    margin-top: 32px;
+  }
+</style>

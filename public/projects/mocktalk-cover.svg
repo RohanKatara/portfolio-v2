@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" width="1280" height="800">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1F2025"/>
+      <stop offset="1" stop-color="#13141A"/>
+    </linearGradient>
+    <radialGradient id="r" cx="0.7" cy="0.3" r="0.6">
+      <stop offset="0" stop-color="#5B8DEF" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#5B8DEF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1280" height="800" fill="url(#g)"/>
+  <rect width="1280" height="800" fill="url(#r)"/>
+  <g fill="none" stroke="#5B8DEF" stroke-width="2" opacity="0.6">
+    <circle cx="900" cy="240" r="60"/>
+    <circle cx="900" cy="240" r="120"/>
+    <circle cx="900" cy="240" r="180"/>
+  </g>
+  <text x="80" y="120" font-family="Fira Code, monospace" font-size="20" fill="#5B8DEF" letter-spacing="2">01 / MOCKTALK</text>
+  <text x="80" y="640" font-family="Georgia, serif" font-size="96" fill="#E8EAF0" font-style="italic">MockTalk</text>
+  <text x="80" y="700" font-family="Inter, sans-serif" font-size="24" fill="#ABADB7">Real-Time AI Interview Simulator</text>
+  <text x="80" y="740" font-family="Fira Code, monospace" font-size="14" fill="#767882">2025 — sub-200ms voice loop</text>
+</svg>
