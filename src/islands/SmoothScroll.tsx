@@ -15,28 +15,6 @@ declare global {
 
 export default function SmoothScroll() {
   useEffect(() => {
-    // Under prefers-reduced-motion we skip Lenis entirely. Native browser
-    // scroll is already instant, and ScrollTrigger listens to native window
-    // scroll events directly, so reveal animations still fire as the user
-    // scrolls — they just don't get smoothed/interpolated. The overlay
-    // scroll-lock is still needed so case overlays don't bleed through to
-    // background scroll, so we wire it via a native overflow toggle.
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      const onOverlayOpen = () => {
-        document.body.style.overflow = 'hidden';
-      };
-      const onOverlayClose = () => {
-        document.body.style.overflow = '';
-      };
-      window.addEventListener('case-overlay-open', onOverlayOpen);
-      window.addEventListener('case-overlay-close', onOverlayClose);
-      return () => {
-        window.removeEventListener('case-overlay-open', onOverlayOpen);
-        window.removeEventListener('case-overlay-close', onOverlayClose);
-        document.body.style.overflow = '';
-      };
-    }
-
     const lenis = new Lenis({
       duration: 1.1,
       smoothWheel: true,

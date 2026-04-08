@@ -247,11 +247,6 @@ export default function AutomateProThumb() {
           65%  { transform: translateX(-370px); opacity: 0;   }
           100% { transform: translateX(-370px); opacity: 0;   }
         }
-
-        @media (prefers-reduced-motion: reduce) {
-          .ap-halo, .ap-mid, .ap-gate, .ap-glint,
-          .ap-pass-l, .ap-pass-r, .ap-reject-l, .ap-reject-r { animation: none; }
-        }
       `}</style>
     </div>
   );

@@ -120,11 +120,6 @@ export default function ContentEngineThumb() {
           0%, 100% { opacity: 0.7; transform: scale(1);   }
           50%      { opacity: 1;   transform: scale(1.6); }
         }
-
-        @media (prefers-reduced-motion: reduce) {
-          .ce-tile, .ce-core { animation: none; }
-          .ce-tile { opacity: 1; transform: scale(1); }
-        }
       `}</style>
     </div>
   );

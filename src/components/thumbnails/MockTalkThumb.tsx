@@ -108,11 +108,6 @@ export default function MockTalkThumb() {
           0%, 100% { opacity: 0.85; }
           50%      { opacity: 1;    }
         }
-        @media (prefers-reduced-motion: reduce) {
-          .mt-bar, .mt-ring, .mt-mic { animation: none; }
-          .mt-bar { transform: scaleY(0.7); opacity: 0.7; }
-          .mt-ring { opacity: 0; }
-        }
       `}</style>
     </div>
   );

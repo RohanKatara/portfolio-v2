@@ -1,8 +1,5 @@
 import { gsap, ScrollTrigger } from './gsap';
 import Splitting from 'splitting';
-import { prefersReducedMotion } from './motion';
-
-const RM = () => prefersReducedMotion();
 
 /**
  * Hero name + tagline char/word reveal. Runs once on load.
@@ -12,21 +9,6 @@ export const initHeroReveal = () => {
   const heroEyebrow = document.querySelectorAll<HTMLElement>('[data-hero-fade]');
   const heroStatus = document.querySelector<HTMLElement>('[data-hero-status]');
   if (!heroName) return;
-
-  if (RM()) {
-    // Reduce-motion: opacity-only fade-in. No yPercent, no char split, no
-    // stagger — fades aren't vestibular motion and are spec-compliant.
-    gsap.set(heroName, { opacity: 0 });
-    heroEyebrow.forEach((el) => gsap.set(el, { opacity: 0, y: 0 }));
-    if (heroStatus) gsap.set(heroStatus, { opacity: 0, y: 0 });
-    const tl = gsap.timeline({ delay: 0.15 });
-    tl.to(heroName, { opacity: 1, duration: 0.8, ease: 'power1.out' })
-      .to(heroEyebrow, { opacity: 1, duration: 0.6, ease: 'power1.out' }, '-=0.4');
-    if (heroStatus) {
-      tl.to(heroStatus, { opacity: 1, duration: 0.5, ease: 'power1.out' }, '-=0.3');
-    }
-    return;
-  }
 
   const heroNameVisual = heroName.querySelector<HTMLElement>('[data-hero-name-visual]');
   if (heroNameVisual) {
@@ -74,19 +56,6 @@ export const initManifestoPin = () => {
   const sentence = root.querySelector<HTMLElement>('[data-manifesto-text]');
   if (!sentence) return;
 
-  if (RM()) {
-    // Reduce-motion: skip the pin/scrub entirely (pinning is vestibular).
-    // Just fade the whole sentence in once when it enters view.
-    gsap.set(sentence, { opacity: 0 });
-    gsap.to(sentence, {
-      opacity: 1,
-      duration: 0.8,
-      ease: 'power1.out',
-      scrollTrigger: { trigger: root, start: 'top 80%' },
-    });
-    return;
-  }
-
   Splitting({ target: sentence, by: 'words' });
   const words = sentence.querySelectorAll<HTMLElement>('.word');
   gsap.set(sentence, { opacity: 1 });
@@ -112,19 +81,6 @@ export const initManifestoPin = () => {
 export const initWorkRowReveals = () => {
   const rows = document.querySelectorAll<HTMLElement>('[data-project-row]');
   if (!rows.length) return;
-
-  if (RM()) {
-    // Reduce-motion: fade each row in on enter. No char split, no stagger,
-    // no underline scaleX — opacity only.
-    rows.forEach((row) => gsap.set(row, { opacity: 0 }));
-    ScrollTrigger.batch('[data-project-row]', {
-      start: 'top 85%',
-      onEnter: (batch) => {
-        gsap.to(batch, { opacity: 1, duration: 0.6, ease: 'power1.out' });
-      },
-    });
-    return;
-  }
 
   rows.forEach((row) => {
     const title = row.querySelector<HTMLElement>('[data-row-title]');
@@ -174,23 +130,6 @@ export const initSectionFades = () => {
   const items = document.querySelectorAll<HTMLElement>('[data-fade]');
   if (!items.length) return;
 
-  if (RM()) {
-    // Reduce-motion: opacity-only fade-in. No y translation.
-    items.forEach((el) => {
-      gsap.fromTo(
-        el,
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 0.7,
-          ease: 'power1.out',
-          scrollTrigger: { trigger: el, start: 'top 88%' },
-        },
-      );
-    });
-    return;
-  }
-
   items.forEach((el) => {
     gsap.fromTo(
       el,
@@ -210,37 +149,6 @@ export const initAboutReveal = () => {
   const portrait = document.querySelector<HTMLElement>('[data-about-portrait]');
   const paragraphs = document.querySelectorAll<HTMLElement>('[data-about-para]');
   if (!portrait && !paragraphs.length) return;
-
-  if (RM()) {
-    // Reduce-motion: skip the clipPath reveal (which feels like a slide) and
-    // the per-word stagger. Just fade portrait + paragraphs in on scroll.
-    if (portrait) {
-      portrait.style.clipPath = 'inset(0)';
-      gsap.fromTo(
-        portrait,
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 0.8,
-          ease: 'power1.out',
-          scrollTrigger: { trigger: portrait, start: 'top 80%' },
-        },
-      );
-    }
-    paragraphs.forEach((para) => {
-      gsap.fromTo(
-        para,
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 0.7,
-          ease: 'power1.out',
-          scrollTrigger: { trigger: para, start: 'top 85%' },
-        },
-      );
-    });
-    return;
-  }
 
   if (portrait) {
     gsap.fromTo(
@@ -275,21 +183,6 @@ export const initContactReveal = () => {
   const email = document.querySelector<HTMLElement>('[data-contact-email]');
   if (!email) return;
 
-  if (RM()) {
-    // Reduce-motion: opacity-only fade on scroll. No char split.
-    gsap.fromTo(
-      email,
-      { opacity: 0 },
-      {
-        opacity: 1,
-        duration: 0.7,
-        ease: 'power1.out',
-        scrollTrigger: { trigger: email, start: 'top 80%' },
-      },
-    );
-    return;
-  }
-
   Splitting({ target: email, by: 'chars' });
   const chars = email.querySelectorAll<HTMLElement>('.char');
   gsap.set(email, { opacity: 1 });
@@ -306,7 +199,6 @@ export const initContactReveal = () => {
 export const initSkillsMarquee = () => {
   const track = document.querySelector<HTMLElement>('[data-skills-track]');
   if (!track) return;
-  if (RM()) return;
   const distance = track.scrollWidth / 2;
   if (!distance) return;
   gsap.to(track, {

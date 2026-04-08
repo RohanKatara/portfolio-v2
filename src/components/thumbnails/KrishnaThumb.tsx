@@ -222,9 +222,6 @@ export default function KrishnaThumb() {
     const container = containerRef.current;
     if (!container) return;
 
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) return;
-
     let mouseX: number | null = null;
     let mouseY: number | null = null;
     let smParaX = 0;
@@ -474,9 +471,6 @@ export default function KrishnaThumb() {
           transform-origin: center;
           transform: scale(calc(1 + var(--eye-prox) * 0.7));
           opacity: calc(0.85 + var(--eye-prox) * 0.15);
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .kr-feather { will-change: auto; }
         }
       `}</style>
     </div>

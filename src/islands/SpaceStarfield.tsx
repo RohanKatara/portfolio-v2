@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Geometry, Camera, Transform, Triangle } from 'ogl';
-import { canRunWebGL, prefersReducedMotion } from '../lib/motion';
+import { canRunWebGL } from '../lib/motion';
 
 /**
  * Persistent fullscreen constellation field rendered behind every section.
@@ -528,7 +528,6 @@ export default function SpaceStarfield() {
     console.log('[SpaceStarfield] init starting');
 
     const host = ref.current;
-    const reduced = prefersReducedMotion();
     let disposed = false;
     let raf = 0;
 
@@ -786,23 +785,15 @@ export default function SpaceStarfield() {
     };
 
     window.addEventListener('resize', resize);
-    // Scroll + mouse listeners only matter when we're animating per-frame.
-    // Under reduce-motion we render exactly one static frame, so they'd just
-    // mutate state that never gets re-rendered.
-    if (!reduced) {
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('mousemove', onMouseMove, { passive: true });
-    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
     window.addEventListener('webgl-disable', onDisable);
     gl.canvas.addEventListener('webglcontextlost', onContextLost as EventListener);
 
     // ---- tick loop ----
-    // Under reduce-motion we call tick() exactly once and don't reschedule —
-    // the user gets a static snapshot of the starfield instead of an animated
-    // one. The render path inside tick is identical, just frozen at t=0.
     const tick = (now: number) => {
       if (disposed) return;
-      if (!reduced) raf = requestAnimationFrame(tick);
+      raf = requestAnimationFrame(tick);
 
       const tSec = now * 0.001;
 
@@ -870,14 +861,7 @@ export default function SpaceStarfield() {
 
       renderer.render({ scene, camera });
     };
-    if (reduced) {
-      // One-shot static frame: tick(0) runs the full render pipeline once
-      // (with t=0, scrollY=0, mouse-at-center) and then exits without
-      // scheduling another frame.
-      tick(0);
-    } else {
-      raf = requestAnimationFrame(tick);
-    }
+    raf = requestAnimationFrame(tick);
 
     // Kick the fade-in on the next frame so at least one render has queued
     requestAnimationFrame(() => {

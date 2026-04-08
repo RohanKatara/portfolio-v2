@@ -1,5 +1,3 @@
-import { prefersReducedMotion } from './motion';
-
 /**
  * Per-letter Matrix scramble on hover for the hero name + role.
  *
@@ -64,8 +62,6 @@ const scrambleElement = (el: HTMLElement): void => {
  * spans we attach to.
  */
 export const initHeroScramble = (): (() => void) => {
-  if (prefersReducedMotion()) return () => {};
-
   const containers = document.querySelectorAll<HTMLElement>(
     '[data-hero-name-visual], [data-hero-role-visual]',
   );

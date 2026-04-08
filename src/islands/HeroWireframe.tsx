@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Geometry, Camera, Transform, Triangle } from 'ogl';
-import { canRunWebGL, prefersReducedMotion } from '../lib/motion';
+import { canRunWebGL } from '../lib/motion';
 import { ScrollTrigger } from '../lib/gsap';
 
 // ---- tuning constants ---------------------------------------------------
@@ -208,7 +208,6 @@ export default function HeroWireframe() {
 
     const host = ref.current;
     const heroEl = host.closest<HTMLElement>('.hero');
-    const reduced = prefersReducedMotion();
     let disposed = false;
 
     const renderer = new Renderer({
@@ -451,7 +450,7 @@ export default function HeroWireframe() {
     // shape, just frozen.
     const tick = (now: number) => {
       if (disposed) return;
-      if (!reduced) raf = requestAnimationFrame(tick);
+      raf = requestAnimationFrame(tick);
       if (!visible) return;
 
       const tSec = now * 0.001;
@@ -469,13 +468,7 @@ export default function HeroWireframe() {
       wireMesh.updateMatrixWorld();
       drawWireframePasses();
     };
-    if (reduced) {
-      // One-shot static render: tick(0) draws the wireframe + particles once
-      // and exits without scheduling another frame.
-      tick(0);
-    } else {
-      raf = requestAnimationFrame(tick);
-    }
+    raf = requestAnimationFrame(tick);
 
     // Kick the fade-in on the next frame so at least one render has queued
     requestAnimationFrame(() => {
