@@ -3,6 +3,7 @@ import '../styles/global.css';
 import DesktopGate from '../islands/DesktopGate.tsx';
 import SmoothScroll from '../islands/SmoothScroll.tsx';
 import CaseOverlayController from '../islands/CaseOverlayController.tsx';
+import SpaceStarfield from '../islands/SpaceStarfield.tsx';
 
 interface Props {
   title?: string;
@@ -15,12 +16,38 @@ const {
 } = Astro.props;
 
 const canonical = 'https://rohankatara.com/';
+
+// Build-time rollback flag. Set PUBLIC_FORCE_LEGACY=1 in Vercel and redeploy
+// to send every visitor to /legacy/ (the coffee portfolio) regardless of device.
+const forceLegacy = import.meta.env.PUBLIC_FORCE_LEGACY === '1';
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Mobile + force-legacy redirect. Must run before paint, before any other
+         script, and must mirror coffee-portfolio's useBreakpoint rule byte-for-byte
+         (width < 768 || (hasTouch && Math.min(screen.w, screen.h) < 768)) so a
+         visitor classified mobile here is also classified mobile by coffee's React
+         hook on the next page. location.replace() leaves no history entry, so the
+         browser back button never bounces back here. ?desktop=1 is an escape hatch
+         for QA on touch laptops. -->
+    <script is:inline define:vars={{ forceLegacy }}>
+      (function () {
+        try {
+          if (location.pathname.indexOf('/legacy') === 0) return;
+          if (location.search.indexOf('desktop=1') !== -1) return;
+          var w = window.innerWidth;
+          var hasTouch = navigator.maxTouchPoints > 0;
+          var smallSide = Math.min(screen.width, screen.height);
+          var isMobile = w < 768 || (hasTouch && smallSide < 768);
+          if (forceLegacy || isMobile) {
+            location.replace('/legacy/' + location.search + location.hash);
+          }
+        } catch (e) {}
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -87,6 +114,7 @@ const canonical = 'https://rohankatara.com/';
     <DesktopGate client:only="react" />
     <SmoothScroll client:only="react" />
     <CaseOverlayController client:only="react" />
+    <SpaceStarfield client:only="react" />
 
     <slot />
   </body>

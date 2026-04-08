@@ -13,7 +13,13 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--bg), var(--bg)),
+    url('/textures/paper-dark.svg');
+  background-repeat: repeat;
+  background-size: auto, 240px 240px;
+  background-blend-mode: normal, overlay;
   color: var(--ink);
 }
 
@@ -37,14 +43,16 @@ body {
   font-size: 16px;
   font-weight: 400;
   line-height: 1.6;
-  background: var(--bg);
   color: var(--ink);
-  background-image: url('/textures/paper-dark.svg');
-  background-repeat: repeat;
-  background-size: 240px 240px;
-  background-blend-mode: overlay;
+  background: transparent;
   min-height: 100dvh;
   overflow-x: hidden;
+  /* Establish a stacking context so the SpaceStarfield (z-index: -1) is
+     scoped within body and renders between body's transparent background
+     and the in-flow page content (main, nav, sections). Without this, the
+     negative-z child propagates up to html's stacking context and gets
+     painted behind html's opaque paper-textured background. */
+  isolation: isolate;
 }
 
 body[data-overlay-open] {

@@ -77,12 +77,14 @@ const renderedCases = await Promise.all(
     initContactReveal,
     initSkillsMarquee,
   } from '../lib/reveal';
+  import { initHeroScramble } from '../lib/scramble';
 
   const boot = () => {
     requestAnimationFrame(() => {
       document.documentElement.removeAttribute('data-cold-overlay');
     });
     initHeroReveal();
+    initHeroScramble();
     initManifestoPin();
     initWorkRowReveals();
     initSectionFades();

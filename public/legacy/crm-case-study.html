@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Automate Pro: AI Lead Gatekeeper</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#10131a",
+                    "inverse-primary": "#842bd2",
+                    "on-tertiary-fixed": "#281900",
+                    "outline": "#988d9f",
+                    "on-background": "#e1e2eb",
+                    "on-tertiary": "#432c00",
+                    "surface-container-highest": "#32353c",
+                    "inverse-on-surface": "#2e3037",
+                    "on-secondary-fixed": "#001f25",
+                    "surface-tint": "#ddb7ff",
+                    "surface-bright": "#363940",
+                    "surface-container": "#1d2026",
+                    "secondary": "#5de6ff",
+                    "primary-container": "#b76dff",
+                    "tertiary-fixed-dim": "#fabc4e",
+                    "on-tertiary-container": "#3a2600",
+                    "surface-dim": "#10131a",
+                    "error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#604100",
+                    "background": "#10131a",
+                    "outline-variant": "#4d4354",
+                    "tertiary-fixed": "#ffdead",
+                    "error": "#ffb4ab",
+                    "primary-fixed": "#f0dbff",
+                    "on-surface": "#e1e2eb",
+                    "on-primary": "#490080",
+                    "on-surface-variant": "#cfc2d6",
+                    "on-secondary": "#00363e",
+                    "inverse-surface": "#e1e2eb",
+                    "surface-container-high": "#272a31",
+                    "primary-fixed-dim": "#ddb7ff",
+                    "primary": "#ddb7ff",
+                    "on-secondary-fixed-variant": "#004e5a",
+                    "tertiary": "#fabc4e",
+                    "on-primary-fixed": "#2c0051",
+                    "secondary-container": "#00cbe6",
+                    "surface-container-lowest": "#0b0e14",
+                    "secondary-fixed": "#a2eeff",
+                    "on-primary-container": "#400071",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-low": "#191c22",
+                    "on-primary-fixed-variant": "#6900b3",
+                    "surface-variant": "#32353c",
+                    "on-error": "#690005",
+                    "secondary-fixed-dim": "#2fd9f4",
+                    "on-secondary-container": "#00515d",
+                    "tertiary-container": "#bd871a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #10131a; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+        .glass-panel {
+            background: rgba(50, 53, 60, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+        .text-glow-primary {
+            text-shadow: 0 0 20px rgba(221, 183, 255, 0.4);
+        }
+        .luminous-shadow-primary {
+            box-shadow: 0 10px 40px -10px rgba(221, 183, 255, 0.15);
+        }
+        .luminous-shadow-secondary {
+            box-shadow: 0 10px 40px -10px rgba(93, 230, 255, 0.15);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .demo-thumbnail {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 1rem;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .demo-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.45);
+            transition: filter 0.3s;
+        }
+        .demo-thumbnail:hover img { filter: brightness(0.6); }
+        .demo-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+        }
+        .demo-play-btn {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(221, 183, 255, 0.18);
+            border: 2px solid rgba(221, 183, 255, 0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, transform 0.2s;
+            backdrop-filter: blur(6px);
+        }
+        .demo-thumbnail:hover .demo-play-btn {
+            background: rgba(221, 183, 255, 0.32);
+            transform: scale(1.08);
+        }
+        .demo-play-icon {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 14px 0 14px 26px;
+            border-color: transparent transparent transparent #ddb7ff;
+            margin-left: 5px;
+        }
+        .demo-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(221, 183, 255, 0.9);
+        }
+    </style>
+</head>
+<body class="text-on-background bg-surface selection:bg-primary/30">
+<!-- Ambient Background Texture -->
+<div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+<div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-primary/5 blur-[120px]"></div>
+<div class="absolute top-[20%] -right-[5%] w-[30%] h-[30%] rounded-full bg-secondary/5 blur-[100px]"></div>
+</div>
+<main class="relative z-10">
+<!-- 1. Hero Section -->
+<section class="min-h-[819px] flex flex-col items-center justify-center text-center px-6 py-24">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-outline-variant/30 bg-surface-container-low/50 mb-8">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="text-xs font-label uppercase tracking-widest text-on-surface-variant">Intelligent Pipeline v2.0</span>
+</div>
+<h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 max-w-4xl bg-gradient-to-br from-primary via-primary-fixed to-secondary bg-clip-text text-transparent text-glow-primary leading-[1.1]">
+                Automate Pro: AI Lead Gatekeeper
+            </h1>
+<p class="text-lg md:text-xl text-on-surface-variant max-w-2xl mx-auto mb-12 leading-relaxed">
+                An automated pipeline that uses LLMs to instantly score, qualify, and route agency leads, saving <span class="text-secondary font-semibold">20+ hours a week</span>.
+            </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<button onclick="window.parent.postMessage('openDemoPlayer', '*')" class="px-8 py-4 bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold rounded-lg luminous-shadow-primary hover:brightness-110 transition-all duration-300 transform hover:scale-[1.02] active:scale-95">
+                    Try the Demo
+                </button>
+</div>
+<!-- Hero Image/Visual Element -->
+<div class="mt-20 w-full max-w-5xl mx-auto px-4">
+<div class="aspect-[16/9] rounded-2xl overflow-hidden border border-outline-variant/20 luminous-shadow-primary relative group">
+<img class="w-full h-full object-cover grayscale-[0.2] brightness-75 group-hover:scale-105 transition-transform duration-700" data-alt="abstract high-tech visualization of digital data nodes and glowing neural network connections in deep violet and cyan light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADVHaWwUd22eXt1ILGfRr7yulfkwlwOVQr5gDHPQtfPkW6WobdIVbJclm58A0S0aFgwLW4ZgefKoGZCQIJmll5yW9-KylyjCALWNohItL-JIxlmCKK3MfB8Z4x3sngmV_7VXDtOfWhkPLr7ollvLp4SJyjxjlvaJuZ9s02x8SWa3BCTk43wLYuMOg7qVEeCnkxvF0nmazfzIEr3ccitfubhCiGIoBWvwKX2PDZMwOpsyquewOlsy0ftkMfW-E43vy6SBBOuluNzx8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60"></div>
+</div>
+</div>
+</section>
+<!-- 2. Architecture & Flow Section -->
+<section class="py-24 px-8 max-w-7xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="text-3xl md:text-4xl font-bold text-on-surface mb-4">The Intelligent Lifecycle</h2>
+<div class="h-1 w-20 bg-secondary mx-auto rounded-full"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Card 1 -->
+<div class="glass-panel p-8 rounded-xl border border-outline-variant/20 hover:border-primary/40 transition-colors group">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="web_traffic">web_traffic</span>
+</div>
+<h3 class="text-xl font-bold mb-3 text-on-surface">1. Capture</h3>
+<p class="text-on-surface-variant leading-relaxed">
+                        Custom React frontend captures high-value prospect data through dynamic forms and behavioral tracking.
+                    </p>
+</div>
+<!-- Card 2 -->
+<div class="glass-panel p-8 rounded-xl border border-outline-variant/20 hover:border-secondary/40 transition-colors group">
+<div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mb-6 group-hover:bg-secondary/20 transition-colors">
+<span class="material-symbols-outlined text-secondary text-3xl" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<h3 class="text-xl font-bold mb-3 text-on-surface">2. AI Scoring</h3>
+<p class="text-on-surface-variant leading-relaxed">
+                        Google Gemini 2.5 Flash analyzes project scope, budget, and urgency to assign a lead quality score out of 10.
+                    </p>
+</div>
+<!-- Card 3 -->
+<div class="glass-panel p-8 rounded-xl border border-outline-variant/20 hover:border-primary-container/40 transition-colors group">
+<div class="w-12 h-12 rounded-lg bg-primary-container/10 flex items-center justify-center mb-6 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-primary-container text-3xl" data-icon="account_tree">account_tree</span>
+</div>
+<h3 class="text-xl font-bold mb-3 text-on-surface">3. Auto-Routing</h3>
+<p class="text-on-surface-variant leading-relaxed">
+                        n8n routes VIPs instantly to Slack and directs low-budget leads to a segmented Google Sheets waitlist for nurturing.
+                    </p>
+</div>
+</div>
+</section>
+<!-- 3. Tech Stack Display -->
+<section class="py-16 px-8 bg-surface-container-lowest/50">
+<div class="max-w-5xl mx-auto flex flex-col items-center">
+<span class="text-xs font-label uppercase tracking-widest text-outline mb-10">Powering the engine</span>
+<div class="flex flex-wrap justify-center gap-4 md:gap-8">
+<!-- Badges -->
+<div class="px-6 py-2 rounded-full border border-outline-variant/30 bg-surface-container-high/40 flex items-center gap-3 hover:border-secondary transition-all cursor-default">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="text-sm font-medium">React</span>
+</div>
+<div class="px-6 py-2 rounded-full border border-outline-variant/30 bg-surface-container-high/40 flex items-center gap-3 hover:border-primary transition-all cursor-default">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="text-sm font-medium">n8n</span>
+</div>
+<div class="px-6 py-2 rounded-full border border-outline-variant/30 bg-surface-container-high/40 flex items-center gap-3 hover:border-tertiary transition-all cursor-default">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<span class="text-sm font-medium">Gemini 2.5 Flash</span>
+</div>
+<div class="px-6 py-2 rounded-full border border-outline-variant/30 bg-surface-container-high/40 flex items-center gap-3 hover:border-secondary transition-all cursor-default">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="text-sm font-medium">Slack API</span>
+</div>
+<div class="px-6 py-2 rounded-full border border-outline-variant/30 bg-surface-container-high/40 flex items-center gap-3 hover:border-primary-container transition-all cursor-default">
+<div class="w-2 h-2 rounded-full bg-primary-container"></div>
+<span class="text-sm font-medium">Google Sheets</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Demo Area -->
+<section class="py-24 px-8 max-w-5xl mx-auto">
+<div class="text-center mb-10">
+<h2 class="text-3xl md:text-4xl font-bold text-on-surface mb-4">Live Interactive Demo</h2>
+<div class="h-1 w-20 bg-primary mx-auto rounded-full mb-4"></div>
+<p class="text-on-surface-variant max-w-xl mx-auto text-lg">
+    Watch the full pipeline walkthrough with voiceover. Press <span class="text-primary font-semibold">START DEMO</span> inside the player to begin.
+</p>
+</div>
+<div
+  class="demo-thumbnail border-2 border-primary/20 luminous-shadow-primary"
+  onclick="window.parent.postMessage('openDemoPlayer', '*')"
+  role="button"
+  tabindex="0"
+  aria-label="Open demo player"
+  onkeydown="if(event.key==='Enter'||event.key===' ')window.parent.postMessage('openDemoPlayer','*')"
+>
+  <img
+    src="https://lh3.googleusercontent.com/aida-public/AB6AXuADVHaWwUd22eXt1ILGfRr7yulfkwlwOVQr5gDHPQtfPkW6WobdIVbJclm58A0S0aFgwLW4ZgefKoGZCQIJmll5yW9-KylyjCALWNohItL-JIxlmCKK3MfB8Z4x3sngmV_7VXDtOfWhkPLr7ollvLp4SJyjxjlvaJuZ9s02x8SWa3BCTk43wLYuMOg7qVEeCnkxvF0nmazfzIEr3ccitfubhCiGIoBWvwKX2PDZMwOpsyquewOlsy0ftkMfW-E43vy6SBBOuluNzx8"
+    alt="Automate Pro demo preview"
+  />
+  <div class="demo-overlay">
+    <div class="demo-play-btn">
+      <div class="demo-play-icon"></div>
+    </div>
+    <span class="demo-label">See Demo</span>
+  </div>
+</div>
+<p class="text-center text-xs text-outline mt-4 tracking-wide uppercase">Click to open the interactive walkthrough — audio included</p>
+</section>
+</main>
+<!-- Footer -->
+</body></html>

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/mocktalk-case-study.html",       "destination": "/legacy/mocktalk-case-study.html" },
+    { "source": "/krishna-case-study.html",        "destination": "/legacy/krishna-case-study.html" },
+    { "source": "/crm-case-study.html",            "destination": "/legacy/crm-case-study.html" },
+    { "source": "/content-engine-case-study.html", "destination": "/legacy/content-engine-case-study.html" },
+    { "source": "/automate-pro-demo/:path*",       "destination": "/legacy/automate-pro-demo/:path*" },
+    { "source": "/models/:path*",                  "destination": "/legacy/models/:path*" },
+    { "source": "/draco/:path*",                   "destination": "/legacy/draco/:path*" }
+  ]
+}

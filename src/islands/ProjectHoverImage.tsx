@@ -1,16 +1,17 @@
 import { useEffect, useRef } from 'react';
+import Thumbnail, { type ThumbSlug } from '../components/thumbnails/Thumbnail';
 
 interface Props {
-  src: string;
+  slug: ThumbSlug;
   alt: string;
 }
 
 /**
- * Cursor-following preview image attached to a project row.
- * Lightweight DOM follower (no WebGL distortion in v1 — keeps the bundle lean
- * and the effect butter-smooth on integrated GPUs).
+ * Cursor-following animated preview attached to a project row. The actual
+ * artwork is rendered by <Thumbnail/>, which dispatches an animated SVG scene
+ * per project slug. The wrapper here just handles the cursor follow + show/hide.
  */
-export default function ProjectHoverImage({ src, alt }: Props) {
+export default function ProjectHoverImage({ slug, alt }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -67,13 +68,14 @@ export default function ProjectHoverImage({ src, alt }: Props) {
   return (
     <div
       ref={ref}
-      aria-hidden="true"
+      role="img"
+      aria-label={alt}
       style={{
         position: 'fixed',
         left: 0,
         top: 0,
-        width: '320px',
-        height: '200px',
+        width: '420px',
+        height: '260px',
         pointerEvents: 'none',
         opacity: 0,
         transform: 'translate(-50%, -50%) scale(0.96)',
@@ -81,14 +83,10 @@ export default function ProjectHoverImage({ src, alt }: Props) {
         zIndex: 50,
         borderRadius: '4px',
         overflow: 'hidden',
-        boxShadow: '0 30px 80px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(91,141,239,0.2)',
+        boxShadow: '0 30px 80px -20px rgba(0,0,0,0.65), 0 0 0 1px rgba(91,141,239,0.2)',
       }}
     >
-      <img
-        src={src}
-        alt={alt}
-        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-      />
+      <Thumbnail slug={slug} variant="preview" />
     </div>
   );
 }

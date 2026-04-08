@@ -44,4 +44,7 @@
   /* Motion */
   --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
   --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Hero scanline overlay */
+  --scanline:    oklch(0% 0 0 / 0.06);
 }

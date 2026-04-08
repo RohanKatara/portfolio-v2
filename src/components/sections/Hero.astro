@@ -1,25 +1,25 @@
 ---
-import HeroShader from '../../islands/HeroShader.tsx';
-import { location } from '../../data/bio';
+import HeroWireframe from '../../islands/HeroWireframe.tsx';
 const year = new Date().getFullYear();
 ---
 <section id="hero" class="hero">
-  <HeroShader client:idle />
-  <div class="hero-grid" aria-hidden="true"></div>
+  <HeroWireframe client:only="react" />
+  <div class="hero-scanlines" aria-hidden="true"></div>
+  <div class="hero-fallback" aria-hidden="true"></div>
   <div class="container hero-content">
     <p class="font-eyebrow hero-eyebrow" data-hero-fade>
       Portfolio — {year}
     </p>
-    <h1 class="hero-name font-display" data-hero-name>Rohan Katara</h1>
+    <h1 class="hero-name font-display" data-hero-name>
+      <span class="sr-only">Rohan Katara</span>
+      <span class="hero-name-visual" aria-hidden="true" data-hero-name-visual>Rohan Katara</span>
+    </h1>
     <p class="hero-role" data-hero-fade>
-      Software Engineer &amp; AI Builder
+      <span class="sr-only">— Software Engineer &amp; AI Builder</span>
+      <span class="hero-role-visual" aria-hidden="true" data-hero-role-visual>— Software Engineer &amp; AI Builder</span>
     </p>
     <div class="hero-status font-mono" data-hero-status>
       <span class="status-dot" aria-hidden="true"></span>
-      <span data-clock>—</span>
-      <span class="hero-status-sep">·</span>
-      <span>{location.coords}</span>
-      <span class="hero-status-sep">·</span>
       <span>Available for opportunities</span>
     </div>
   </div>
@@ -39,16 +39,25 @@ const year = new Date().getFullYear();
     overflow: hidden;
     isolation: isolate;
   }
-  .hero-grid {
+  .hero-fallback {
     position: absolute;
     inset: 0;
-    background-image:
-      linear-gradient(to right, oklch(28% 0.012 262 / 0.4) 1px, transparent 1px),
-      linear-gradient(to bottom, oklch(28% 0.012 262 / 0.4) 1px, transparent 1px);
-    background-size: 80px 80px;
-    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    z-index: 0;
     pointer-events: none;
-    z-index: 1;
+    background:
+      radial-gradient(
+        ellipse 60% 50% at 35% 45%,
+        oklch(70% 0.18 262 / 0.20) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 80% 60% at 70% 70%,
+        oklch(61.53% 0.1675 262 / 0.12) 0%,
+        transparent 70%
+      );
+  }
+  .hero[data-webgl="on"] .hero-fallback {
+    display: none;
   }
   .hero-content {
     position: relative;
@@ -70,9 +79,14 @@ const year = new Date().getFullYear();
     color: var(--ink);
     opacity: 0;
   }
-  .hero-name :global(.char) {
+  .hero-name-visual,
+  .hero-role-visual {
     display: inline-block;
-    will-change: transform;
+  }
+  .hero-name-visual :global(.char),
+  .hero-role-visual :global(.char) {
+    display: inline-block;
+    will-change: transform, color;
   }
   .hero-role {
     font-size: clamp(20px, 2.4vw, 28px);
@@ -83,8 +97,9 @@ const year = new Date().getFullYear();
     opacity: 0;
     transform: translateY(20px);
   }
-  .hero-role::before {
-    content: '— ';
+  /* Color the leading "— " of the role accent-blue. After Splitting runs, the
+     dash is the first .char and the space is a .whitespace span (skipped). */
+  .hero-role-visual :global(.char):first-child {
     color: var(--accent);
   }
   .hero-status {
@@ -100,9 +115,6 @@ const year = new Date().getFullYear();
     backdrop-filter: blur(8px);
     opacity: 0;
     transform: translateY(20px);
-  }
-  .hero-status-sep {
-    color: var(--faint);
   }
   .hero-status .status-dot {
     width: 7px;
@@ -140,21 +152,25 @@ const year = new Date().getFullYear();
     0%, 100% { transform: scaleY(1); transform-origin: top; }
     50% { transform: scaleY(0.4); transform-origin: top; }
   }
+
+  /* CRT scanline overlay — sits between the grid canvas (z=0) and content (z=2) */
+  .hero-scanlines {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 2px,
+      var(--scanline) 2px,
+      var(--scanline) 3px
+    );
+    mix-blend-mode: multiply;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-scanlines { display: none; }
+  }
 </style>
 
-<script>
-  // Live IST clock
-  const update = () => {
-    const el = document.querySelector('[data-clock]');
-    if (!el) return;
-    const fmt = new Intl.DateTimeFormat('en-IN', {
-      timeZone: 'Asia/Kolkata',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    });
-    el.textContent = fmt.format(new Date()) + ' IST';
-  };
-  update();
-  setInterval(update, 30000);
-</script>

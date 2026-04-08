@@ -1,5 +1,5 @@
 ---
-import { social, location } from '../../data/bio';
+import { social } from '../../data/bio';
 ---
 <section id="contact" class="contact">
   <div class="container">
@@ -7,10 +7,6 @@ import { social, location } from '../../data/bio';
     <h2 class="contact-heading font-display" data-fade>
       Let's <span class="italic">build</span> something.
     </h2>
-    <p class="contact-status font-mono" data-fade>
-      <span class="status-dot" aria-hidden="true"></span>
-      Available for opportunities · {location.coords}
-    </p>
 
     <a
       class="contact-email font-display"
@@ -51,38 +47,22 @@ import { social, location } from '../../data/bio';
     font-size: clamp(48px, 7vw, 96px);
     line-height: 1;
     letter-spacing: -0.025em;
-    margin: 16px 0 32px;
+    margin: 16px 0 48px;
     color: var(--ink);
   }
   .italic {
     font-style: italic;
     color: var(--accent);
   }
-  .contact-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 96px;
-  }
-  .contact-status .status-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--success);
-    animation: hero-pulse 2.4s ease-out infinite;
-  }
   .contact-email {
-    display: block;
+    display: inline-block;
     font-family: var(--font-display);
-    font-size: clamp(48px, 9vw, 128px);
-    line-height: 0.95;
-    letter-spacing: -0.025em;
+    font-size: clamp(22px, 2.6vw, 38px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
     color: var(--ink);
     margin: 0;
-    word-break: break-all;
-    transition: color 320ms ease, transform 320ms ease;
+    transition: color 320ms ease;
     cursor: pointer;
     opacity: 0;
   }

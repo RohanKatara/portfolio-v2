@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import portrait from '../../../public/images/rohan-profile.jpg';
-import { bioParagraphs, location } from '../../data/bio';
+import { bioParagraphs } from '../../data/bio';
 import { skills } from '../../data/skills';
 ---
 <section id="about" class="about">
@@ -21,9 +21,6 @@ import { skills } from '../../data/skills';
           loading="eager"
           fetchpriority="high"
         />
-        <p class="portrait-caption font-mono">
-          {location.city}, {location.country} — {new Date().getFullYear()}
-        </p>
       </div>
       <div class="about-bio">
         {bioParagraphs.map((p) => <p class="bio-para" data-about-para>{p}</p>)}
@@ -84,18 +81,6 @@ import { skills } from '../../data/skills';
     object-fit: cover;
     display: block;
     filter: grayscale(0.15) contrast(1.05);
-  }
-  .portrait-caption {
-    position: absolute;
-    bottom: 16px;
-    left: 16px;
-    right: 16px;
-    font-size: 11px;
-    color: var(--ink);
-    background: oklch(0% 0 0 / 0.55);
-    padding: 8px 12px;
-    border-radius: 2px;
-    backdrop-filter: blur(4px);
   }
   .about-bio {
     display: flex;

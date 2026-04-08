@@ -18,21 +18,21 @@ metrics:
 
 ## Overview
 
-Content Engine takes one long-form piece — a blog post, a video transcript, a launch announcement — and spits out platform-specific variants for every social channel a marketing team cares about. Twitter threads, LinkedIn carousels, Instagram captions, newsletter blurbs, all in the brand's voice.
+Content Engine takes one long form piece : a blog post, a video transcript, a launch announcement and spits out platform specific variants for every social channel a marketing team cares about. Twitter threads, LinkedIn carousels, Instagram captions, newsletter blurbs, all in the brand's voice.
 
 The pitch to a marketer is simple: write once, ship twelve places. The pitch to me as an engineer was: how tight can the prompt loop get before brand voice starts drifting?
 
 ## How it works
 
-The system pipes the source content through a chain of platform-specific prompts. Each prompt knows the format constraints of its channel (character limits, optimal structure, hashtag conventions) **and** the brand voice rules. The voice rules are extracted up-front from a sample corpus the user provides — everything that follows compares against that corpus instead of "generic helpful AI."
+The system pipes the source content through a chain of platform specific prompts. Each prompt knows the format constraints of its channel (character limits, optimal structure, hashtag conventions) **and** the brand voice rules. The voice rules are extracted up front from a sample corpus the user provides, everything that follows compares against that corpus instead of "generic helpful AI."
 
-The output preview lets the user accept, edit, or regenerate per channel before anything ships. Nothing posts automatically — the model is the writer, not the publisher.
+The output preview lets the user accept, edit, or regenerate per channel before anything ships. Nothing posts automatically, the model is the writer, not the publisher.
 
 ## What I learned
 
 - Brand voice is the killer feature. Generic LLM output is everywhere; output that *sounds like the user* is rare and hard.
-- Format follows function. A LinkedIn carousel and a Twitter thread aren't just length-different — they're argument-shape-different. The prompts have to know that, not just "be shorter."
-- Manual review at the end is non-negotiable. Marketers will not let an LLM publish for them, and they're right not to.
+- Format follows function. A LinkedIn carousel and a Twitter thread aren't just length different. They're argument shape different. The prompts have to know that, not just "be shorter."
+- Manual review at the end is non negotiable. Marketers will not let an LLM publish for them, and they're right not to.
 
 ## Reflection
 

@@ -29,7 +29,7 @@ After: an n8n pipeline scores every lead the moment it lands, routes the top 20%
 Form → React frontend → n8n webhook → Gemini scoring → Slack | Sheets
 ```
 
-The React frontend captures lead data with a dynamic form and behavioral tracking — what fields they edited, how long they spent on each — and posts to an n8n webhook. n8n hands the payload to Google Gemini 2.5 Flash with a scoring prompt that weighs project scope, budget signals, and stated urgency, returning a 0–10 quality score plus a one-line rationale.
+The React frontend captures lead data with a dynamic form and behavioral tracking, what fields they edited, how long they spent on each posts to an n8n webhook. n8n hands the payload to Google Gemini 2.5 Flash with a scoring prompt that weighs project scope, budget signals, and stated urgency, returning a 0–10 quality score plus a one line rationale.
 
 A router node branches on the score. **8 and up:** Slack message to the sales channel with the lead, the rationale, and a click-to-respond button. **Below 8:** appended to a tiered Google Sheet that feeds the nurture sequence later.
 
@@ -45,4 +45,4 @@ This is the project I point at when someone asks "what does AI actually do for a
 
 ## Demo
 
-A short walkthrough video lives in the project assets — open the link below to see the full pipeline running on a real submission.
+A short walkthrough video lives in the project assets. open the link below to see the full pipeline running on a real submission.

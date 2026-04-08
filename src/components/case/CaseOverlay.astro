@@ -1,5 +1,6 @@
 ---
 import CaseMetrics from './CaseMetrics.astro';
+import Thumbnail, { type ThumbSlug } from '../thumbnails/Thumbnail';
 
 interface Metric { label: string; value: string; }
 interface Props {
@@ -34,6 +35,10 @@ const { slug, index, title, tagline, year, role, accent, metrics, cover, demo, n
       </button>
     </header>
     <div class="case-scroll" data-lenis-prevent>
+      <div class="case-hero">
+        <Thumbnail client:idle slug={slug as ThumbSlug} variant="hero" />
+        <div class="case-hero-fade" aria-hidden="true"></div>
+      </div>
       <div class="case-content">
         <p class="case-index font-mono">{index} / 04</p>
         <h2 class="case-title font-display">{title}</h2>
@@ -42,10 +47,6 @@ const { slug, index, title, tagline, year, role, accent, metrics, cover, demo, n
           <span>{year}</span>
           <span>·</span>
           <span>{role}</span>
-        </div>
-
-        <div class="case-cover">
-          <img src={cover} alt={`${title} cover`} loading="lazy" />
         </div>
 
         <CaseMetrics metrics={metrics} accent={accent} />
@@ -145,10 +146,30 @@ const { slug, index, title, tagline, year, role, accent, metrics, cover, demo, n
     flex: 1;
     overflow-y: auto;
   }
+  .case-hero {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 78vh;
+    background: var(--surface);
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  .case-hero > :global(div) {
+    width: 100%;
+    height: 100%;
+  }
+  .case-hero-fade {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 30%;
+    background: linear-gradient(to bottom, transparent, var(--bg));
+    pointer-events: none;
+  }
   .case-content {
     max-width: 760px;
     margin: 0 auto;
-    padding: 96px 32px 160px;
+    padding: 64px 32px 160px;
   }
   .case-index {
     color: var(--case-accent, var(--accent));
@@ -176,18 +197,6 @@ const { slug, index, title, tagline, year, role, accent, metrics, cover, demo, n
     color: var(--faint);
     font-size: 12px;
     margin-bottom: 64px;
-  }
-  .case-cover {
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    overflow: hidden;
-    margin: 0 0 32px;
-    background: var(--surface);
-  }
-  .case-cover img {
-    width: 100%;
-    height: auto;
-    display: block;
   }
   .case-prose {
     color: var(--ink);

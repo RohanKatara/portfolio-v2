@@ -25,7 +25,7 @@ const { project } = Astro.props;
     <span class="row-stack font-mono" data-row-meta>{project.stack.slice(0, 2).join(' · ')}</span>
     <span class="row-arrow" aria-hidden="true">→</span>
   </div>
-  <ProjectHoverImage client:visible src={project.cover} alt={`${project.name} cover`} />
+  <ProjectHoverImage client:visible slug={project.slug} alt={`${project.name} preview`} />
 </a>
 
 <style>
