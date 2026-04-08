@@ -14,9 +14,17 @@ export const initHeroReveal = () => {
   if (!heroName) return;
 
   if (RM()) {
-    heroName.style.opacity = '1';
-    heroEyebrow.forEach((el) => (el.style.opacity = '1'));
-    if (heroStatus) heroStatus.style.opacity = '1';
+    // Reduce-motion: opacity-only fade-in. No yPercent, no char split, no
+    // stagger — fades aren't vestibular motion and are spec-compliant.
+    gsap.set(heroName, { opacity: 0 });
+    heroEyebrow.forEach((el) => gsap.set(el, { opacity: 0, y: 0 }));
+    if (heroStatus) gsap.set(heroStatus, { opacity: 0, y: 0 });
+    const tl = gsap.timeline({ delay: 0.15 });
+    tl.to(heroName, { opacity: 1, duration: 0.8, ease: 'power1.out' })
+      .to(heroEyebrow, { opacity: 1, duration: 0.6, ease: 'power1.out' }, '-=0.4');
+    if (heroStatus) {
+      tl.to(heroStatus, { opacity: 1, duration: 0.5, ease: 'power1.out' }, '-=0.3');
+    }
     return;
   }
 
@@ -67,7 +75,15 @@ export const initManifestoPin = () => {
   if (!sentence) return;
 
   if (RM()) {
-    sentence.style.opacity = '1';
+    // Reduce-motion: skip the pin/scrub entirely (pinning is vestibular).
+    // Just fade the whole sentence in once when it enters view.
+    gsap.set(sentence, { opacity: 0 });
+    gsap.to(sentence, {
+      opacity: 1,
+      duration: 0.8,
+      ease: 'power1.out',
+      scrollTrigger: { trigger: root, start: 'top 80%' },
+    });
     return;
   }
 
@@ -98,7 +114,15 @@ export const initWorkRowReveals = () => {
   if (!rows.length) return;
 
   if (RM()) {
-    rows.forEach((row) => (row.style.opacity = '1'));
+    // Reduce-motion: fade each row in on enter. No char split, no stagger,
+    // no underline scaleX — opacity only.
+    rows.forEach((row) => gsap.set(row, { opacity: 0 }));
+    ScrollTrigger.batch('[data-project-row]', {
+      start: 'top 85%',
+      onEnter: (batch) => {
+        gsap.to(batch, { opacity: 1, duration: 0.6, ease: 'power1.out' });
+      },
+    });
     return;
   }
 
@@ -151,9 +175,18 @@ export const initSectionFades = () => {
   if (!items.length) return;
 
   if (RM()) {
+    // Reduce-motion: opacity-only fade-in. No y translation.
     items.forEach((el) => {
-      el.style.opacity = '1';
-      el.style.transform = 'none';
+      gsap.fromTo(
+        el,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.7,
+          ease: 'power1.out',
+          scrollTrigger: { trigger: el, start: 'top 88%' },
+        },
+      );
     });
     return;
   }
@@ -179,8 +212,33 @@ export const initAboutReveal = () => {
   if (!portrait && !paragraphs.length) return;
 
   if (RM()) {
-    if (portrait) portrait.style.clipPath = 'inset(0)';
-    paragraphs.forEach((p) => (p.style.opacity = '1'));
+    // Reduce-motion: skip the clipPath reveal (which feels like a slide) and
+    // the per-word stagger. Just fade portrait + paragraphs in on scroll.
+    if (portrait) {
+      portrait.style.clipPath = 'inset(0)';
+      gsap.fromTo(
+        portrait,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power1.out',
+          scrollTrigger: { trigger: portrait, start: 'top 80%' },
+        },
+      );
+    }
+    paragraphs.forEach((para) => {
+      gsap.fromTo(
+        para,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.7,
+          ease: 'power1.out',
+          scrollTrigger: { trigger: para, start: 'top 85%' },
+        },
+      );
+    });
     return;
   }
 
@@ -218,7 +276,17 @@ export const initContactReveal = () => {
   if (!email) return;
 
   if (RM()) {
-    email.style.opacity = '1';
+    // Reduce-motion: opacity-only fade on scroll. No char split.
+    gsap.fromTo(
+      email,
+      { opacity: 0 },
+      {
+        opacity: 1,
+        duration: 0.7,
+        ease: 'power1.out',
+        scrollTrigger: { trigger: email, start: 'top 80%' },
+      },
+    );
     return;
   }
 

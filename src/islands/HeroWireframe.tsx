@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Geometry, Camera, Transform, Triangle } from 'ogl';
-import { canRunWebGL } from '../lib/motion';
+import { canRunWebGL, prefersReducedMotion } from '../lib/motion';
 import { ScrollTrigger } from '../lib/gsap';
 
 // ---- tuning constants ---------------------------------------------------
@@ -208,6 +208,7 @@ export default function HeroWireframe() {
 
     const host = ref.current;
     const heroEl = host.closest<HTMLElement>('.hero');
+    const reduced = prefersReducedMotion();
     let disposed = false;
 
     const renderer = new Renderer({
@@ -444,9 +445,13 @@ export default function HeroWireframe() {
     };
 
     // ---- tick loop ----
+    // Under reduce-motion: tick() runs exactly once and never reschedules,
+    // giving a static still of the icosahedron + particle dust + (no streak,
+    // since streaks are gated by random spawn at t=0). The user sees the
+    // shape, just frozen.
     const tick = (now: number) => {
       if (disposed) return;
-      raf = requestAnimationFrame(tick);
+      if (!reduced) raf = requestAnimationFrame(tick);
       if (!visible) return;
 
       const tSec = now * 0.001;
@@ -464,7 +469,13 @@ export default function HeroWireframe() {
       wireMesh.updateMatrixWorld();
       drawWireframePasses();
     };
-    raf = requestAnimationFrame(tick);
+    if (reduced) {
+      // One-shot static render: tick(0) draws the wireframe + particles once
+      // and exits without scheduling another frame.
+      tick(0);
+    } else {
+      raf = requestAnimationFrame(tick);
+    }
 
     // Kick the fade-in on the next frame so at least one render has queued
     requestAnimationFrame(() => {
