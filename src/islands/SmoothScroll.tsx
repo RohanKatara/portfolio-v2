@@ -15,28 +15,35 @@ declare global {
 
 export default function SmoothScroll() {
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.1,
-      smoothWheel: true,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    });
-    window.__lenis = lenis;
+    let lenis: Lenis | null = null;
+    let tickerCb: ((time: number) => void) | null = null;
 
-    lenis.on('scroll', ScrollTrigger.update);
-    const tickerCb = (time: number) => lenis.raf(time * 1000);
-    gsap.ticker.add(tickerCb);
-    gsap.ticker.lagSmoothing(0);
+    try {
+      lenis = new Lenis({
+        duration: 1.1,
+        smoothWheel: true,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+      window.__lenis = lenis;
 
-    const onOverlayOpen = () => lenis.stop();
-    const onOverlayClose = () => lenis.start();
+      lenis.on('scroll', ScrollTrigger.update);
+      tickerCb = (time: number) => lenis?.raf(time * 1000);
+      gsap.ticker.add(tickerCb);
+      gsap.ticker.lagSmoothing(0);
+    } catch (err) {
+      console.error('[SmoothScroll] init failed:', err);
+    }
+
+    const onOverlayOpen = () => lenis?.stop();
+    const onOverlayClose = () => lenis?.start();
     window.addEventListener('case-overlay-open', onOverlayOpen);
     window.addEventListener('case-overlay-close', onOverlayClose);
 
     return () => {
       window.removeEventListener('case-overlay-open', onOverlayOpen);
       window.removeEventListener('case-overlay-close', onOverlayClose);
-      gsap.ticker.remove(tickerCb);
-      lenis.destroy();
+      if (tickerCb) gsap.ticker.remove(tickerCb);
+      lenis?.destroy();
       window.__lenis = undefined;
     };
   }, []);
