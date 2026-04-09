@@ -10,12 +10,5 @@ export const canRunWebGL = (): boolean => {
   } catch {
     return false;
   }
-  if (
-    typeof navigator !== 'undefined' &&
-    navigator.hardwareConcurrency &&
-    navigator.hardwareConcurrency < 4
-  ) {
-    return false;
-  }
   return true;
 };

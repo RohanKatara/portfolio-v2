@@ -32,33 +32,10 @@ export default function SmoothScroll() {
     window.addEventListener('case-overlay-open', onOverlayOpen);
     window.addEventListener('case-overlay-close', onOverlayClose);
 
-    // FPS watchdog
-    let frameCount = 0;
-    let frameTimeAccum = 0;
-    let lastTime = performance.now();
-    let fpsCheck: number | null = null;
-    const sampleFps = (now: number) => {
-      const dt = now - lastTime;
-      lastTime = now;
-      frameTimeAccum += dt;
-      frameCount++;
-      if (frameTimeAccum >= 5000) {
-        const avgFps = (frameCount / frameTimeAccum) * 1000;
-        if (avgFps < 45) {
-          window.dispatchEvent(new CustomEvent('webgl-disable'));
-        }
-        frameCount = 0;
-        frameTimeAccum = 0;
-      }
-      fpsCheck = requestAnimationFrame(sampleFps);
-    };
-    fpsCheck = requestAnimationFrame(sampleFps);
-
     return () => {
       window.removeEventListener('case-overlay-open', onOverlayOpen);
       window.removeEventListener('case-overlay-close', onOverlayClose);
       gsap.ticker.remove(tickerCb);
-      if (fpsCheck != null) cancelAnimationFrame(fpsCheck);
       lenis.destroy();
       window.__lenis = undefined;
     };
