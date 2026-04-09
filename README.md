@@ -1,5 +1,12 @@
 # Portfolio v2
 
+<p align="center">
+  <a href="https://rohankatara.com"><img src="https://img.shields.io/badge/Live_Demo-000?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo"></a>
+</p>
+
+<!-- TODO: replace the commented line below with an actual demo GIF or screenshot -->
+<!-- <p align="center"><img src="docs/demo.gif" alt="Portfolio v2 demo" width="800"></p> -->
+
 > Desktop-first **editorial scroll portfolio** for Rohan Katara — built with Astro 5, React islands, GSAP, Lenis, and OGL.
 
 ![Astro](https://img.shields.io/badge/Astro-0C1222?style=for-the-badge&logo=astro&logoColor=FF5D01)
