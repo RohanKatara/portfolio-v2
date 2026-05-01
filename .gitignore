@@ -25,3 +25,5 @@ pnpm-debug.log*
 
 # lighthouse
 lighthouse.html
+
+.vercel
