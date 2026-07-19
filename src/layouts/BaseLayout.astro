@@ -11,8 +11,8 @@ interface Props {
 }
 
 const {
-  title = 'Rohan Katara | AI Engineer',
-  description = 'Portfolio of Rohan Katara, a B.Tech Computer Engineering graduate based in Ahmedabad, India. Specializing in Generative AI, high-performance web environments, and immersive interactive interfaces.',
+  title = 'Rohan Katara — Web, Apps & AI Automation | Freelance Developer, Ahmedabad',
+  description = 'Freelance developer in Ahmedabad building websites, apps, and AI/WhatsApp automations that get businesses more customers and save hours of manual work. Working across Gujarat, India, and remotely worldwide.',
 } = Astro.props;
 
 const canonical = 'https://rohankatara.com/';
@@ -76,13 +76,15 @@ const forceLegacy = import.meta.env.PUBLIC_FORCE_LEGACY === '1';
       '@type': 'Person',
       'name': 'Rohan Katara',
       'url': canonical,
-      'jobTitle': 'AI Engineer',
+      'jobTitle': 'Freelance Software Developer',
       'description': description,
+      'email': 'mailto:rohankatara750@gmail.com',
       'address': {
         '@type': 'PostalAddress',
         'addressLocality': 'Ahmedabad',
         'addressCountry': 'India',
       },
+      'areaServed': ['Gujarat', 'India', 'Worldwide'],
       'sameAs': [
         'https://github.com/RohanKatara',
         'https://www.linkedin.com/in/rohan-katara-5895952b6',
@@ -91,6 +93,8 @@ const forceLegacy = import.meta.env.PUBLIC_FORCE_LEGACY === '1';
       'knowsAbout': [
         'React', 'Next.js', 'TypeScript', 'Generative AI',
         'Large Language Models', 'Node.js', 'Web Development',
+        'AI Automation', 'WhatsApp Automation', 'E-commerce Websites',
+        'App Development',
       ],
     })} />
 

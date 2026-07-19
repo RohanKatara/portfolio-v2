@@ -1,11 +1,10 @@
 /**
- * Per-letter Matrix scramble on hover for the hero name + role.
+ * Per-letter Matrix scramble on hover for the hero name.
  *
- * Each `.char` span (produced by Splitting.js inside the visual wrappers
- * `[data-hero-name-visual]` and `[data-hero-role-visual]`) gets a `mouseenter`
- * listener that briefly cycles its text through a mixed pool of glyphs
- * (ASCII symbols + digits + binary + half-width katakana) and then snaps it
- * back to the original character.
+ * Each `.char` span (produced by Splitting.js inside the visual wrapper
+ * `[data-hero-name-visual]`) gets a `mouseenter` listener that briefly cycles
+ * its text through a mixed pool of glyphs (ASCII symbols + digits + binary +
+ * half-width katakana) and then snaps it back to the original character.
  *
  * The visual wrappers are `aria-hidden`; the canonical text is held in a
  * sibling `<span class="sr-only">` so screen readers never see the scramble.
@@ -55,15 +54,15 @@ const scrambleElement = (el: HTMLElement): void => {
 };
 
 /**
- * Wire up scramble listeners on every `.char` span inside the hero name +
- * role visual wrappers. Returns a destructor that removes all listeners.
+ * Wire up scramble listeners on every `.char` span inside the hero name
+ * visual wrapper. Returns a destructor that removes all listeners.
  *
  * Must run AFTER `initHeroReveal()` because Splitting.js produces the `.char`
  * spans we attach to.
  */
 export const initHeroScramble = (): (() => void) => {
   const containers = document.querySelectorAll<HTMLElement>(
-    '[data-hero-name-visual], [data-hero-role-visual]',
+    '[data-hero-name-visual]',
   );
   if (containers.length === 0) return () => {};
 

@@ -1,0 +1,118 @@
+---
+import { services } from '../../data/services';
+import { primaryCta } from '../../data/cta';
+---
+<section id="services" class="services">
+  <div class="container">
+    <header class="services-header">
+      <p class="font-eyebrow" data-fade>Services / 003</p>
+      <h2 class="services-heading font-display" data-fade>
+        What I can <span class="services-heading-italic">build</span> for you
+      </h2>
+    </header>
+
+    <div class="services-grid">
+      {services.map((s) => (
+        <article class="service-card" data-service-card>
+          <span class="service-index font-mono">{s.index} / 04</span>
+          <h3 class="service-title font-display">{s.title}</h3>
+          <p class="service-body">{s.body}</p>
+          <p class="service-price font-mono">{s.price}</p>
+        </article>
+      ))}
+    </div>
+
+    <p class="services-note" data-fade>
+      Not sure what you need?
+      <a href={primaryCta.href}>Email me</a>
+      and I'll tell you honestly what will actually move the needle — no jargon.
+    </p>
+  </div>
+</section>
+
+<style>
+  .services {
+    padding: 160px 0 96px;
+    position: relative;
+  }
+  .services-header {
+    margin-bottom: 64px;
+    max-width: 720px;
+  }
+  .services-heading {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin: 16px 0 0;
+    color: var(--ink);
+  }
+  .services-heading-italic {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 720px) {
+    .services-grid { grid-template-columns: 1fr; }
+  }
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    padding: 32px 28px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: oklch(16.75% 0.011 262 / 0.5);
+    transition: border-color 320ms ease, background 320ms ease, transform 320ms ease;
+  }
+  .service-card:hover {
+    border-color: var(--accent);
+    background: oklch(20% 0.014 262 / 0.7);
+    transform: translateY(-2px);
+  }
+  .service-index {
+    font-size: 12px;
+    color: var(--faint);
+    letter-spacing: 0.08em;
+    margin-bottom: 20px;
+  }
+  .service-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+    color: var(--ink);
+  }
+  .service-body {
+    margin: 0 0 28px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .service-price {
+    margin: auto 0 0;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+  }
+  .services-note {
+    margin: 48px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 560px;
+  }
+  .services-note a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 240ms ease;
+  }
+  .services-note a:hover {
+    color: var(--accent-hi);
+  }
+</style>

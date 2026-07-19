@@ -1,0 +1,105 @@
+---
+import { testimonials } from '../../data/testimonials';
+---
+{testimonials.length > 0 && (
+  <section id="testimonials" class="testimonials">
+    <div class="container">
+      <header class="testimonials-header">
+        <p class="font-eyebrow" data-fade>Testimonials / 005</p>
+        <h2 class="testimonials-heading font-display" data-fade>
+          What <span class="testimonials-heading-italic">clients</span> say
+        </h2>
+      </header>
+
+      <div class="testimonials-grid">
+        {testimonials.map((t) => (
+          <figure class="testimonial-card" data-testimonial-card>
+            <blockquote class="testimonial-quote font-display">
+              “{t.quote}”
+            </blockquote>
+            <figcaption class="testimonial-attribution">
+              <span class="testimonial-name">{t.name}</span>
+              <span class="testimonial-role font-mono">{t.role}</span>
+              {t.project && <span class="testimonial-project font-mono">{t.project}</span>}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .testimonials {
+    padding: 160px 0 96px;
+    position: relative;
+  }
+  .testimonials-header {
+    margin-bottom: 64px;
+    max-width: 720px;
+  }
+  .testimonials-heading {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin: 16px 0 0;
+    color: var(--ink);
+  }
+  .testimonials-heading-italic {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 720px) {
+    .testimonials-grid { grid-template-columns: 1fr; }
+  }
+  .testimonial-card {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 32px 28px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: oklch(16.75% 0.011 262 / 0.5);
+    transition: border-color 320ms ease, background 320ms ease, transform 320ms ease;
+  }
+  .testimonial-card:hover {
+    border-color: var(--accent);
+    background: oklch(20% 0.014 262 / 0.7);
+    transform: translateY(-2px);
+  }
+  .testimonial-quote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.35;
+    color: var(--ink);
+    margin: 0 0 24px;
+  }
+  .testimonial-attribution {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .testimonial-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .testimonial-role {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .testimonial-project {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+  }
+</style>

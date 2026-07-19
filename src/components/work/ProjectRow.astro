@@ -18,6 +18,11 @@ const { project } = Astro.props;
   <div class="row-main">
     <h3 class="row-title font-display" data-row-title>{project.name}</h3>
     <p class="row-tagline" data-row-meta>{project.tagline}</p>
+    {project.buyerNote && (
+      <p class="row-buyer-note" data-row-meta>
+        <span class="row-buyer-mark" aria-hidden="true">↳</span> {project.buyerNote}
+      </p>
+    )}
     <span class="row-underline" data-row-underline></span>
   </div>
   <div class="row-meta-side">
@@ -80,6 +85,16 @@ const { project } = Astro.props;
     font-size: 14px;
     color: var(--muted);
     max-width: 480px;
+  }
+  .row-buyer-note {
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--faint);
+    max-width: 480px;
+  }
+  .row-buyer-mark {
+    color: var(--row-accent, var(--accent));
   }
   .row-underline {
     position: absolute;

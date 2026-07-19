@@ -16,14 +16,6 @@ export const initHeroReveal = () => {
   }
   const chars = heroNameVisual?.querySelectorAll<HTMLElement>('.char') ?? [];
 
-  // Also split the role paragraph so the scramble effect has `.char` spans to attach to.
-  // The role isn't part of the load-in stagger — it uses the parent <p>'s opacity fade,
-  // so we just split it without adding it to the timeline.
-  const heroRoleVisual = document.querySelector<HTMLElement>('[data-hero-role-visual]');
-  if (heroRoleVisual) {
-    Splitting({ target: heroRoleVisual, by: 'chars' });
-  }
-
   gsap.set(heroName, { opacity: 1 });
   gsap.set(chars, { yPercent: 110, opacity: 0 });
 
@@ -123,6 +115,36 @@ export const initWorkRowReveals = () => {
         }
       });
     },
+  });
+};
+
+export const initServicesReveal = () => {
+  const cards = document.querySelectorAll<HTMLElement>('[data-service-card]');
+  if (!cards.length) return;
+
+  ScrollTrigger.batch('[data-service-card]', {
+    start: 'top 85%',
+    onEnter: (batch) =>
+      gsap.fromTo(
+        batch,
+        { opacity: 0, y: 32 },
+        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out' },
+      ),
+  });
+};
+
+export const initTestimonialsReveal = () => {
+  const cards = document.querySelectorAll<HTMLElement>('[data-testimonial-card]');
+  if (!cards.length) return;
+
+  ScrollTrigger.batch('[data-testimonial-card]', {
+    start: 'top 85%',
+    onEnter: (batch) =>
+      gsap.fromTo(
+        batch,
+        { opacity: 0, y: 32 },
+        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out' },
+      ),
   });
 };
 

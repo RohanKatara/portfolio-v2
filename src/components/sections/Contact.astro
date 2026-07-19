@@ -1,12 +1,18 @@
 ---
 import { social } from '../../data/bio';
+import CtaButton from '../ui/CtaButton.astro';
+import { primaryCta } from '../../data/cta';
 ---
 <section id="contact" class="contact">
   <div class="container">
-    <p class="font-eyebrow" data-fade>Contact / 004</p>
+    <p class="font-eyebrow" data-fade>Contact / 006</p>
     <h2 class="contact-heading font-display" data-fade>
-      Let's <span class="italic">build</span> something.
+      Let's get you <span class="italic">more customers</span>.
     </h2>
+    <p class="contact-blurb" data-fade>
+      Tell me what your business needs. I'll reply within a day with honest next
+      steps and a clear price — no pressure.
+    </p>
 
     <a
       class="contact-email font-display"
@@ -17,6 +23,10 @@ import { social } from '../../data/bio';
     <p class="contact-email-hint font-mono" data-fade>
       <span data-copy-status>click to copy</span>
     </p>
+
+    <div class="contact-ctas" data-fade>
+      <CtaButton href={primaryCta.href} label={primaryCta.label} variant="primary" />
+    </div>
 
     <div class="social-grid" data-fade>
       <a class="social-card" href={social.github} target="_blank" rel="noopener">
@@ -44,11 +54,18 @@ import { social } from '../../data/bio';
   }
   .contact-heading {
     font-family: var(--font-display);
-    font-size: clamp(48px, 7vw, 96px);
+    font-size: clamp(44px, 6.4vw, 88px);
     line-height: 1;
     letter-spacing: -0.025em;
-    margin: 16px 0 48px;
+    margin: 16px 0 32px;
     color: var(--ink);
+  }
+  .contact-blurb {
+    margin: 0 0 48px;
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 560px;
   }
   .italic {
     font-style: italic;
@@ -74,11 +91,17 @@ import { social } from '../../data/bio';
     color: var(--accent);
   }
   .contact-email-hint {
-    margin: 16px 0 96px;
+    margin: 16px 0 40px;
     font-size: 11px;
     color: var(--faint);
     text-transform: uppercase;
     letter-spacing: 0.12em;
+  }
+  .contact-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 0 0 96px;
   }
   .social-grid {
     display: grid;

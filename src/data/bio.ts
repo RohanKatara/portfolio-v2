@@ -5,7 +5,7 @@ export const bioParagraphs: string[] = [
 ];
 
 export const social = {
-  email: 'rohankatara3@gmail.com',
+  email: 'rohankatara750@gmail.com',
   github: 'https://github.com/RohanKatara',
   githubHandle: 'RohanKatara',
   linkedin: 'https://www.linkedin.com/in/rohan-katara-5895952b6',
