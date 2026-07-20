@@ -2,16 +2,12 @@
 import HeroWireframe from '../../islands/HeroWireframe.tsx';
 import CtaButton from '../ui/CtaButton.astro';
 import { primaryCta } from '../../data/cta';
-const year = new Date().getFullYear();
 ---
 <section id="hero" class="hero">
   <HeroWireframe client:only="react" />
   <div class="hero-scanlines" aria-hidden="true"></div>
   <div class="hero-fallback" aria-hidden="true"></div>
   <div class="container hero-content">
-    <p class="font-eyebrow hero-eyebrow" data-hero-fade>
-      Portfolio — {year}
-    </p>
     <h1 class="hero-name font-display" data-hero-name>
       <span class="sr-only">Rohan Katara</span>
       <span class="hero-name-visual" aria-hidden="true" data-hero-name-visual>Rohan Katara</span>
@@ -76,12 +72,6 @@ const year = new Date().getFullYear();
     position: relative;
     z-index: 2;
     padding-top: 120px;
-  }
-  .hero-eyebrow {
-    margin: 0 0 24px;
-    color: var(--accent);
-    opacity: 0;
-    transform: translateY(20px);
   }
   .hero-name {
     font-family: var(--font-display);
