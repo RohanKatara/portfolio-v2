@@ -61,6 +61,10 @@ const scrambleElement = (el: HTMLElement): void => {
  * spans we attach to.
  */
 export const initHeroScramble = (): (() => void) => {
+  // mouseenter never fires meaningfully on touch-only devices; skip wiring
+  // listeners entirely there.
+  if (matchMedia('(hover: none)').matches) return () => {};
+
   const containers = document.querySelectorAll<HTMLElement>(
     '[data-hero-name-visual]',
   );

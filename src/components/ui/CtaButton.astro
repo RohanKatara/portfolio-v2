@@ -31,26 +31,28 @@ const { href, label, variant = 'primary' } = Astro.props;
     background: var(--accent-soft);
     color: var(--ink);
   }
-  .cta-button.primary:hover {
-    background: var(--accent);
-    color: var(--bg);
-    transform: translateY(-2px);
-  }
   .cta-button.ghost {
     border: 1px solid var(--line);
     background: transparent;
     color: var(--muted);
   }
-  .cta-button.ghost:hover {
-    border-color: var(--accent);
-    color: var(--ink);
-    transform: translateY(-2px);
-  }
   .cta-arrow {
     font-size: 14px;
     transition: transform 320ms var(--ease-out);
   }
-  .cta-button:hover .cta-arrow {
-    transform: translateX(4px);
+  @media (hover: hover) and (pointer: fine) {
+    .cta-button.primary:hover {
+      background: var(--accent);
+      color: var(--bg);
+      transform: translateY(-2px);
+    }
+    .cta-button.ghost:hover {
+      border-color: var(--accent);
+      color: var(--ink);
+      transform: translateY(-2px);
+    }
+    .cta-button:hover .cta-arrow {
+      transform: translateX(4px);
+    }
   }
 </style>

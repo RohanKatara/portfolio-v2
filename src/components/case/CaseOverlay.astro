@@ -127,7 +127,9 @@ const { slug, index, title, tagline, year, role, accent, metrics, cover, demo, n
     font-size: 12px;
     transition: color 240ms ease;
   }
-  .case-back:hover { color: var(--ink); }
+  @media (hover: hover) and (pointer: fine) {
+    .case-back:hover { color: var(--ink); }
+  }
   .case-close {
     width: 40px;
     height: 40px;
@@ -138,9 +140,11 @@ const { slug, index, title, tagline, year, role, accent, metrics, cover, demo, n
     line-height: 1;
     transition: background 240ms ease, border-color 240ms ease;
   }
-  .case-close:hover {
-    background: var(--surface-hi);
-    border-color: var(--case-accent, var(--accent));
+  @media (hover: hover) and (pointer: fine) {
+    .case-close:hover {
+      background: var(--surface-hi);
+      border-color: var(--case-accent, var(--accent));
+    }
   }
   .case-scroll {
     flex: 1;
@@ -280,9 +284,11 @@ const { slug, index, title, tagline, year, role, accent, metrics, cover, demo, n
     color: var(--ink);
     transition: border-color 320ms ease, transform 320ms ease;
   }
-  .case-next:hover {
-    border-color: var(--case-accent, var(--accent));
-    transform: translateY(-2px);
+  @media (hover: hover) and (pointer: fine) {
+    .case-next:hover {
+      border-color: var(--case-accent, var(--accent));
+      transform: translateY(-2px);
+    }
   }
   .case-next-name {
     font-family: var(--font-display);

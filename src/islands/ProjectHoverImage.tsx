@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Thumbnail, { type ThumbSlug } from '../components/thumbnails/Thumbnail';
 
 interface Props {
@@ -13,8 +13,17 @@ interface Props {
  */
 export default function ProjectHoverImage({ slug, alt }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
+  // Cursor-follow previews are meaningless on touch devices. Decided
+  // post-mount (not at render) so the first client render matches the
+  // server-rendered wrapper — this island hydrates via client:visible.
+  const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
+    setEnabled(matchMedia('(hover: hover) and (pointer: fine)').matches);
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) return;
     const el = ref.current;
     if (!el) return;
     const row = el.closest<HTMLElement>('[data-project-row]');
@@ -63,7 +72,7 @@ export default function ProjectHoverImage({ slug, alt }: Props) {
       row.removeEventListener('mousemove', move);
       cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [enabled]);
 
   return (
     <div
@@ -86,7 +95,7 @@ export default function ProjectHoverImage({ slug, alt }: Props) {
         boxShadow: '0 30px 80px -20px rgba(0,0,0,0.65), 0 0 0 1px rgba(91,141,239,0.2)',
       }}
     >
-      <Thumbnail slug={slug} variant="preview" />
+      {enabled && <Thumbnail slug={slug} variant="preview" />}
     </div>
   );
 }

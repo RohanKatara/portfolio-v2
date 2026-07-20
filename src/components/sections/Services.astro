@@ -71,10 +71,12 @@ import { primaryCta } from '../../data/cta';
     background: oklch(16.75% 0.011 262 / 0.5);
     transition: border-color 320ms ease, background 320ms ease, transform 320ms ease;
   }
-  .service-card:hover {
-    border-color: var(--accent);
-    background: oklch(20% 0.014 262 / 0.7);
-    transform: translateY(-2px);
+  @media (hover: hover) and (pointer: fine) {
+    .service-card:hover {
+      border-color: var(--accent);
+      background: oklch(20% 0.014 262 / 0.7);
+      transform: translateY(-2px);
+    }
   }
   .service-index {
     font-size: 12px;
@@ -115,7 +117,9 @@ import { primaryCta } from '../../data/cta';
     text-underline-offset: 3px;
     transition: color 240ms ease;
   }
-  .services-note a:hover {
-    color: var(--accent-hi);
+  @media (hover: hover) and (pointer: fine) {
+    .services-note a:hover {
+      color: var(--accent-hi);
+    }
   }
 </style>

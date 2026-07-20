@@ -50,14 +50,16 @@ const { project } = Astro.props;
   .project-row:last-of-type {
     border-bottom: 1px solid var(--line);
   }
-  .project-row:hover {
-    padding-left: 16px;
-  }
-  .project-row:hover .row-title {
-    color: var(--row-accent, var(--accent));
-  }
-  .project-row:hover .row-arrow {
-    transform: translateX(8px);
+  @media (hover: hover) and (pointer: fine) {
+    .project-row:hover {
+      padding-left: 16px;
+    }
+    .project-row:hover .row-title {
+      color: var(--row-accent, var(--accent));
+    }
+    .project-row:hover .row-arrow {
+      transform: translateX(8px);
+    }
   }
   .row-index {
     font-size: 12px;
@@ -107,8 +109,10 @@ const { project } = Astro.props;
     transform: scaleX(0);
     transition: transform 600ms var(--ease-out);
   }
-  .project-row:hover .row-underline {
-    transform: scaleX(1);
+  @media (hover: hover) and (pointer: fine) {
+    .project-row:hover .row-underline {
+      transform: scaleX(1);
+    }
   }
   .row-meta-side {
     display: flex;
