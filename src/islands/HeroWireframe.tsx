@@ -266,7 +266,8 @@ export default function HeroWireframe() {
       mode: gl.LINES,
     });
     wireMesh.position.set(0, 0, ICO_POS_Z);
-    wireMesh.scale.set(ICO_SCALE, ICO_SCALE, ICO_SCALE);
+    // Scale is set by resize() (called below before the first frame) — it
+    // caps the shape to the visible frustum width on narrow viewports.
     wireMesh.frustumCulled = false;
 
     // ---- particle dust field ----
@@ -350,7 +351,15 @@ export default function HeroWireframe() {
       renderer.setSize(w, h);
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       streakProgram.uniforms.uResolution.value = [w * dpr, h * dpr];
-      camera.perspective({ aspect: w / Math.max(h, 1) });
+      const aspect = w / Math.max(h, 1);
+      camera.perspective({ aspect });
+      // Fit-to-width: on portrait viewports the desktop-sized icosahedron is
+      // wider than the visible frustum at its depth and crops off both sides.
+      // Cap the diameter (2 × scale, circumradius is 1) at 90% of the visible
+      // width; on wide screens the cap never binds and scale stays ICO_SCALE.
+      const visibleW = 2 * Math.abs(ICO_POS_Z) * Math.tan((camera.fov * Math.PI) / 360) * aspect;
+      const s = Math.min(ICO_SCALE, 0.45 * visibleW);
+      wireMesh.scale.set(s, s, s);
     };
     resize();
     window.addEventListener('resize', resize);
