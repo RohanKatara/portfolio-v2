@@ -74,7 +74,7 @@ export const projects: Project[] = [
     caseStudySlug: 'automate-pro',
     links: { demo: '/automate-pro-demo/automate-pro-demo.mp4' },
     buyerNote:
-      'This is the kind of automation I can build for your business — qualifying leads and creating content on autopilot.',
+      'This is the kind of automation I can build for your business: qualifying leads and creating content on autopilot.',
   },
   {
     slug: 'content-engine',
@@ -95,6 +95,6 @@ export const projects: Project[] = [
     cover: '/projects/content-engine-cover.svg',
     caseStudySlug: 'content-engine',
     buyerNote:
-      'This is the kind of automation I can build for your business — qualifying leads and creating content on autopilot.',
+      'This is the kind of automation I can build for your business: qualifying leads and creating content on autopilot.',
   },
 ];
