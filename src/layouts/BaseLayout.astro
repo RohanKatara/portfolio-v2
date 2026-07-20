@@ -17,9 +17,12 @@ const {
 
 const canonical = 'https://rohankatara.com/';
 
-// Build-time rollback flag. Set PUBLIC_FORCE_LEGACY=1 in Vercel and redeploy
-// to send every visitor to /legacy/ (the coffee portfolio) regardless of device.
+// Build-time rollback flags (flipping either requires a redeploy):
+// - PUBLIC_FORCE_LEGACY=1 sends every visitor to /legacy/ regardless of device.
+// - PUBLIC_MOBILE_LEGACY=1 restores the old mobile→/legacy/ redirect. Default
+//   (unset) serves the responsive v2 site to phones.
 const forceLegacy = import.meta.env.PUBLIC_FORCE_LEGACY === '1';
+const mobileLegacy = import.meta.env.PUBLIC_MOBILE_LEGACY === '1';
 ---
 <!doctype html>
 <html lang="en">
@@ -33,7 +36,7 @@ const forceLegacy = import.meta.env.PUBLIC_FORCE_LEGACY === '1';
          hook on the next page. location.replace() leaves no history entry, so the
          browser back button never bounces back here. ?desktop=1 is an escape hatch
          for QA on touch laptops. -->
-    <script is:inline define:vars={{ forceLegacy }}>
+    <script is:inline define:vars={{ forceLegacy, mobileLegacy }}>
       (function () {
         try {
           if (location.pathname.indexOf('/legacy') === 0) return;
@@ -42,7 +45,7 @@ const forceLegacy = import.meta.env.PUBLIC_FORCE_LEGACY === '1';
           var hasTouch = navigator.maxTouchPoints > 0;
           var smallSide = Math.min(screen.width, screen.height);
           var isMobile = w < 768 || (hasTouch && smallSide < 768);
-          if (forceLegacy || isMobile) {
+          if (forceLegacy || (mobileLegacy && isMobile)) {
             location.replace('/legacy/' + location.search + location.hash);
           }
         } catch (e) {}

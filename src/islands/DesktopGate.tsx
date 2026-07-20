@@ -22,6 +22,11 @@ export default function DesktopGate() {
       return;
     }
 
+    // The mobile→legacy redirect is opt-in via env flag now that v2 is
+    // responsive. Set PUBLIC_MOBILE_LEGACY=1 (and redeploy) to restore it —
+    // this must stay in sync with the inline script in BaseLayout.astro.
+    if (import.meta.env.PUBLIC_MOBILE_LEGACY !== '1') return;
+
     const search = window.location.search;
     // ?desktop=1 is the same escape hatch honored by the inline script in
     // BaseLayout.astro — keep them in sync so a QA override applies to both
