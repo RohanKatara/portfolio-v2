@@ -148,3 +148,19 @@ svg {
   opacity: 0;
   transform: translateY(20px);
 }
+
+/* Reduced motion: show every reveal target at its final state. The boot
+   script (index.astro) also skips all timelines/ScrollTriggers, so without
+   these overrides the CSS-hidden elements would stay stuck at opacity 0. */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal-fade],
+  [data-hero-name],
+  [data-hero-fade],
+  [data-hero-status],
+  [data-project-row],
+  [data-contact-email] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

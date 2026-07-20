@@ -53,20 +53,36 @@ export const initManifestoPin = () => {
   gsap.set(sentence, { opacity: 1 });
   gsap.set(words, { opacity: 0.12 });
 
-  ScrollTrigger.create({
-    trigger: root,
-    start: 'top top',
-    end: '+=180%',
-    pin: true,
-    scrub: 0.6,
-    onUpdate: (self) => {
-      const p = self.progress;
-      const total = words.length;
-      words.forEach((w, i) => {
-        const wordProgress = Math.min(1, Math.max(0, p * total - i));
-        w.style.opacity = String(0.12 + wordProgress * 0.88);
-      });
-    },
+  const paintWords = (p: number) => {
+    const total = words.length;
+    words.forEach((w, i) => {
+      const wordProgress = Math.min(1, Math.max(0, p * total - i));
+      w.style.opacity = String(0.12 + wordProgress * 0.88);
+    });
+  };
+
+  const mm = gsap.matchMedia();
+  mm.add('(min-width: 721px)', () => {
+    ScrollTrigger.create({
+      trigger: root,
+      start: 'top top',
+      end: '+=180%',
+      pin: true,
+      scrub: 0.6,
+      onUpdate: (self) => paintWords(self.progress),
+    });
+  });
+  // No pin on phones: pin-spacers interact badly with URL-bar viewport
+  // changes. Same fill-as-you-read effect, driven by the section passing
+  // through the viewport instead.
+  mm.add('(max-width: 720px)', () => {
+    ScrollTrigger.create({
+      trigger: root,
+      start: 'top 70%',
+      end: 'bottom 55%',
+      scrub: 0.6,
+      onUpdate: (self) => paintWords(self.progress),
+    });
   });
 };
 

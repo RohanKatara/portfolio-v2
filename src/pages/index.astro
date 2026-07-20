@@ -89,6 +89,9 @@ const renderedCases = await Promise.all(
     requestAnimationFrame(() => {
       document.documentElement.removeAttribute('data-cold-overlay');
     });
+    // Reduced motion: global.css already shows every reveal target at its
+    // final state, so skipping the timelines leaves nothing stuck hidden.
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     initHeroReveal();
     initHeroScramble();
     initManifestoPin();
