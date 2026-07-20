@@ -15,6 +15,7 @@ const ICO_ROT_Y_PER_FRAME = 0.0042;
 const CHROMA_OFFSET_PX = 1.6; // pixel-space NDC offset magnitude per chroma pass
 
 const PARTICLE_COUNT = 1200;
+const PARTICLE_COUNT_SMALL = 500; // phones / small touch tablets
 const PARTICLE_RADIUS = 3.6;
 const PARTICLE_BASE_SIZE = 3.4;
 const PARTICLE_DRIFT_AMP = 0.085;
@@ -176,11 +177,11 @@ void main() {
 `;
 
 // ---- particle geometry generator ----------------------------------------
-const buildParticles = () => {
-  const positions = new Float32Array(PARTICLE_COUNT * 3);
-  const seeds = new Float32Array(PARTICLE_COUNT);
-  const sizes = new Float32Array(PARTICLE_COUNT);
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
+const buildParticles = (count: number) => {
+  const positions = new Float32Array(count * 3);
+  const seeds = new Float32Array(count);
+  const sizes = new Float32Array(count);
+  for (let i = 0; i < count; i++) {
     // Rejection-sample inside unit sphere, then scale
     let x = 0, y = 0, z = 0;
     while (true) {
@@ -269,7 +270,12 @@ export default function HeroWireframe() {
     wireMesh.frustumCulled = false;
 
     // ---- particle dust field ----
-    const particles = buildParticles();
+    // Same small-screen rule as SpaceStarfield: phones and small touch
+    // tablets get less dust; touch laptops keep the full set.
+    const isSmallScreen =
+      matchMedia('(max-width: 720px)').matches ||
+      (matchMedia('(hover: none)').matches && Math.min(screen.width, screen.height) < 900);
+    const particles = buildParticles(isSmallScreen ? PARTICLE_COUNT_SMALL : PARTICLE_COUNT);
     const particleGeo = new Geometry(gl, {
       position: { size: 3, data: particles.positions },
       aSeed: { size: 1, data: particles.seeds },

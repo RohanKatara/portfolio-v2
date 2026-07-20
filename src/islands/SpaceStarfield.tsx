@@ -42,13 +42,15 @@ const ACCENT: [number, number, number] = [0.357, 0.553, 0.937]; // #5B8DEF, sign
 const HERO_COLOR: [number, number, number] = [0.92, 0.96, 1.0]; // near-white w/ blue tint
 const GRID_COLOR: [number, number, number] = [0.357, 0.553, 0.937];
 
-// Particle counts
+// Particle counts (small screens get the reduced set — see `isSmallScreen`)
 const PARTICLE_COUNT = 2500;
+const PARTICLE_COUNT_SMALL = 1000;
 const HERO_STAR_RATIO = 0.05; // ~125 dots are bright near-white twinklers
 
 // KNN constellation edges
 const KNN_K = 3; // edges per particle (asymmetric, then deduped)
 const MAX_EDGES = 4000; // hard cap after dedupe (longest edges dropped)
+const MAX_EDGES_SMALL = 1500;
 const EDGE_MAX_WORLD_DIST = 1.55; // base-position distance threshold (world units)
 const EDGE_MAX_NDC_DIST = 0.18; // screen-space distance threshold for alpha falloff
 const LINE_BASE_ALPHA = 0.18; // additive blend, max alpha at zero distance
@@ -323,13 +325,13 @@ interface ParticleData {
   heros: Float32Array;
 }
 
-const buildParticles = (): ParticleData => {
-  const positions = new Float32Array(PARTICLE_COUNT * 3);
-  const seeds = new Float32Array(PARTICLE_COUNT);
-  const depths = new Float32Array(PARTICLE_COUNT);
-  const heros = new Float32Array(PARTICLE_COUNT);
+const buildParticles = (count: number): ParticleData => {
+  const positions = new Float32Array(count * 3);
+  const seeds = new Float32Array(count);
+  const depths = new Float32Array(count);
+  const heros = new Float32Array(count);
 
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
+  for (let i = 0; i < count; i++) {
     positions[i * 3 + 0] = (Math.random() * 2 - 1) * HALF_W;
     positions[i * 3 + 1] = (Math.random() * 2 - 1) * HALF_H;
     positions[i * 3 + 2] = (Math.random() * 2 - 1) * HALF_D + Z_OFFSET;
@@ -349,7 +351,9 @@ const buildParticles = (): ParticleData => {
 // particles parallax fast on long scrolls — connecting them would produce
 // long edges that visibly stretch across the screen as endpoints wrap.
 
-const buildKnnEdges = (data: ParticleData): Uint16Array => {
+// `count` doubles as the stride of the edge-dedupe hash (lo * count + hi),
+// so it MUST be the same value the particle buffers were built with.
+const buildKnnEdges = (data: ParticleData, count: number, maxEdges: number): Uint16Array => {
   const cellSize = EDGE_MAX_WORLD_DIST;
   const minX = -HALF_W;
   const minY = -HALF_H;
@@ -365,7 +369,7 @@ const buildKnnEdges = (data: ParticleData): Uint16Array => {
     cx + cy * cellsX + cz * cellsX * cellsY;
 
   const eligible: number[] = [];
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
+  for (let i = 0; i < count; i++) {
     if (data.depths[i] >= 0.5) continue;
     eligible.push(i);
     const x = data.positions[i * 3 + 0];
@@ -426,23 +430,23 @@ const buildKnnEdges = (data: ParticleData): Uint16Array => {
       const j = neighbors[n].idx;
       const lo = Math.min(i, j);
       const hi = Math.max(i, j);
-      edgeSet.add(lo * PARTICLE_COUNT + hi);
+      edgeSet.add(lo * count + hi);
     }
   }
 
-  // Convert set to flat edge list, then cap at MAX_EDGES (drop the longest)
+  // Convert set to flat edge list, then cap at maxEdges (drop the longest)
   let edges: { i: number; j: number; distSq: number }[] = [];
   for (const key of edgeSet) {
-    const lo = Math.floor(key / PARTICLE_COUNT);
-    const hi = key - lo * PARTICLE_COUNT;
+    const lo = Math.floor(key / count);
+    const hi = key - lo * count;
     const dxw = data.positions[hi * 3 + 0] - data.positions[lo * 3 + 0];
     const dyw = data.positions[hi * 3 + 1] - data.positions[lo * 3 + 1];
     const dzw = data.positions[hi * 3 + 2] - data.positions[lo * 3 + 2];
     edges.push({ i: lo, j: hi, distSq: dxw * dxw + dyw * dyw + dzw * dzw });
   }
-  if (edges.length > MAX_EDGES) {
+  if (edges.length > maxEdges) {
     edges.sort((a, b) => a.distSq - b.distSq);
-    edges = edges.slice(0, MAX_EDGES);
+    edges = edges.slice(0, maxEdges);
   }
 
   const out = new Uint16Array(edges.length * 2);
@@ -562,13 +566,24 @@ export default function SpaceStarfield() {
 
     const scene = new Transform();
 
+    // ---- device tier ----
+    // Phones and small touch tablets get fewer particles/edges. The screen
+    // check catches touch laptops (fine pointer, big screen) and keeps them
+    // on the full set.
+    const isTouch = matchMedia('(hover: none)').matches;
+    const isSmallScreen =
+      matchMedia('(max-width: 720px)').matches ||
+      (isTouch && Math.min(screen.width, screen.height) < 900);
+    const particleCount = isSmallScreen ? PARTICLE_COUNT_SMALL : PARTICLE_COUNT;
+    const maxEdges = isSmallScreen ? MAX_EDGES_SMALL : MAX_EDGES;
+
     // ---- particle data + KNN edges (built once) ----
-    const particles = buildParticles();
-    const edges = buildKnnEdges(particles);
+    const particles = buildParticles(particleCount);
+    const edges = buildKnnEdges(particles, particleCount, maxEdges);
     const edgeCount = edges.length / 2;
 
     // Pre-allocated per-frame work buffers — never reallocated in tick
-    const screenPositions = new Float32Array(PARTICLE_COUNT * 2);
+    const screenPositions = new Float32Array(particleCount * 2);
     const lineAlphas = new Float32Array(edgeCount * 2);
 
     // ---- grid undertone (Pass 1) ----
@@ -639,7 +654,9 @@ export default function SpaceStarfield() {
         uScrollY: { value: 0 },
         uMouseNDC: { value: [0, 0] },
         uCursorRadius: { value: CURSOR_RADIUS_NDC },
-        uCursorPush: { value: CURSOR_PUSH },
+        // Touch: no cursor. uMouseNDC rests at screen center, so a nonzero
+        // push would paint a permanent distortion mid-screen.
+        uCursorPush: { value: isTouch ? 0 : CURSOR_PUSH },
         uDriftAmp: { value: DRIFT_AMP },
         uDriftFreqX: { value: DRIFT_FREQ_X },
         uDriftFreqY: { value: DRIFT_FREQ_Y },
@@ -685,8 +702,10 @@ export default function SpaceStarfield() {
         uScrollY: { value: 0 },
         uMouseNDC: { value: [0, 0] },
         uCursorRadius: { value: CURSOR_RADIUS_NDC },
-        uCursorPush: { value: CURSOR_PUSH },
-        uCursorBrighten: { value: CURSOR_BRIGHTEN },
+        // Same touch guard as the line program — a center-resting cursor
+        // with brighten on would render a permanent glow hotspot.
+        uCursorPush: { value: isTouch ? 0 : CURSOR_PUSH },
+        uCursorBrighten: { value: isTouch ? 0 : CURSOR_BRIGHTEN },
         uDriftAmp: { value: DRIFT_AMP },
         uDriftFreqX: { value: DRIFT_FREQ_X },
         uDriftFreqY: { value: DRIFT_FREQ_Y },
@@ -786,7 +805,7 @@ export default function SpaceStarfield() {
 
     window.addEventListener('resize', resize);
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    if (!isTouch) window.addEventListener('mousemove', onMouseMove, { passive: true });
     window.addEventListener('webgl-disable', onDisable);
     gl.canvas.addEventListener('webglcontextlost', onContextLost as EventListener);
 
@@ -830,10 +849,10 @@ export default function SpaceStarfield() {
       particleProgram.uniforms.uHeroBrightMul.value = 1 + heroBoost * HERO_BOOST_BRIGHTNESS_GAIN;
 
       // Project all "edge-eligible" particles (depth < 0.5) to NDC. We
-      // technically project all 2500 here for simplicity — the overhead is
-      // negligible (~25k arithmetic ops) and it lets us stay branch-free in
-      // the edge loop below.
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
+      // technically project every particle here for simplicity — the
+      // overhead is negligible and it lets us stay branch-free in the edge
+      // loop below.
+      for (let i = 0; i < particleCount; i++) {
         projectParticle(particles, i, scrollY, tSec, projXScale, projYScale, screenPositions);
       }
 
@@ -869,7 +888,7 @@ export default function SpaceStarfield() {
     });
 
     console.log('[SpaceStarfield] init complete', {
-      particleCount: PARTICLE_COUNT,
+      particleCount,
       edgeCount,
       canvasSize: [gl.canvas.width, gl.canvas.height],
       glVersion: gl.getParameter(gl.VERSION),
