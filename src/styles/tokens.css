@@ -40,6 +40,8 @@
   /* Layout */
   --max-w: 1040px;
   --pad-x: clamp(16px, 4vw, 32px);
+  /* Section top padding: 160px on desktop (≥1000px), easing to 96px on phones */
+  --section-pad-t: clamp(96px, 16vw, 160px);
 
   /* Motion */
   --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);

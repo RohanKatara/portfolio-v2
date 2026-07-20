@@ -50,7 +50,11 @@ import { primaryCta } from '../../data/cta';
 
 <style>
   .contact {
-    padding: 160px 0 96px;
+    padding: var(--section-pad-t) 0 96px;
+  }
+  @media (max-width: 720px) {
+    .contact-blurb { margin-bottom: 32px; }
+    .contact-ctas { margin-bottom: 56px; }
   }
   .contact-heading {
     font-family: var(--font-display);

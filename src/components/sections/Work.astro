@@ -24,8 +24,11 @@ import ProjectRow from '../work/ProjectRow.astro';
 
 <style>
   .work {
-    padding: 160px 0 96px;
+    padding: var(--section-pad-t) 0 96px;
     position: relative;
+  }
+  @media (max-width: 720px) {
+    .work-header { margin-bottom: 56px; }
   }
   .work-header {
     margin-bottom: 96px;

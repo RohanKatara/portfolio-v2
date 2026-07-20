@@ -42,7 +42,7 @@ import { skills } from '../../data/skills';
 
 <style>
   .about {
-    padding: 160px 0 96px;
+    padding: var(--section-pad-t) 0 96px;
   }
   .about-heading {
     font-family: var(--font-display);
@@ -66,6 +66,17 @@ import { skills } from '../../data/skills';
     .about-grid {
       grid-template-columns: 1fr;
     }
+    /* Once the 320px column collapses the portrait would fill the row —
+       cap it so it stays a portrait, not a banner. */
+    .about-portrait {
+      max-width: 320px;
+    }
+  }
+  @media (max-width: 720px) {
+    .about-heading { margin: 16px 0 40px; }
+    .about-grid { gap: 40px; }
+    .bio-para { font-size: 16px; }
+    .skills-block { margin-top: 56px; }
   }
   .about-portrait {
     position: relative;

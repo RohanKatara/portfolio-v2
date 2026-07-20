@@ -31,8 +31,11 @@ import { testimonials } from '../../data/testimonials';
 
 <style>
   .testimonials {
-    padding: 160px 0 96px;
+    padding: var(--section-pad-t) 0 96px;
     position: relative;
+  }
+  @media (max-width: 720px) {
+    .testimonials-header { margin-bottom: 40px; }
   }
   .testimonials-header {
     margin-bottom: 64px;

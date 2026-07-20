@@ -32,8 +32,11 @@ import { primaryCta } from '../../data/cta';
 
 <style>
   .services {
-    padding: 160px 0 96px;
+    padding: var(--section-pad-t) 0 96px;
     position: relative;
+  }
+  @media (max-width: 720px) {
+    .services-header { margin-bottom: 40px; }
   }
   .services-header {
     margin-bottom: 64px;
