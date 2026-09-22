@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/chrome/Nav.astro';
 import Footer from '../components/chrome/Footer.astro';
 import Hero from '../components/sections/Hero.astro';
+import WebsiteWork from '../components/sections/WebsiteWork.astro';
 import Manifesto from '../components/sections/Manifesto.astro';
 import Services from '../components/sections/Services.astro';
 import Work from '../components/sections/Work.astro';
@@ -43,6 +44,7 @@ const renderedCases = await Promise.all(
   <Nav />
   <main data-page-content>
     <Hero />
+    <WebsiteWork />
     <Manifesto />
     <Services />
     <Work />

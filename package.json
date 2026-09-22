@@ -7,7 +7,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check",
+    "test:websites": "node scripts/verify-websites.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.0",
@@ -26,6 +28,7 @@
     "splitting": "^1.1.0"
   },
   "devDependencies": {
+    "@astrojs/check": "0.9.4",
     "@tailwindcss/vite": "^4.0.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",

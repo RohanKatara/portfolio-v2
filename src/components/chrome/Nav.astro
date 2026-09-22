@@ -1,19 +1,35 @@
 ---
+const isWebsiteWork = Astro.url.pathname.replace(/\/$/, '') === '/websites';
+const homeLinks = [
+  { href: '/#services', label: 'Services' },
+  { href: '/#work', label: 'Work' },
+  { href: '/#about', label: 'About' },
+  { href: '/#contact', label: 'Contact' },
+];
 ---
-<nav class="nav">
+<nav class:list={['nav', { 'nav-work': isWebsiteWork }]} aria-label="Primary navigation">
   <div class="nav-inner container">
-    <a href="#hero" class="nav-logo">
+    <a href="/#hero" class="nav-logo" aria-label="Rohan Katara home">
       <span class="font-display">RK</span>
     </a>
     <ul class="nav-links">
-      <li><a href="#services">Services</a></li>
-      <li><a href="#work">Work</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="/websites/" aria-current={isWebsiteWork ? 'page' : undefined}>Website work</a></li>
+      {homeLinks.map(({ href, label }) => <li><a href={href}>{label}</a></li>)}
     </ul>
     <div class="nav-status">
       <span class="status-dot" aria-hidden="true"></span>
       <span class="font-mono">Available</span>
+    </div>
+    <div class="nav-mobile">
+      <a class="mobile-work-link" href="/websites/" aria-current={isWebsiteWork ? 'page' : undefined}>Website work</a>
+      <details class="nav-menu" data-nav-menu>
+        <summary aria-controls="mobile-navigation">
+          Menu <span class="menu-indicator" aria-hidden="true">+</span>
+        </summary>
+        <ul id="mobile-navigation" class="mobile-nav-links">
+          {homeLinks.map(({ href, label }) => <li><a href={href}>{label}</a></li>)}
+        </ul>
+      </details>
     </div>
   </div>
 </nav>
@@ -35,7 +51,16 @@
     justify-content: space-between;
     pointer-events: auto;
   }
+  .nav-work {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
   .nav-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
     font-size: 28px;
     font-style: italic;
     color: var(--ink);
@@ -51,8 +76,29 @@
     font-weight: 500;
   }
   .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
     color: var(--muted);
     transition: color 240ms ease;
+  }
+  .nav a[aria-current="page"] {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 6px;
+    text-decoration-thickness: 2px;
+  }
+  .nav a:focus-visible,
+  .nav summary:focus-visible {
+    outline: 2px solid var(--accent-hi);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  .nav-mobile {
+    display: none;
   }
   @media (hover: hover) and (pointer: fine) {
     .nav-links a:hover {
@@ -82,10 +128,90 @@
   @media (max-width: 720px) {
     .nav { padding: 14px 0; }
     .nav-logo { font-size: 22px; }
-    .nav-links {
-      gap: 18px;
-      font-size: 13px;
-    }
+    .nav-links,
     .nav-status { display: none; }
+    .nav-mobile {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .mobile-work-link,
+    .nav-menu summary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: var(--bg);
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .nav-menu {
+      position: relative;
+    }
+    .nav-menu summary {
+      gap: 8px;
+      cursor: pointer;
+      list-style: none;
+    }
+    .nav-menu summary::-webkit-details-marker {
+      display: none;
+    }
+    .menu-indicator {
+      font-size: 18px;
+      line-height: 1;
+    }
+    .nav-menu[open] .menu-indicator {
+      transform: rotate(45deg);
+    }
+    .mobile-nav-links {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: min(260px, calc(100vw - 32px));
+      max-height: calc(100dvh - 100px);
+      overflow-y: auto;
+      list-style: none;
+      margin: 0;
+      padding: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      box-shadow: 0 16px 48px rgb(0 0 0 / 0.4);
+    }
+    .mobile-nav-links a {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 8px 14px;
+      color: var(--ink);
+      border-radius: 4px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .status-dot { animation: none; }
   }
 </style>
+
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>('[data-nav-menu]');
+  if (menu) {
+    const summary = menu.querySelector('summary');
+    menu.addEventListener('click', (event) => {
+      if (event.target instanceof Element && event.target.closest('a')) menu.open = false;
+    });
+    document.addEventListener('click', (event) => {
+      if (event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && menu.open) {
+        menu.open = false;
+        summary?.focus();
+      }
+    });
+  }
+</script>

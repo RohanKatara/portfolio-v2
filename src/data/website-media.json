@@ -1,0 +1,50 @@
+{
+  "odd-home": {
+    "src": "/website-work/odd-home-1906.webp",
+    "srcset": "/website-work/odd-home-640.webp 640w, /website-work/odd-home-1280.webp 1280w, /website-work/odd-home-1906.webp 1906w",
+    "width": 1906,
+    "height": 866
+  },
+  "odd-sun": {
+    "src": "/website-work/odd-sun-1897.webp",
+    "srcset": "/website-work/odd-sun-640.webp 640w, /website-work/odd-sun-1280.webp 1280w, /website-work/odd-sun-1897.webp 1897w",
+    "width": 1897,
+    "height": 762
+  },
+  "odd-dusk": {
+    "src": "/website-work/odd-dusk-1897.webp",
+    "srcset": "/website-work/odd-dusk-640.webp 640w, /website-work/odd-dusk-1280.webp 1280w, /website-work/odd-dusk-1897.webp 1897w",
+    "width": 1897,
+    "height": 787
+  },
+  "kindred-home": {
+    "src": "/website-work/kindred-home-1265.webp",
+    "srcset": "/website-work/kindred-home-640.webp 640w, /website-work/kindred-home-1265.webp 1265w",
+    "width": 1265,
+    "height": 712
+  },
+  "kindred-collection": {
+    "src": "/website-work/kindred-collection-1265.webp",
+    "srcset": "/website-work/kindred-collection-640.webp 640w, /website-work/kindred-collection-1265.webp 1265w",
+    "width": 1265,
+    "height": 712
+  },
+  "kindred-mobile": {
+    "src": "/website-work/kindred-mobile-375.webp",
+    "srcset": "/website-work/kindred-mobile-375.webp 375w",
+    "width": 375,
+    "height": 811
+  },
+  "energy-home": {
+    "src": "/website-work/energy-home-1280.webp",
+    "srcset": "/website-work/energy-home-640.webp 640w, /website-work/energy-home-1280.webp 1280w",
+    "width": 1280,
+    "height": 632
+  },
+  "energy-detail": {
+    "src": "/website-work/energy-detail-1280.webp",
+    "srcset": "/website-work/energy-detail-640.webp 640w, /website-work/energy-detail-1280.webp 1280w",
+    "width": 1280,
+    "height": 632
+  }
+}

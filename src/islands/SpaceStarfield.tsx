@@ -360,7 +360,6 @@ const buildKnnEdges = (data: ParticleData, count: number, maxEdges: number): Uin
   const minZ = Z_OFFSET - HALF_D;
   const cellsX = Math.ceil((HALF_W * 2) / cellSize) + 1;
   const cellsY = Math.ceil((HALF_H * 2) / cellSize) + 1;
-  const cellsZ = Math.ceil((HALF_D * 2) / cellSize) + 1;
 
   // Build spatial grid: cell index -> list of particle indices (only the
   // ones eligible for edges, i.e. depth < 0.5)
