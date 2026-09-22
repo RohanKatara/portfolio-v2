@@ -1,0 +1,73 @@
+---
+import { websiteEnquiry, type Website } from '../../data/websites';
+interface Props { project: Website; }
+const { project } = Astro.props;
+---
+<article id={project.slug} class:list={['website-project', `theme-${project.theme}`]} data-website>
+  <div class="project-topline">
+    <span class="work-label"><span class="project-number">{project.index}</span> / {project.category}</span>
+    <span class="project-status"><span aria-hidden="true"></span>Awaiting launch</span>
+  </div>
+  <div class="project-heading">
+    <h2>{project.name}</h2>
+    <a class="preview-link" href={project.url} target="_blank" rel="noopener noreferrer" data-demo>
+      View website preview <span aria-hidden="true">↗</span>
+      <span class="work-sr-only"> for {project.name} (opens in a new tab)</span>
+    </a>
+  </div>
+  <figure class="project-cover">
+    <div class="browser-bar" aria-hidden="true">
+      <span class="browser-dots"><i></i><i></i><i></i></span>
+      <span>{project.domain}</span><span>PREVIEW</span>
+    </div>
+    <a href={project.cover.src} data-image-open data-title={`${project.name} · ${project.cover.caption}`} class="cover-link" aria-label={`Enlarge ${project.name} homepage screenshot`}>
+      <img src={project.cover.src} srcset={project.cover.srcset} sizes="(min-width: 1400px) 1280px, calc(100vw - 48px)" width={project.cover.width} height={project.cover.height} alt={project.cover.alt} loading={project.index === '01' ? 'eager' : 'lazy'} fetchpriority={project.index === '01' ? 'high' : 'auto'} decoding="async" />
+      <span class="enlarge-hint" aria-hidden="true">Enlarge screenshot <span>↗</span></span>
+    </a>
+    <figcaption>
+      <span>{project.cover.caption}</span>
+      {project.video ? (
+        <a href={project.video.src} class="film-link" data-video-open data-video={project.video.src} data-poster={project.cover.src} data-title={`${project.name} · ${project.video.label}`} data-description={project.video.description}>
+          <span class="play-icon" aria-hidden="true">▶</span> {project.video.label}
+        </a>
+      ) : <span class="cover-note">Designed for desktop & mobile</span>}
+    </figcaption>
+  </figure>
+  <div class="project-story">
+    <div class="project-credit">
+      <p class="work-label">The project</p>
+      <p>Client website<br /><span>Design & development by me</span></p>
+      <ul aria-label={`${project.name} project disciplines`}>
+        {project.disciplines.map((discipline) => <li>{discipline}</li>)}
+      </ul>
+    </div>
+    <div class="project-narrative">
+      <h3>{project.headline}</h3>
+      <p>{project.description}</p>
+      <a class="project-enquiry" href={websiteEnquiry(project.name)}>Discuss a similar website <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+  <div class:list={['project-gallery', { 'with-phone': !!project.mobile, 'single-detail': project.gallery.length === 1 && !project.mobile }]}>
+    {project.gallery.map((item) => (
+      <figure class="gallery-item">
+        <a href={item.src} data-image-open data-title={`${project.name} · ${item.caption}`} aria-label={`Enlarge ${item.caption}`}>
+          <img src={item.src} srcset={item.srcset} sizes="(min-width: 760px) 620px, calc(100vw - 48px)" width={item.width} height={item.height} alt={item.alt} loading="lazy" decoding="async" />
+          <span class="gallery-expand" aria-hidden="true">↗</span>
+        </a>
+        <figcaption>{item.caption}</figcaption>
+      </figure>
+    ))}
+    {project.mobile && (
+      <figure class="gallery-item mobile-detail">
+        <div class="phone-stage">
+          <a href={project.mobile.src} data-image-open data-title={`${project.name} · Mobile`} aria-label="Enlarge Kindred Coffee mobile screenshot">
+            <img src={project.mobile.src} width={project.mobile.width} height={project.mobile.height} alt={project.mobile.alt} loading="lazy" decoding="async" />
+          </a>
+          <span class="phone-label work-label" aria-hidden="true">Made for<br />the everyday<br /><em>scroll.</em></span>
+        </div>
+        <figcaption>{project.mobile.caption}</figcaption>
+      </figure>
+    )}
+  </div>
+</article>
+
