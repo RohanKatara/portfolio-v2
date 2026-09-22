@@ -14,6 +14,8 @@ The page will present these projects in this exact order:
 
 Rohan confirmed that all three are client projects awaiting launch and that he handled everything himself. Credit can say “Design and development by Rohan Katara.” Show the projects as previews and describe the work delivered without claiming post-launch business results.
 
+Rohan subsequently clarified that ODD is planned to launch as a WooCommerce store. Describe that platform as upcoming; the current static Vercel preview does not establish completed WooCommerce integration or working checkout.
+
 A homepage website showcase and a “Website work” navigation link will make the new page discoverable. Project enquiry actions use the existing public email, rohankatara3@gmail.com. User-supplied screenshots and screen recordings are expected; media selection and crops will follow inspection of those files.
 
 ## Recommended direction: editorial project showcase

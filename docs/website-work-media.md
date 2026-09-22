@@ -2,6 +2,8 @@
 
 Prepared 22 September 2026 for `/websites/` and its homepage preview. Rohan confirmed that these are client projects awaiting launch and that he handled their design and development. The media demonstrates appearance and interaction; it does not establish sales results or working production checkout.
 
+ODD is planned to launch on WooCommerce, as subsequently confirmed by Rohan. Its current Vercel deployment remains a static preview; the portfolio copy must distinguish the upcoming store from completed commerce integration.
+
 ## Sources and selection
 
 | Project | Selected material | Published image dimensions |

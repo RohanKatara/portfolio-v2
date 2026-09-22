@@ -40,7 +40,7 @@ export const websites: Website[] = [
     slug: 'odd-care', index: '01', name: 'ODD Care Co.', category: 'Ecommerce · Skincare',
     theme: 'odd', url: 'https://odd-care-co.vercel.app', domain: 'odd-care-co.vercel.app',
     headline: 'Skincare with a point of view.',
-    description: 'A complete digital expression for a skincare brand with something to say. A crisp storefront, distinctive product pages and a playful character make the essentials feel anything but ordinary.',
+    description: 'A skincare storefront for an upcoming WooCommerce store. Crisp product pages, a distinctive visual identity and a playful character make the essentials feel anything but ordinary.',
     disciplines: ['Art direction', 'Website design', 'Development', 'Product storytelling'],
     cover: image('odd-home', 'ODD Care Co. storefront with bold monochrome typography and a four product skincare range', 'The storefront'),
     gallery: [
