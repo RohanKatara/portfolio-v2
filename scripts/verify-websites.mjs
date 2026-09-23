@@ -298,7 +298,28 @@ const run = async () => {
     await screenshot(page, 'no-javascript');
     for (const project of CASES) {
       await visit(page, '/work/#ai-automations');
-      await page.locator(`#ai-automations a[href="/work/${project.slug}/"]`).click();
+      const row = page.locator(`#ai-automations a[href="/work/${project.slug}/"]`);
+      if (engine === 'webkit') {
+        // With JavaScript disabled, WebKit can stall the driver's frame-based
+        // stability retry after returning from a case. Verify the visible hit
+        // target, then exercise a native phone tap rather than forcing a click.
+        await row.evaluate((element) => element.scrollIntoView({ block: 'center', behavior: 'instant' }));
+        const target = await row.evaluate((element) => {
+          const heading = element.querySelector('h3');
+          if (!heading) return null;
+          const rect = heading.getBoundingClientRect();
+          const x = rect.left + rect.width / 2;
+          const y = rect.top + rect.height / 2;
+          const barBottom = Math.max(...Array.from(document.querySelectorAll('.nav, .work-categories'),
+            (bar) => bar.getBoundingClientRect().bottom));
+          return { x, y, visible: x > 0 && x < innerWidth && y > barBottom && y < innerHeight,
+            hit: element.contains(document.elementFromPoint(x, y)) };
+        });
+        check(`no-js ${project.slug}: case heading is visible and receives touch`, target?.visible && target?.hit, JSON.stringify(target));
+        await page.touchscreen.tap(target.x, target.y);
+      } else {
+        await row.click();
+      }
       await page.waitForURL((url) => isCaseUrl(url, project.slug));
       await checkCase(page, project, `no-js ${project.slug}`);
       await page.locator('a.case-back').first().click();
