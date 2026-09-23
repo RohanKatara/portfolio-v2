@@ -1,6 +1,6 @@
 /**
  * Unified work and static case-study regressions against a running dev or preview server.
- * Run: node scripts/verify-websites.mjs [baseUrl] [--webkit]
+ * Run: node scripts/verify-websites.mjs [baseUrl] [--webkit] [--only=scenario-name]
  * Uses system Chrome by default. --webkit requires Playwright WebKit installed.
  * Screenshots and report.json go to QA_OUTPUT_DIR, or ../qa/<engine>.
  * External demos and mailto links are inspected, never opened or submitted.
@@ -12,6 +12,7 @@ import { chromium, webkit } from 'playwright-core';
 const args = process.argv.slice(2);
 const BASE = (args.find((arg) => !arg.startsWith('--')) ?? 'http://localhost:4321').replace(/\/$/, '');
 const engine = args.includes('--webkit') ? 'webkit' : 'chrome';
+const onlyScenario = args.find((arg) => arg.startsWith('--only='))?.slice(7);
 const OUTPUT = resolve(process.env.QA_OUTPUT_DIR ?? '../qa', engine);
 const ORIGIN = new URL(BASE).origin;
 const EMAIL = 'rohankatara3@gmail.com';
@@ -31,6 +32,7 @@ const checks = [];
 const pageErrors = [];
 const consoleErrors = [];
 const httpErrors = [];
+let scenarioCount = 0;
 let browser;
 
 class CheckFailure extends Error {}
@@ -45,6 +47,8 @@ const screenshot = (page, name, fullPage = false) =>
   page.screenshot({ path: resolve(OUTPUT, `${name}.png`), fullPage, animations: 'disabled' });
 
 const scenario = async (name, options, run) => {
+  if (onlyScenario && name !== onlyScenario) return;
+  scenarioCount++;
   const context = await browser.newContext(options);
   const page = await context.newPage();
   page.setDefaultTimeout(12000);
@@ -223,6 +227,9 @@ const run = async () => {
   }
 
   await scenario('media', { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }, async (page) => {
+    // WebKit may scroll between synthetic mouse-down/up in its phone viewport.
+    // Native touch keeps both events on the control the visitor actually taps.
+    const activate = (locator) => engine === 'webkit' ? locator.tap() : locator.click();
     const requestedMedia = [];
     page.on('request', (request) => {
       if (request.resourceType() === 'media') requestedMedia.push(request.url());
@@ -235,7 +242,7 @@ const run = async () => {
     check('media: videos not requested on page load', requestedMedia.length === 0, requestedMedia.join(', '));
 
     const imageLink = page.locator('#odd-care a[data-image-open]').first();
-    await imageLink.click();
+    await activate(imageLink);
     await page.waitForFunction(() => document.querySelector('#media-dialog')?.open);
     await page.locator('#showcase-image').evaluate((image) => image.decode());
     check('media: image dialog is named and loaded',
@@ -257,7 +264,7 @@ const run = async () => {
       const link = page.locator(`[id="${id}"] a[data-video-open]`);
       const source = await link.getAttribute('data-video');
       check(`media: ${id} has a video source`, Boolean(source));
-      await link.click();
+      await activate(link);
       await page.waitForFunction(() => document.querySelector('#media-dialog')?.open);
       check(`media: ${id} hides full-size image link`, await originalLink.isHidden());
       const actualSource = await video.getAttribute('src');
@@ -275,7 +282,7 @@ const run = async () => {
         return element && !element.paused && element.currentTime > 0;
       }, null, { timeout: 12000 });
       check(`media: ${id} video loads and plays`, true);
-      await dialog.locator('[data-media-close]').click();
+      await activate(dialog.locator('[data-media-close]'));
       // The native dialog close event is queued after the open attribute changes.
       await page.waitForFunction(() => {
         const element = document.querySelector('#showcase-video');
@@ -296,15 +303,14 @@ const run = async () => {
     check('no-js: native menu exposes home navigation', await page.locator('.mobile-nav-links a[href="/#contact"]').isVisible());
     await checkOverflow(page, 'no-js');
     await screenshot(page, 'no-javascript');
+    await visit(page, '/work/#ai-automations');
     for (const project of CASES) {
-      await visit(page, '/work/#ai-automations');
       const row = page.locator(`#ai-automations a[href="/work/${project.slug}/"]`);
       if (engine === 'webkit') {
         // With JavaScript disabled, WebKit can stall the driver's frame-based
         // stability retry after returning from a case. Verify the visible hit
         // target, then exercise a native phone tap rather than forcing a click.
-        await row.evaluate((element) => element.scrollIntoView({ block: 'center', behavior: 'instant' }));
-        const target = await row.evaluate((element) => {
+        const measureTarget = () => row.evaluate((element) => {
           const heading = element.querySelector('h3');
           if (!heading) return null;
           const rect = heading.getBoundingClientRect();
@@ -315,6 +321,15 @@ const run = async () => {
           return { x, y, visible: x > 0 && x < innerWidth && y > barBottom && y < innerHeight,
             hit: element.contains(document.elementFromPoint(x, y)) };
         });
+        let target;
+        const deadline = Date.now() + 4000;
+        do {
+          await row.evaluate((element) => element.scrollIntoView({ block: 'center', behavior: 'instant' }));
+          target = await measureTarget();
+          if (target?.visible && target?.hit) break;
+          // Poll the real scroll/hit state from Node: page timers are disabled.
+          await new Promise((resolve) => setTimeout(resolve, 50));
+        } while (Date.now() < deadline);
         check(`no-js ${project.slug}: case heading is visible and receives touch`, target?.visible && target?.hit, JSON.stringify(target));
         await page.touchscreen.tap(target.x, target.y);
       } else {
@@ -472,6 +487,7 @@ const run = async () => {
     });
   }
 
+  if (onlyScenario && scenarioCount === 0) throw new Error(`Unknown scenario: ${onlyScenario}`);
   for (const [name, errors] of [['no page errors', pageErrors], ['no browser console errors', consoleErrors], ['no local HTTP errors', httpErrors]]) {
     try { check(name, errors.length === 0, errors.join(' | ')); } catch (error) {
       if (!(error instanceof CheckFailure)) throw error;
@@ -488,7 +504,7 @@ try {
   await browser?.close();
   await mkdir(OUTPUT, { recursive: true });
   await writeFile(resolve(OUTPUT, 'report.json'), JSON.stringify({
-    baseUrl: BASE, engine, createdAt: new Date().toISOString(), checks, pageErrors, consoleErrors, httpErrors,
+    baseUrl: BASE, engine, onlyScenario: onlyScenario ?? null, createdAt: new Date().toISOString(), checks, pageErrors, consoleErrors, httpErrors,
   }, null, 2));
   const failures = checks.filter((result) => !result.passed).length;
   console.log(`\n${failures ? `${failures} CHECK(S) FAILED` : 'ALL CHECKS PASSED'} — ${checks.length} checks; artifacts: ${OUTPUT}`);

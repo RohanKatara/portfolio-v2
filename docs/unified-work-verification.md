@@ -16,6 +16,12 @@ WebKit with JavaScript disabled reproducibly stopped delivering the animation-fr
 
 The real phone interaction was independently exercised using native touchscreen taps after scrolling the heading into view and checking the actual element at the tap point. All four cases, their narrative/enquiry content and Back links passed three consecutive runs (12 complete flows, no errors). Only that WebKit/no-JavaScript test activation uses this method. Chrome retains normal locator actionability, and every browser retains route/content assertions and uncensored error auditing. Diagnostic reports are outside git in `../qa/webkit-nojs-focus/`.
 
+The final focused no-JavaScript suite passed all 79 checks in WebKit with zero page, console or HTTP errors (`../qa/unified-nojs-final/webkit/report.json`). Use `--only=no-javascript` to reproduce that exact scenario.
+
+A separate mobile WebKit mouse-click timeout was also traced: the engine scrolled 194px between mouse-down on the 404 recording link and mouse-up on a screenshot, so the final click correctly did not activate the link. Native touch taps passed the complete image → ODD recording → 404 recording sequence, including playback and focus restoration. The phone media scenario now uses native taps for WebKit; desktop/Chrome retain clicks. Evidence is in `../qa/media-investigation/`. Neither workaround forces clicks, invokes application handlers directly, suppresses errors, or changes the application.
+
+The final focused media suite passed all 24 interaction/playback/focus assertions. Its full result was 26/27: no console or HTTP errors, with only the known native-controls page-error audit failing (`../qa/unified-media-final/webkit/report.json`, reproduce with `--only=media`).
+
 ## Native video diagnostic
 
 The installed automated WebKit 26.5 engine still emits `RangeError: Temporal.Duration properties must be finite and of consistent sign` from native video controls. Video decoding and advancing playback pass. This same diagnostic was independently reproduced on a bare video element during the earlier website release; see `website-work-verification.md`. Native controls are preserved and errors are not filtered. A strict WebKit run is therefore not a clean diagnostic pass even when its functional assertions pass. Physical iPhone Safari testing is unavailable.
