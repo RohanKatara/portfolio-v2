@@ -1,60 +1,26 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Nav from '../components/chrome/Nav.astro';
-import Footer from '../components/chrome/Footer.astro';
-import WebsiteShowcase from '../components/work/WebsiteShowcase.astro';
-import { websites, websiteEnquiry } from '../data/websites';
-import '../styles/websites.css';
+// Vercel redirects first in production. This fallback supports static previews.
+import '../styles/global.css';
 ---
-<BaseLayout
-  title="Website Work | Rohan Katara"
-  description="Explore three client websites designed and developed by Rohan Katara: ODD Care Co., Kindred Coffee and 404 Energy. View the previews and discuss your website."
-  socialImage="/website-work/social-cover.jpg"
-  atmosphere={false}
->
-  <a class="work-skip" href="#main">Skip to the work</a>
-  <Nav />
-  <main id="main" class="website-main" data-page-content>
-    <header class="work-hero work-container">
-      <div class="work-hero-top work-label"><span>Selected websites / 2026</span><a href={websiteEnquiry()}>Discuss your website <span aria-hidden="true">↗</span></a></div>
-      <div class="work-hero-heading">
-        <h1>A closer look<br />at the <em>work.</em><sup>(03)</sup></h1>
-        <div class="work-intro">
-          <span class="intro-mark" aria-hidden="true">↘</span>
-          <p>Three brands. Three different worlds.<br />Websites designed and developed by me.</p>
-          <span class="work-label">Client projects · Awaiting launch</span>
-        </div>
-      </div>
-      <nav class="project-index" aria-label="Jump to a website project">
-        {websites.map((project) => <a href={`#${project.slug}`}><span class="work-label">{project.index}</span><span>{project.name}</span><span aria-hidden="true">↓</span></a>)}
-      </nav>
-    </header>
-    <div class="work-container projects">
-      {websites.map((project) => <WebsiteShowcase project={project} />)}
-    </div>
-    <section id="website-enquiry" class="work-enquiry work-container" aria-labelledby="enquiry-title">
-      <div class="work-label"><span class="availability-dot" aria-hidden="true"></span> Your project could be next</div>
-      <div class="enquiry-grid">
-        <h2 id="enquiry-title">Something in mind?<br /><em>Let’s build it.</em></h2>
-        <div>
-          <p>Tell me about your business and the website you have in mind. I’ll reply within a day with clear next steps.</p>
-          <a class="work-cta" href={websiteEnquiry()}>Discuss your website <span aria-hidden="true">↗</span></a>
-          <a class="back-home" href="/#services">Explore my services <span aria-hidden="true">→</span></a>
-        </div>
-      </div>
-    </section>
-    <Footer />
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://rohankatara.com/work/" />
+  <title>Work has moved | Rohan Katara</title>
+  <script is:inline>location.replace('/work/' + location.search + location.hash);</script>
+</head>
+<body>
+  <main class="redirect-message container">
+    <h1 class="font-display">All the work. One place.</h1>
+    <p><a href="/work/">Explore websites &amp; AI automations →</a></p>
   </main>
-  <dialog id="media-dialog" class="media-dialog" aria-labelledby="media-title" aria-describedby="media-description">
-    <div class="media-topbar"><p id="media-title"></p><button type="button" data-media-close aria-label="Close media preview">Close <span aria-hidden="true">×</span></button></div>
-    <div class="media-stage">
-      <img id="showcase-image" alt="" hidden />
-      <video id="showcase-video" controls playsinline preload="none" hidden aria-label="Website screen recording"></video>
-    </div>
-    <div class="media-bottom"><p id="media-description"></p><a id="media-original" target="_blank" rel="noopener noreferrer" hidden>Open full-size image <span aria-hidden="true">↗</span></a></div>
-  </dialog>
-</BaseLayout>
-<script>
-  import { initWebsiteMedia } from '../lib/website-media';
-  initWebsiteMedia();
-</script>
+</body>
+</html>
+<style>
+  .redirect-message { padding-top: 120px; }
+  h1 { font-size: clamp(40px,7vw,80px); }
+  a { color: var(--accent-hi); text-decoration: underline; text-underline-offset: 6px; }
+</style>

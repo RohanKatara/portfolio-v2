@@ -1,0 +1,356 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/chrome/Nav.astro';
+import Footer from '../../components/chrome/Footer.astro';
+import Thumbnail from '../../components/thumbnails/Thumbnail';
+import { projects, type Project } from '../../data/projects';
+import { primaryCta } from '../../data/cta';
+
+export const getStaticPaths = (async () => {
+  const studies = await getCollection('case-studies');
+  studies.sort((a, b) => Number(a.data.index) - Number(b.data.index));
+
+  return studies.map((study, index) => {
+    const project = projects.find((entry) => entry.caseStudySlug === study.slug);
+    const nextStudy = studies[(index + 1) % studies.length];
+    const nextProject = projects.find((entry) => entry.caseStudySlug === nextStudy.slug);
+    if (!project || !nextProject) throw new Error(`Missing project metadata for ${study.slug}`);
+
+    return {
+      params: { slug: study.slug },
+      props: { study, project, next: { slug: nextStudy.slug, name: nextProject.name } },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+interface Props {
+  study: CollectionEntry<'case-studies'>;
+  project: Project;
+  next: { slug: string; name: string };
+}
+
+const { study, project, next } = Astro.props;
+const { Content } = await study.render();
+const { title, tagline, role, accent, index, metrics, demo } = study.data;
+---
+<BaseLayout
+  title={`${project.name} — Case Study | Rohan Katara`}
+  description={tagline}
+  canonicalPath={`/work/${study.slug}/`}
+  atmosphere={false}
+>
+  <a class="case-skip" href="#main">Skip to case study</a>
+  <Nav />
+  <main id="main" class="case-page" tabindex="-1" data-page-content data-case-study={study.slug} style={`--case-accent: ${accent};`}>
+    <article class="case-shell">
+      <a class="case-back font-mono" href="/work/#ai-automations"><span aria-hidden="true">←</span> Back to Work</a>
+
+      <header class="case-intro">
+        <p class="case-index font-eyebrow">AI &amp; Automations / {index}</p>
+        <h1 class="case-title font-display">{title}</h1>
+        <p class="case-tagline">{tagline}</p>
+        <div class="case-meta font-mono"><span>{project.year}</span><span aria-hidden="true">·</span><span>{role}</span></div>
+      </header>
+
+      <div class="case-art">
+        <Thumbnail slug={project.slug} variant="hero" />
+      </div>
+
+      <div class="case-content">
+        <dl class="case-metrics">
+          {metrics.map((metric) => (
+            <div class="case-metric">
+              <dt class="font-mono">{metric.label}</dt>
+              <dd class="font-display">{metric.value}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div class="case-prose"><Content /></div>
+
+        {demo && (
+          <section class="case-demo" aria-labelledby="case-demo-title">
+            <h2 id="case-demo-title" class="font-display">Watch the demo</h2>
+            <video controls playsinline preload="none" poster={project.cover} aria-label={`${project.name} walkthrough`}>
+              <source src={demo} type="video/mp4" />
+              <a href={demo}>Open the {project.name} walkthrough video</a>
+            </video>
+            <a class="case-video-link font-mono" href={demo}>Open the video <span aria-hidden="true">↗</span></a>
+          </section>
+        )}
+
+        <section class="case-enquiry" aria-labelledby="case-enquiry-title">
+          <h2 id="case-enquiry-title" class="font-display">Have something similar in mind?</h2>
+          <a href={primaryCta.href}>Discuss your project <span aria-hidden="true">↗</span></a>
+        </section>
+
+        <nav class="case-pagination" aria-label="Case study navigation">
+          <a class="case-next" href={`/work/${next.slug}/`}>
+            <span class="font-eyebrow">Next case study</span>
+            <span class="case-next-name font-display">{next.name} <span aria-hidden="true">→</span></span>
+          </a>
+          <a class="case-back font-mono" href="/work/#ai-automations"><span aria-hidden="true">←</span> All AI &amp; automation projects</a>
+        </nav>
+      </div>
+    </article>
+    <Footer />
+  </main>
+</BaseLayout>
+
+<style>
+  .case-page {
+    padding-top: 120px;
+  }
+  .case-shell {
+    max-width: 1120px;
+    margin-inline: auto;
+    padding-inline: var(--pad-x);
+  }
+  .case-skip {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 200;
+    padding: 12px 18px;
+    background: var(--ink);
+    color: var(--bg);
+    transform: translateY(-200%);
+  }
+  .case-skip:focus {
+    transform: translateY(0);
+  }
+  .case-back,
+  .case-video-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .case-page a:focus-visible,
+  .case-skip:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 5px;
+  }
+  .case-intro {
+    max-width: 920px;
+    padding-block: 48px 56px;
+  }
+  .case-index {
+    margin: 0 0 24px;
+    color: var(--case-accent);
+  }
+  .case-title {
+    margin: 0 0 24px;
+    font-size: clamp(44px, 6.2vw, 84px);
+    line-height: 1.03;
+    overflow-wrap: break-word;
+  }
+  .case-tagline {
+    max-width: 680px;
+    margin: 0 0 24px;
+    font-size: clamp(18px, 2vw, 23px);
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  .case-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 12px;
+    font-size: 12px;
+    color: var(--faint);
+  }
+  .case-art {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .case-art > :global(div) {
+    width: 100%;
+    height: 100%;
+  }
+  .case-content {
+    max-width: 800px;
+    margin-inline: auto;
+  }
+  .case-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 48px 0 64px;
+  }
+  .case-metric {
+    min-width: 0;
+    padding: 24px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .case-metric dt {
+    margin-bottom: 12px;
+    color: var(--faint);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+  }
+  .case-metric dd {
+    margin: 0;
+    font-size: clamp(27px, 3.4vw, 40px);
+    line-height: 1.1;
+    color: var(--case-accent);
+    overflow-wrap: anywhere;
+  }
+  .case-prose {
+    font-size: 17px;
+    line-height: 1.8;
+    overflow-wrap: break-word;
+  }
+  .case-prose :global(h2),
+  .case-demo h2 {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 4vw, 42px);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 64px 0 20px;
+  }
+  .case-prose :global(h3) {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--case-accent);
+    margin: 32px 0 12px;
+  }
+  .case-prose :global(p) {
+    margin: 0 0 24px;
+  }
+  .case-prose :global(ul),
+  .case-prose :global(ol) {
+    margin: 0 0 24px;
+    padding-left: 24px;
+    color: var(--muted);
+  }
+  .case-prose :global(ul) { list-style: disc; }
+  .case-prose :global(ol) { list-style: decimal; }
+  .case-prose :global(li) { margin: 12px 0; }
+  .case-prose :global(strong) {
+    color: var(--case-accent);
+    font-weight: 500;
+  }
+  .case-prose :global(a) {
+    color: var(--accent-hi);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .case-prose :global(a:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+  .case-prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    padding: 2px 5px;
+    background: var(--surface-hi);
+    color: var(--accent-hi);
+  }
+  .case-prose :global(pre) {
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 20px;
+    margin: 24px 0;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+  }
+  .case-prose :global(pre code) {
+    padding: 0;
+    background: none;
+    color: var(--ink);
+  }
+  .case-prose :global(hr) {
+    margin: 48px 0;
+    border-color: var(--line);
+  }
+  .case-demo video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-top: 20px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .case-video-link {
+    margin-top: 8px;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .case-pagination {
+    margin-top: 48px;
+  }
+  .case-enquiry {
+    margin-top: 80px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+  }
+  .case-enquiry h2 {
+    margin: 0 0 24px;
+    font-size: clamp(32px, 4.5vw, 48px);
+    line-height: 1.1;
+  }
+  .case-enquiry a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 48px;
+    padding: 12px 20px;
+    border: 1px solid var(--accent);
+    color: var(--accent-hi);
+  }
+  .case-next {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 44px;
+    margin-bottom: 16px;
+    padding: 32px;
+    border: 1px solid var(--line);
+    transition: border-color 240ms ease;
+  }
+  .case-next-name {
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1.1;
+    color: var(--case-accent);
+    font-style: italic;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .case-back:hover,
+    .case-video-link:hover { color: var(--ink); }
+    .case-next:hover { border-color: var(--case-accent); }
+  }
+  @media (max-width: 720px) {
+    .case-page { padding-top: 88px; }
+    .case-intro { padding-block: 32px 40px; }
+    .case-index { margin-bottom: 20px; }
+    .case-title { font-size: clamp(40px, 10vw, 64px); }
+    .case-art { aspect-ratio: 8 / 5; }
+    .case-metrics { gap: 12px; margin-block: 32px 48px; }
+    .case-metric { padding: 16px; }
+    .case-metric dd { font-size: clamp(25px, 6.8vw, 36px); }
+    .case-prose { font-size: 16px; }
+    .case-prose :global(h2),
+    .case-demo h2 { margin-top: 48px; }
+    .case-enquiry { margin-top: 56px; }
+    .case-next { padding: 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .case-art :global(*) {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>

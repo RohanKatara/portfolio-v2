@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/chrome/Nav.astro';
+import Footer from '../components/chrome/Footer.astro';
+import WebsiteShowcase from '../components/work/WebsiteShowcase.astro';
+import ProjectRow from '../components/work/ProjectRow.astro';
+import { websites } from '../data/websites';
+import { projects } from '../data/projects';
+import { primaryCta } from '../data/cta';
+import '../styles/websites.css';
+const total = String(websites.length + projects.length).padStart(2, '0');
+---
+<BaseLayout title="Work | Websites & AI Automations by Rohan Katara" description="Explore websites, AI experiences and automation workflows designed and developed by Rohan Katara. See the work, explore the case studies, and discuss your project." socialImage="/website-work/social-cover.jpg" atmosphere={false}>
+  <a class="work-skip" href="#main">Skip to the work</a>
+  <Nav />
+  <main id="main" class="website-main unified-work" tabindex="-1" data-page-content>
+    <header class="work-hero work-container">
+      <div class="work-hero-top work-label"><span>Selected work / {total} projects</span><a href={primaryCta.href}>Let’s talk <span aria-hidden="true">↗</span></a></div>
+      <div class="work-hero-heading">
+        <h1>Good ideas.<br /><em>Built to work.</em></h1>
+        <div class="work-intro"><span class="intro-mark" aria-hidden="true">↘</span><p>Websites with personality. AI with a purpose.<br />A selection of what I design and build, from a brand’s first impression to the work behind the scenes.</p></div>
+      </div>
+    </header>
+    <nav class="work-categories" aria-label="Work categories">
+      <div class="work-container category-inner">
+        <a href="#websites"><span>Websites</span><span class="category-count">{String(websites.length).padStart(2, '0')}</span><span class="category-arrow" aria-hidden="true">↘</span></a>
+        <a href="#ai-automations"><span>AI &amp; Automations</span><span class="category-count">{String(projects.length).padStart(2, '0')}</span><span class="category-arrow" aria-hidden="true">↘</span></a>
+        <span class="category-note work-label">From concept to code</span>
+      </div>
+    </nav>
+    <section id="websites" class="work-category work-container" aria-labelledby="websites-title">
+      <header class="category-heading">
+        <div><p class="work-label">01 / Websites</p><h2 id="websites-title">Different brands.<br /><em>Distinct experiences.</em></h2></div>
+        <p>Three client websites, designed and developed by me. A look at the details before they launch.</p>
+      </header>
+      <nav class="project-index" aria-label="Jump to a website project">{websites.map((project) => <a href={`#${project.slug}`}><span class="work-label">{project.index}</span><span>{project.name}</span><span aria-hidden="true">↓</span></a>)}</nav>
+      <div class="projects">{websites.map((project) => <WebsiteShowcase project={project} />)}</div>
+    </section>
+    <section id="ai-automations" class="work-category work-container" aria-labelledby="ai-title">
+      <header class="category-heading">
+        <div><p class="work-label">02 / AI &amp; Automations</p><h2 id="ai-title">Less manual.<br /><em>More possible.</em></h2></div>
+        <p>Voice experiences, smarter lead handling and content workflows. Open a project to see the thinking and the build.</p>
+      </header>
+      <div class="project-list">{projects.map((project) => <ProjectRow project={project} />)}</div>
+    </section>
+    <section id="work-enquiry" class="work-enquiry work-container" aria-labelledby="enquiry-title">
+      <div class="work-label"><span class="availability-dot" aria-hidden="true"></span> Your project could be next</div>
+      <div class="enquiry-grid">
+        <h2 id="enquiry-title">Something in mind?<br /><em>Let’s build it.</em></h2>
+        <div><p>A new website, an AI workflow, or a better way to get things done. Tell me what you’re working on, and I’ll reply within a day with clear next steps.</p><a class="work-cta" href={primaryCta.href}>Discuss your project <span aria-hidden="true">↗</span></a><a class="back-home" href="/#services">Explore my services <span aria-hidden="true">→</span></a></div>
+      </div>
+    </section>
+    <Footer />
+  </main>
+  <dialog id="media-dialog" class="media-dialog" aria-labelledby="media-title" aria-describedby="media-description">
+    <div class="media-topbar"><p id="media-title"></p><button type="button" data-media-close aria-label="Close media preview">Close <span aria-hidden="true">×</span></button></div>
+    <div class="media-stage"><img id="showcase-image" alt="" hidden /><video id="showcase-video" controls playsinline preload="none" hidden aria-label="Website screen recording"></video></div>
+    <div class="media-bottom"><p id="media-description"></p><a id="media-original" target="_blank" rel="noopener noreferrer" hidden>Open full-size image <span aria-hidden="true">↗</span></a></div>
+  </dialog>
+</BaseLayout>
+<script>
+  import { initWebsiteMedia } from '../lib/website-media';
+  initWebsiteMedia();
+  // Keep both sections readable; the highlight follows native scrolling.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.work-categories a')];
+  const sections = links.map((link) => document.getElementById(link.hash.slice(1)));
+  let queued = false;
+  const update = () => {
+    const edge = (document.querySelector('.work-categories')?.getBoundingClientRect().bottom ?? 140) + 32;
+    const active = sections.reduce((current, section) => section && section.getBoundingClientRect().top <= edge ? section : current, sections[0]);
+    links.forEach((link) => {
+      if (link.hash === `#${active?.id}`) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+    queued = false;
+  };
+  const schedule = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule);
+  window.addEventListener('pageshow', schedule);
+  update();
+</script>

@@ -2,7 +2,6 @@
 import '../styles/global.css';
 import DesktopGate from '../islands/DesktopGate.tsx';
 import SmoothScroll from '../islands/SmoothScroll.tsx';
-import CaseOverlayController from '../islands/CaseOverlayController.tsx';
 import SpaceStarfield from '../islands/SpaceStarfield.tsx';
 
 interface Props {
@@ -112,28 +111,24 @@ const mobileLegacy = import.meta.env.PUBLIC_MOBILE_LEGACY === '1';
 
     {isHome && (
       <Fragment>
-        <!-- Only the homepage renders case overlays. Keep the pre-paint guard
-             with its controller so a matching hash cannot hide another route. -->
+        <!-- Preserve bookmarked case studies and the former Work section URL. -->
         <script is:inline>
-          (function () {
+          function redirectLegacyWork() {
             var slugs = ['mocktalk', 'krishna', 'automate-pro', 'content-engine'];
             var h = (location.hash || '').replace(/^#/, '');
-            if (slugs.indexOf(h) !== -1) {
-              document.documentElement.setAttribute('data-cold-overlay', h);
-            }
-          })();
+            if (slugs.indexOf(h) !== -1) location.replace('/work/' + h + '/' + location.search);
+            else if (h === 'work') location.replace('/work/' + location.search);
+            else if (h === 'website-work') location.replace('/work/' + location.search + '#websites');
+          }
+          redirectLegacyWork();
+          window.addEventListener('hashchange', redirectLegacyWork);
         </script>
-        <style is:inline>
-          html[data-cold-overlay] body { overflow: hidden; }
-          html[data-cold-overlay] [data-page-content] { visibility: hidden; }
-        </style>
       </Fragment>
     )}
   </head>
   <body>
     <DesktopGate client:only="react" />
     {isHome && <SmoothScroll client:only="react" />}
-    {isHome && <CaseOverlayController client:only="react" />}
     {atmosphere && <SpaceStarfield client:only="react" />}
 
     <slot />
