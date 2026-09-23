@@ -9,7 +9,7 @@ const { project } = Astro.props;
     <span class="project-status"><span aria-hidden="true"></span>Awaiting launch</span>
   </div>
   <div class="project-heading">
-    <h2>{project.name}</h2>
+    <h3>{project.name}</h3>
     <a class="preview-link" href={project.url} target="_blank" rel="noopener noreferrer" data-demo>
       View website preview <span aria-hidden="true">↗</span>
       <span class="work-sr-only"> for {project.name} (opens in a new tab)</span>
@@ -42,7 +42,7 @@ const { project } = Astro.props;
       </ul>
     </div>
     <div class="project-narrative">
-      <h3>{project.headline}</h3>
+      <h4>{project.headline}</h4>
       <p>{project.description}</p>
       <a class="project-enquiry" href={websiteEnquiry(project.name)}>Discuss a similar website <span aria-hidden="true">↗</span></a>
     </div>

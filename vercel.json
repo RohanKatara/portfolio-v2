@@ -1,5 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    { "source": "/websites", "destination": "/work/", "permanent": true },
+    { "source": "/websites/", "destination": "/work/", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/mocktalk-case-study.html",       "destination": "/legacy/mocktalk-case-study.html" },
     { "source": "/krishna-case-study.html",        "destination": "/legacy/krishna-case-study.html" },

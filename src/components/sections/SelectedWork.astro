@@ -1,0 +1,72 @@
+---
+import { websites } from '../../data/websites';
+import { projects } from '../../data/projects';
+const cover = websites[0].cover;
+---
+<section class="selected-work" id="work" aria-labelledby="selected-work-title">
+  <div class="container">
+    <div class="selected-work-heading">
+      <div><p class="font-eyebrow">Selected work</p><h2 id="selected-work-title" class="font-display">Ideas, made <em>real.</em></h2></div>
+      <a class="view-all" href="/work/">Explore all work <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="selected-work-grid">
+      <a class="selected-work-card" href="/work/#websites">
+        <div class="selected-work-visual website-visual">
+          <img src={cover.src} srcset={cover.srcset} sizes="(min-width: 760px) 520px, calc(100vw - 48px)" width={cover.width} height={cover.height} alt="ODD Care Co. skincare storefront, from the website collection" loading="lazy" decoding="async" />
+          <span class="card-arrow" aria-hidden="true">↗</span>
+        </div>
+        <div class="selected-work-meta"><span class="font-mono">01 / {String(websites.length).padStart(2, '0')} projects</span><h3 class="font-display">Websites</h3><p>Distinctive websites for brands with something to say.</p><span class="card-caption">ODD Care Co. · Kindred Coffee · 404 Energy</span></div>
+      </a>
+      <a class="selected-work-card" href="/work/#ai-automations">
+        <div class="selected-work-visual automation-visual" aria-hidden="true">
+          <span class="flow-label font-mono">Less busywork. More possibility.</span>
+          <div class="flow-system"><span class="flow-node">Your input</span><span class="flow-line"></span><span class="flow-core">AI</span><span class="flow-line"></span><span class="flow-node">In motion</span></div>
+          <span class="flow-footnote font-mono"><i></i> Workflows, working for you.</span>
+          <span class="card-arrow">↗</span>
+        </div>
+        <div class="selected-work-meta"><span class="font-mono">02 / {String(projects.length).padStart(2, '0')} projects</span><h3 class="font-display">AI &amp; Automations</h3><p>Useful AI experiences and workflows that take work off your plate.</p><span class="card-caption">Voice AI · Lead qualification · Content workflows</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+<style>
+  .selected-work { padding: 72px 0 80px; border-block: 1px solid var(--line); scroll-margin-top: 90px; background: #0d111b99; }
+  .selected-work-heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 34px; }
+  .selected-work-heading .font-eyebrow { font-size: 10px; margin: 0 0 18px; }
+  h2 { font-size: clamp(44px,5vw,68px); line-height: 1.05; margin: 0; }
+  h2 em { color: var(--accent-hi); }
+  .view-all { display: inline-flex; gap: 22px; align-items: center; min-height: 44px; font-size: 12px; border-bottom: 1px solid var(--muted); flex-shrink: 0; }
+  .view-all span { font-size: 22px; color: var(--accent-hi); }
+  .selected-work-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 28px; }
+  .selected-work-card { min-width: 0; display: block; }
+  .selected-work-visual { position: relative; overflow: hidden; border: 1px solid var(--line); background: var(--surface); aspect-ratio: 1.95; border-radius: 5px; }
+  .selected-work-visual img { width: 100%; height: 100%; object-fit: cover; object-position: top left; transition: transform 600ms var(--ease-out); }
+  .card-arrow { position: absolute; right: 12px; bottom: 12px; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; background: #10131cf2; border: 1px solid #ffffff28; color: var(--ink); }
+  .selected-work-meta { padding-top: 20px; }
+  .selected-work-meta > .font-mono { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
+  h3 { margin: 8px 0; font-size: clamp(31px,3vw,40px); line-height: 1.1; }
+  .selected-work-meta p { font-size: 13px; line-height: 1.8; color: var(--muted); margin: 12px 0; max-width: 360px; }
+  .card-caption { font-size: 10px; color: var(--muted); }
+  .automation-visual { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 22px; background: radial-gradient(ellipse at 50% 70%, #273e773e, transparent 80%), #0e1420; }
+  .flow-label { font-size: 8px; text-transform: uppercase; letter-spacing: .11em; color: var(--muted); }
+  .flow-system { display: flex; align-items: center; width: 83%; }
+  .flow-node { padding: 10px; border: 1px solid #65739250; border-radius: 5px; font-size: 10px; white-space: nowrap; background: #182031; }
+  .flow-line { height: 1px; background: #7296d266; flex: 1; min-width: 10px; }
+  .flow-core { width: 62px; height: 62px; border: 1px solid #82a7ff80; border-radius: 50%; display: grid; place-items: center; font: italic 29px var(--font-display); color: var(--accent-hi); box-shadow: 0 0 45px #496dc031, inset 0 0 20px #496dc017; }
+  .flow-footnote { font-size: 8px; color: var(--muted); }
+  .flow-footnote i { display: inline-block; width: 5px; height: 5px; background: var(--accent-hi); border-radius: 50%; margin-right: 6px; }
+  a:focus-visible { outline: 2px solid var(--accent-hi); outline-offset: 6px; border-radius: 3px; }
+  @media (hover:hover) and (pointer:fine) { .selected-work-card:hover img { transform: scale(1.035); } .selected-work-card:hover h3, .view-all:hover { color: var(--accent-hi); } }
+  @media (max-width:760px) {
+    .selected-work { padding-block: 48px; }
+    .selected-work-heading { display: block; margin-bottom: 26px; }
+    .view-all { margin-top: 16px; }
+    .selected-work-grid { grid-template-columns: 1fr; gap: 36px; }
+    .selected-work-visual { aspect-ratio: 1.95; }
+    .selected-work-meta { padding-top: 14px; }
+    .selected-work-meta p { margin-block: 9px; }
+    .flow-core { width: 52px; height: 52px; }
+    .automation-visual { gap: 16px; }
+  }
+  @media (prefers-reduced-motion:reduce) { .selected-work-visual img { transition: none; } }
+</style>

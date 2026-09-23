@@ -9,9 +9,8 @@ const { project } = Astro.props;
 ---
 <a
   class="project-row"
-  href={`#${project.slug}`}
+  href={`/work/${project.slug}/`}
   data-project-row
-  data-open-case={project.slug}
   style={`--row-accent: ${project.accent};`}
 >
   <span class="row-index font-mono" data-row-meta>{project.index} / 04</span>
@@ -45,7 +44,10 @@ const { project } = Astro.props;
     color: var(--ink);
     text-decoration: none;
     transition: color 320ms ease, padding 320ms ease;
-    opacity: 0;
+  }
+  .project-row:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 6px;
   }
   .project-row:last-of-type {
     border-bottom: 1px solid var(--line);
@@ -68,6 +70,7 @@ const { project } = Astro.props;
   }
   .row-main {
     position: relative;
+    min-width: 0;
   }
   .row-title {
     font-family: var(--font-display);
