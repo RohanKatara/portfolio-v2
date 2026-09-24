@@ -30,8 +30,10 @@ const errorId = `motion-${variant}-error`;
     align-items: center;
     flex-wrap: wrap;
     column-gap: 14px;
-    margin-top: 14px;
-    font-size: 11px;
+    row-gap: 8px;
+    margin-top: 20px;
+    font-size: 12px;
+    line-height: 1.5;
     color: var(--muted);
   }
   button {
@@ -43,7 +45,20 @@ const errorId = `motion-${variant}-error`;
     text-decoration: underline;
     text-underline-offset: 4px;
   }
-  .motion-note { color: var(--muted); font-size: 10px; }
+  .motion-prompt button {
+    justify-content: center;
+    min-height: 48px;
+    padding: 12px 18px;
+    border: 1px solid var(--accent-hi);
+    border-radius: 999px;
+    background: var(--accent-soft);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-decoration: none;
+  }
+  .motion-prompt button:hover { border-color: var(--ink); color: var(--ink); }
+  .motion-note { color: var(--muted); font-size: 11px; }
   .motion-settings {
     display: flex;
     flex-wrap: wrap;
