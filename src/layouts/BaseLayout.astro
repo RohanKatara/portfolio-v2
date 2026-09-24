@@ -3,6 +3,7 @@ import '../styles/global.css';
 import DesktopGate from '../islands/DesktopGate.tsx';
 import SmoothScroll from '../islands/SmoothScroll.tsx';
 import SpaceStarfield from '../islands/SpaceStarfield.tsx';
+import MotionBootstrap from '../components/chrome/MotionBootstrap.astro';
 
 interface Props {
   title?: string;
@@ -37,6 +38,7 @@ const mobileLegacy = import.meta.env.PUBLIC_MOBILE_LEGACY === '1';
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <MotionBootstrap />
     <!-- Mobile + force-legacy redirect. Must run before paint, before any other
          script, and must mirror coffee-portfolio's useBreakpoint rule byte-for-byte
          (width < 768 || (hasTouch && Math.min(screen.w, screen.h) < 768)) so a

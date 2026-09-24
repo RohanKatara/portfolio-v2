@@ -1,0 +1,115 @@
+---
+interface Props { variant: 'prompt' | 'settings' }
+const { variant } = Astro.props;
+const errorId = `motion-${variant}-error`;
+---
+{variant === 'prompt' ? (
+  <div class="motion-prompt font-mono" data-motion-prompt hidden>
+    <span>Viewing with reduced motion.</span>
+    <button type="button" data-enable-motion aria-describedby={`motion-reload-note ${errorId}`}>Enable animations <span aria-hidden="true">↗</span></button>
+    <span id="motion-reload-note" class="motion-note">Reloads this page.</span>
+    <p id={errorId} class="motion-error" data-motion-error role="status" hidden></p>
+  </div>
+) : (
+  <form class="motion-settings font-mono" data-motion-form hidden>
+    <label for="motion-preference">Animations</label>
+    <select id="motion-preference" name="motion" aria-describedby={errorId}>
+      <option value="system">Use device setting</option>
+      <option value="full">Full animations</option>
+      <option value="reduced">Reduced motion</option>
+    </select>
+    <button type="submit">Apply &amp; reload <span aria-hidden="true">↗</span></button>
+    <p id={errorId} class="motion-error" data-motion-error role="status" hidden></p>
+  </form>
+)}
+
+<style>
+  [hidden] { display: none !important; }
+  .motion-prompt {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    column-gap: 14px;
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    color: var(--accent-hi);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .motion-note { color: var(--muted); font-size: 10px; }
+  .motion-settings {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 16px;
+    row-gap: 8px;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 18px;
+  }
+  select {
+    font: inherit;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 10px 12px;
+    min-height: 44px;
+    max-width: 100%;
+  }
+  button:focus-visible, select:focus-visible {
+    outline: 2px solid var(--accent-hi);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  .motion-error {
+    flex-basis: 100%;
+    margin: 4px 0 0;
+    color: var(--ink);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+</style>
+
+<script>
+  import { getMotionPreference, isMotionReduced, saveMotionPreference } from '../../lib/motion';
+
+  const apply = (preference: string, container: HTMLElement) => {
+    if (saveMotionPreference(preference)) {
+      window.location.reload();
+      return;
+    }
+    const error = container.querySelector<HTMLElement>('[data-motion-error]');
+    if (error) {
+      error.textContent = 'Your browser could not save this setting. Allow site storage, then try again. Your current animation setting is unchanged.';
+      error.hidden = false;
+    }
+  };
+
+  const prompt = document.querySelector<HTMLElement>('[data-motion-prompt]');
+  if (prompt) {
+    prompt.hidden = !isMotionReduced();
+    prompt.querySelector<HTMLButtonElement>('[data-enable-motion]')?.addEventListener('click', () => apply('full', prompt));
+  }
+
+  document.querySelectorAll<HTMLFormElement>('[data-motion-form]').forEach((form) => {
+    const select = form.querySelector<HTMLSelectElement>('[name="motion"]');
+    if (!select) return;
+    const syncSelection = () => { select.value = getMotionPreference(); };
+    syncSelection();
+    // Browsers restore form values after scripts run during history navigation.
+    window.addEventListener('pageshow', syncSelection);
+    form.hidden = false;
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      apply(select.value, form);
+    });
+  });
+</script>

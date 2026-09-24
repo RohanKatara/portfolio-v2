@@ -95,10 +95,8 @@
   .project-index a:hover { background: #ffffff04; }
   .preview-link:hover, .project-enquiry:hover, .film-link:hover, .back-home:hover { color: var(--accent-hi); }
 }
-@media (prefers-reduced-motion:no-preference) {
-  .work-hero-heading { animation: work-arrive 700ms var(--ease-out) both; }
-  @keyframes work-arrive { from { opacity: .4; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-}
+html[data-motion='full'] .work-hero-heading { animation: work-arrive 700ms var(--ease-out) both; }
+@keyframes work-arrive { from { opacity: .4; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 @media (max-width:900px) {
   .work-hero-heading { gap: 30px; grid-template-columns: 1.2fr 1fr; }
   .work-hero h1 { font-size: 78px; }
@@ -173,9 +171,6 @@
   .media-bottom { display: block; padding-right: 0; }
   #media-original { margin: 0 14px 10px; font-size: 12px; }
 }
-@media (prefers-reduced-motion:reduce) {
-  .website-main *, .website-main *::before, .website-main *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-}
 
 /* Shared Work index: native section navigation, always-readable content. */
 .unified-work .work-hero-heading { grid-template-columns: 1.5fr 1fr; padding-bottom: 48px; }
@@ -221,4 +216,3 @@
   .unified-work .work-hero-heading { padding-bottom: 28px; }
   .unified-work .work-intro p { margin-bottom: 0; }
 }
-@media (prefers-reduced-motion:reduce) { .work-categories a::after { transition: none; } }

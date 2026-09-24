@@ -37,11 +37,12 @@ import Contact from '../components/sections/Contact.astro';
     initSkillsMarquee,
   } from '../lib/reveal';
   import { initHeroScramble } from '../lib/scramble';
+  import { isMotionReduced } from '../lib/motion';
 
   const boot = () => {
     // Reduced motion: global.css already shows every reveal target at its
     // final state, so skipping the timelines leaves nothing stuck hidden.
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (isMotionReduced()) return;
     initHeroReveal();
     initHeroScramble();
     initManifestoPin();
