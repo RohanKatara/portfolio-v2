@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Geometry, Camera, Transform, Triangle } from 'ogl';
-import { canRunWebGL } from '../lib/motion';
+import { canRunWebGL, isMotionReduced } from '../lib/motion';
 
 /**
  * Persistent fullscreen constellation field rendered behind every section.
@@ -29,7 +29,7 @@ import { canRunWebGL } from '../lib/motion';
  * scrolls, and connecting them would produce ugly long edges crossing the
  * screen as endpoints wrap independently.
  *
- * Lifecycle: gated on `canRunWebGL()` inside the effect. The single
+ * Lifecycle: gated on the motion preference and `canRunWebGL()`. The single
  * `teardown()` function is called from React cleanup, the `webgl-disable`
  * watchdog event, and `webglcontextlost`. Idempotent via the `disposed`
  * flag — safe to call multiple times.
@@ -519,6 +519,8 @@ export default function SpaceStarfield() {
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (isMotionReduced()) return;
+
     if (!ref.current) {
       console.warn('[SpaceStarfield] no host ref');
       return;

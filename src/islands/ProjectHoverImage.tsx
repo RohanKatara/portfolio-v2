@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Thumbnail, { type ThumbSlug } from '../components/thumbnails/Thumbnail';
+import { isMotionReduced } from '../lib/motion';
 
 interface Props {
   slug: ThumbSlug;
@@ -18,8 +19,9 @@ export default function ProjectHoverImage({ slug, alt }: Props) {
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
-    const media = matchMedia('(min-width: 901px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
-    const update = () => setEnabled(media.matches);
+    const media = matchMedia('(min-width: 901px) and (hover: hover) and (pointer: fine)');
+    // Motion is resolved at page load; viewport and pointer changes remain live.
+    const update = () => setEnabled(media.matches && !isMotionReduced());
     update();
     media.addEventListener('change', update);
     return () => media.removeEventListener('change', update);

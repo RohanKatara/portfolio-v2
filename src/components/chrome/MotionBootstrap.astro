@@ -1,0 +1,29 @@
+---
+import { MOTION_STORAGE_KEY } from '../../lib/motion';
+---
+<!-- Resolve before paint so the OS preference cannot override an explicit
+     site choice in CSS while JavaScript starts a different experience. -->
+<script is:inline define:vars={{ motionStorageKey: MOTION_STORAGE_KEY }}>
+  (function () {
+    function readMotion() {
+      var saved = null;
+      try { saved = window.localStorage.getItem(motionStorageKey); } catch (error) {}
+      var preference = saved === 'full' || saved === 'reduced' ? saved : 'system';
+      var reduced = preference === 'reduced' ||
+        (preference === 'system' && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+      return { preference: preference, mode: reduced ? 'reduced' : 'full' };
+    }
+    var initial = readMotion();
+    document.documentElement.dataset.motionPreference = initial.preference;
+    document.documentElement.dataset.motion = initial.mode;
+
+    // Back/Forward may restore an entire old page without running its scripts.
+    // Re-enter with the saved choice if it changed on another page or tab.
+    window.addEventListener('pageshow', function (event) {
+      if (!event.persisted) return;
+      var current = readMotion();
+      if (current.preference !== document.documentElement.dataset.motionPreference ||
+          current.mode !== document.documentElement.dataset.motion) window.location.reload();
+    });
+  })();
+</script>

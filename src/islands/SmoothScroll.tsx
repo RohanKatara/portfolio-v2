@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { isMotionReduced } from '../lib/motion';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -15,6 +16,8 @@ declare global {
 
 export default function SmoothScroll() {
   useEffect(() => {
+    if (isMotionReduced()) return;
+
     let lenis: Lenis | null = null;
     let tickerCb: ((time: number) => void) | null = null;
 

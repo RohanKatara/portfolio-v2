@@ -131,9 +131,13 @@ try {
     check('desktop: resizing wide restores hover enhancement', true);
 
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await waitEnabled(preview, false);
-    await page.waitForFunction(() => getComputedStyle(document.querySelector('[data-project-preview]')).opacity === '0');
-    await checkDisabled(page, row, preview, 'live reduced-motion change');
+    await waitEnabled(preview, true);
+    check('desktop: live OS change preserves the page-load motion snapshot',
+      await page.locator('html').getAttribute('data-motion') === 'full');
+    await page.reload({ waitUntil: 'load' });
+    await row.scrollIntoViewIfNeeded();
+    await row.locator('astro-island:not([ssr])').waitFor({ state: 'attached' });
+    await checkDisabled(page, row, preview, 'reloaded system reduced-motion preference');
   });
 
   await scenario('narrow-540', { viewport: { width: 540, height: 844 }, reducedMotion: 'no-preference' }, async (page, row, preview) => {

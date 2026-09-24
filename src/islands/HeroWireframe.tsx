@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Geometry, Camera, Transform, Triangle } from 'ogl';
-import { canRunWebGL } from '../lib/motion';
+import { canRunWebGL, isMotionReduced } from '../lib/motion';
 import { ScrollTrigger } from '../lib/gsap';
 
 // ---- tuning constants ---------------------------------------------------
@@ -205,6 +205,7 @@ export default function HeroWireframe() {
 
   useEffect(() => {
     if (!ref.current) return;
+    if (isMotionReduced()) return;
     if (!canRunWebGL()) return;
 
     const host = ref.current;
@@ -459,10 +460,8 @@ export default function HeroWireframe() {
     };
 
     // ---- tick loop ----
-    // Under reduce-motion: tick() runs exactly once and never reschedules,
-    // giving a static still of the icosahedron + particle dust + (no streak,
-    // since streaks are gated by random spawn at t=0). The user sees the
-    // shape, just frozen.
+    // Reduced motion returns before creating a renderer, leaving the CSS
+    // gradient fallback visible. Only full motion reaches this loop.
     const tick = (now: number) => {
       if (disposed) return;
       raf = requestAnimationFrame(tick);
