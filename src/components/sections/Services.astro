@@ -1,6 +1,7 @@
 ---
 import { services } from '../../data/services';
 import { primaryCta } from '../../data/cta';
+import EnquiryButton from '../ui/EnquiryButton.astro';
 ---
 <section id="services" class="services">
   <div class="container">
@@ -18,6 +19,7 @@ import { primaryCta } from '../../data/cta';
           <h3 class="service-title font-display">{s.title}</h3>
           <p class="service-body">{s.body}</p>
           <p class="service-price font-mono">{s.price}</p>
+          <div class="service-enquiry"><EnquiryButton intent={s.enquiry} /></div>
         </article>
       ))}
     </div>
@@ -29,7 +31,7 @@ import { primaryCta } from '../../data/cta';
 
     <p class="services-note" data-fade>
       Not sure where to start?
-      <a href={primaryCta.href}>Email me</a>
+      <a href={primaryCta.href}>Message me on WhatsApp</a>
       about what you want to build or improve, and we’ll work out the next step.
     </p>
   </div>
@@ -110,6 +112,7 @@ import { primaryCta } from '../../data/cta';
     letter-spacing: 0.06em;
     color: var(--accent);
   }
+  .service-enquiry { margin-top: 20px; }
   .services-support {
     display: flex;
     justify-content: space-between;

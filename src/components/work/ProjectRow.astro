@@ -1,6 +1,7 @@
 ---
 import ProjectHoverImage from '../../islands/ProjectHoverImage.tsx';
 import type { Project } from '../../data/projects';
+import EnquiryButton from '../ui/EnquiryButton.astro';
 
 interface Props {
   project: Project;
@@ -31,6 +32,7 @@ const { project } = Astro.props;
   </div>
   <ProjectHoverImage client:visible slug={project.slug} alt={`${project.name} preview`} />
 </a>
+<div class="row-enquiry"><EnquiryButton intent={project.enquiry} reference={project.name} /></div>
 
 <style>
   .project-row {
@@ -39,7 +41,7 @@ const { project } = Astro.props;
     grid-template-columns: 80px 1fr auto;
     align-items: center;
     gap: 32px;
-    padding: 48px 0;
+    padding: 48px 0 28px;
     border-top: 1px solid var(--line);
     color: var(--ink);
     text-decoration: none;
@@ -49,9 +51,7 @@ const { project } = Astro.props;
     outline: 2px solid var(--accent);
     outline-offset: 6px;
   }
-  .project-row:last-of-type {
-    border-bottom: 1px solid var(--line);
-  }
+  .row-enquiry { padding: 0 0 36px 112px; }
   @media (hover: hover) and (pointer: fine) {
     .project-row:hover {
       padding-left: 16px;
@@ -139,6 +139,7 @@ const { project } = Astro.props;
     transition: transform 320ms var(--ease-out);
   }
   @media (max-width: 720px) {
+    .row-enquiry { padding: 0 0 32px; }
     .project-row {
       grid-template-columns: 1fr;
       gap: 12px;

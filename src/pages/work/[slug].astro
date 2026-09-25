@@ -6,7 +6,8 @@ import Nav from '../../components/chrome/Nav.astro';
 import Footer from '../../components/chrome/Footer.astro';
 import Thumbnail from '../../components/thumbnails/Thumbnail';
 import { projects, type Project } from '../../data/projects';
-import { primaryCta } from '../../data/cta';
+import { emailCta } from '../../data/cta';
+import EnquiryButton from '../../components/ui/EnquiryButton.astro';
 
 export const getStaticPaths = (async () => {
   const studies = await getCollection('case-studies');
@@ -40,6 +41,8 @@ const { title, tagline, role, accent, index, metrics, demo } = study.data;
   description={tagline}
   canonicalPath={`/work/${study.slug}/`}
   atmosphere={false}
+  enquiryIntent={project.enquiry}
+  enquiryReference={project.name}
 >
   <a class="case-skip" href="#main">Skip to case study</a>
   <Nav />
@@ -83,7 +86,11 @@ const { title, tagline, role, accent, index, metrics, demo } = study.data;
 
         <section class="case-enquiry" aria-labelledby="case-enquiry-title">
           <h2 id="case-enquiry-title" class="font-display">Have something similar in mind?</h2>
-          <a href={primaryCta.href}>Discuss your project <span aria-hidden="true">↗</span></a>
+          <p>Tell me what you want to build or improve. Start a conversation on WhatsApp, or send me an email.</p>
+          <div class="case-enquiry-actions">
+            <EnquiryButton intent={project.enquiry} reference={project.name} />
+            <a class="case-email" href={emailCta.href}>Email me <span aria-hidden="true">↗</span></a>
+          </div>
         </section>
 
         <nav class="case-pagination" aria-label="Case study navigation">
@@ -301,14 +308,15 @@ const { title, tagline, role, accent, index, metrics, demo } = study.data;
     font-size: clamp(32px, 4.5vw, 48px);
     line-height: 1.1;
   }
-  .case-enquiry a {
+  .case-enquiry p { margin: 0 0 24px; color: var(--muted); line-height: 1.6; }
+  .case-enquiry-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+  .case-email {
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
     gap: 24px;
     min-height: 48px;
     padding: 12px 20px;
-    border: 1px solid var(--accent);
     color: var(--accent-hi);
   }
   .case-next {

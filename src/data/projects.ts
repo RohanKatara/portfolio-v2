@@ -2,6 +2,7 @@ export type Project = {
   slug: 'mocktalk' | 'krishna' | 'automate-pro' | 'content-engine';
   index: string;
   name: string;
+  enquiry: 'ai' | 'workflow';
   title: string;
   tagline: string;
   description: string[];
@@ -21,6 +22,7 @@ export const projects: Project[] = [
     slug: 'mocktalk',
     index: '01',
     name: 'MockTalk',
+    enquiry: 'ai',
     title: 'MockTalk — Real Time AI Interview Simulator',
     tagline: 'Voice to voice interview prep with sub 200ms response latency',
     description: [
@@ -40,6 +42,7 @@ export const projects: Project[] = [
     slug: 'krishna',
     index: '02',
     name: 'Krishna.AI',
+    enquiry: 'ai',
     title: 'Krishna.AI — Bhagavad Gita Guidance',
     tagline: 'Ancient wisdom answered through modern LLM prompt engineering',
     description: [
@@ -58,6 +61,7 @@ export const projects: Project[] = [
     slug: 'automate-pro',
     index: '03',
     name: 'Automate Pro',
+    enquiry: 'workflow',
     title: 'Automate Pro — AI Lead Gatekeeper',
     tagline: 'n8n + Gemini pipeline that saves an agency 20+ hours per week',
     description: [
@@ -80,6 +84,7 @@ export const projects: Project[] = [
     slug: 'content-engine',
     index: '04',
     name: 'Content Engine',
+    enquiry: 'workflow',
     title: 'AI Content Multiplier & Syndication Engine',
     tagline: 'One long form input, twelve platform native variants out',
     description: [

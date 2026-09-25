@@ -1,5 +1,6 @@
 ---
-import { websiteEnquiry, type Website } from '../../data/websites';
+import type { Website } from '../../data/websites';
+import EnquiryButton from '../ui/EnquiryButton.astro';
 interface Props { project: Website; }
 const { project } = Astro.props;
 ---
@@ -44,7 +45,7 @@ const { project } = Astro.props;
     <div class="project-narrative">
       <h4>{project.headline}</h4>
       <p>{project.description}</p>
-      <a class="project-enquiry" href={websiteEnquiry(project.name)}>Discuss a similar website <span aria-hidden="true">↗</span></a>
+      <div class="project-enquiry"><EnquiryButton intent="website" reference={project.name} /></div>
     </div>
   </div>
   <div class:list={['project-gallery', { 'with-phone': !!project.mobile, 'single-detail': project.gallery.length === 1 && !project.mobile }]}>

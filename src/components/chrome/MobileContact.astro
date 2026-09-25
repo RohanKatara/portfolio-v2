@@ -1,0 +1,26 @@
+---
+import { enquiryFor, emailCta, type EnquiryIntent } from '../../data/cta';
+interface Props { intent?: EnquiryIntent; reference?: string; }
+const { intent = 'general', reference } = Astro.props;
+const enquiry = enquiryFor(intent, reference);
+---
+<aside class="mobile-contact" aria-label="Quick contact">
+  <a class="mobile-whatsapp" href={enquiry.href} data-mobile-enquiry aria-label="Chat on WhatsApp">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M21 11.5a9 9 0 0 1-13.4 7.8L3 21l1.6-4.7A9 9 0 1 1 21 11.5Z"/><path d="M8 8c0 4 2 6 6 7l2-2-3-1-1 1-2-2 1-1-1-3Z"/></svg>
+    <span>Chat on WhatsApp</span><span aria-hidden="true">↗</span>
+  </a>
+  <a class="mobile-email" href={emailCta.href}>Email</a>
+</aside>
+<style>
+  .mobile-contact { display: none; }
+  @media (max-width: 720px) {
+    :global(body) { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px)); }
+    .mobile-contact { position: fixed; z-index: 45; bottom: 0; left: 0; right: 0; display: flex; gap: 10px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); background: #0b0e16f5; backdrop-filter: blur(16px); }
+    .mobile-contact a { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; font: 12px/1.4 var(--font-mono); border-radius: 999px; }
+    .mobile-whatsapp { flex: 1; padding: 12px; color: var(--ink); background: var(--accent-soft); border: 1px solid var(--accent-hi); }
+    .mobile-email { padding: 12px 16px; color: var(--muted); border: 1px solid var(--line); }
+    .mobile-contact a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    :global(body[data-overlay-open]) .mobile-contact { display: none; }
+    :global(body:has(dialog[open])) .mobile-contact { display: none; }
+  }
+</style>

@@ -7,7 +7,7 @@ import WebsiteShowcase from '../components/work/WebsiteShowcase.astro';
 import ProjectRow from '../components/work/ProjectRow.astro';
 import { websites } from '../data/websites';
 import { projects } from '../data/projects';
-import { primaryCta } from '../data/cta';
+import { primaryCta, emailCta } from '../data/cta';
 import '../styles/websites.css';
 const total = String(websites.length + projects.length).padStart(2, '0');
 ---
@@ -49,7 +49,7 @@ const total = String(websites.length + projects.length).padStart(2, '0');
       <div class="work-label"><span class="availability-dot" aria-hidden="true"></span> Your project could be next</div>
       <div class="enquiry-grid">
         <h2 id="enquiry-title">Something in mind?<br /><em>Let’s build it.</em></h2>
-        <div><p>A new website, an AI workflow, or a better way to get things done. Tell me what you’re working on, and I’ll reply within a day with clear next steps.</p><a class="work-cta" href={primaryCta.href}>Discuss your project <span aria-hidden="true">↗</span></a><a class="back-home" href="/#services">Explore my services <span aria-hidden="true">→</span></a></div>
+        <div><p>A new website, an AI workflow, or a better way to get things done. Tell me what you’re working on, and I’ll reply within a day with clear next steps.</p><a class="work-cta" href={primaryCta.href}>Chat on WhatsApp <span aria-hidden="true">↗</span></a><a class="back-home" href={emailCta.href}>Prefer email? Email me <span aria-hidden="true">↗</span></a><a class="back-home" href="/#services">Explore my services <span aria-hidden="true">→</span></a></div>
       </div>
     </section>
     <Footer />

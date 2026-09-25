@@ -49,8 +49,7 @@
 .project-credit li { font: 9px/1.5 var(--font-mono); padding: 7px 10px; border: 1px solid var(--line); color: var(--muted); border-radius: 2px; }
 .project-narrative h4 { font: clamp(29px,3vw,42px)/1.12 var(--font-display); letter-spacing: -.015em; margin: 0 0 18px; max-width: 520px; }
 .project-narrative > p { font-size: 14px; line-height: 1.85; color: var(--muted); max-width: 600px; margin: 0; }
-.project-enquiry { display: inline-flex; align-items: center; gap: 24px; margin-top: 20px; min-height: 44px; font-size: 12px; }
-.project-enquiry span { color: var(--accent-hi); }
+.project-enquiry { margin-top: 20px; }
 .project-gallery { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
 .gallery-item { margin: 0; min-width: 0; }
 .gallery-item > a { display: block; position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); }
@@ -142,7 +141,7 @@ html[data-motion='full'] .work-hero-heading { animation: work-arrive 700ms var(-
   .project-story { display: flex; flex-direction: column-reverse; gap: 28px; padding: 28px 0; }
   .project-narrative h4 { font-size: 32px; }
   .project-narrative > p { font-size: 14px; }
-  .project-enquiry { font-size: 13px; margin-top: 14px; border-bottom: 1px solid var(--line); }
+  .project-enquiry { margin-top: 14px; }
   .project-credit { padding-top: 24px; border-top: 1px solid var(--line); }
   .project-credit > .work-label { margin-bottom: 8px; font-size: 9px; }
   .project-credit > p:not(.work-label) { font-size: 12px; }

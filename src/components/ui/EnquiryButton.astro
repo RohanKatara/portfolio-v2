@@ -1,0 +1,16 @@
+---
+import { enquiryFor, type EnquiryIntent } from '../../data/cta';
+interface Props { intent?: EnquiryIntent; reference?: string; label?: string; }
+const { intent = 'general', reference, label } = Astro.props;
+const enquiry = enquiryFor(intent, reference);
+const text = label ?? enquiry.label;
+---
+<a class="enquiry-button" href={enquiry.href} data-enquiry={intent} data-enquiry-reference={reference} aria-label={`${text}${text.includes('WhatsApp') ? '' : ' on WhatsApp'}${reference ? ` — ${reference}` : ''}`}>
+  <span>{text}</span><span aria-hidden="true">↗</span>
+</a>
+<style>
+  .enquiry-button { display: inline-flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 48px; max-width: 100%; padding: 12px 18px; border: 1px solid var(--accent); border-radius: 999px; background: var(--accent-soft); color: var(--ink); font: 12px/1.5 var(--font-mono); text-decoration: none; }
+  .enquiry-button > span:last-child { color: var(--accent-hi); flex-shrink: 0; }
+  .enquiry-button:hover { border-color: var(--accent-hi); background: var(--surface-hi); }
+  .enquiry-button:focus-visible { outline: 2px solid var(--accent-hi); outline-offset: 4px; }
+</style>
