@@ -6,6 +6,8 @@ import SpaceStarfield from '../islands/SpaceStarfield.tsx';
 import MotionBootstrap from '../components/chrome/MotionBootstrap.astro';
 import { brandIconVersion } from '../data/brand.mjs';
 import { social } from '../data/bio';
+import MobileContact from '../components/chrome/MobileContact.astro';
+import type { EnquiryIntent } from '../data/cta';
 
 interface Props {
   title?: string;
@@ -13,6 +15,8 @@ interface Props {
   canonicalPath?: string;
   socialImage?: string;
   atmosphere?: boolean;
+  enquiryIntent?: EnquiryIntent;
+  enquiryReference?: string;
 }
 
 const isHome = Astro.url.pathname === '/';
@@ -140,5 +144,6 @@ const mobileLegacy = import.meta.env.PUBLIC_MOBILE_LEGACY === '1';
     {atmosphere && <SpaceStarfield client:only="react" />}
 
     <slot />
+    <MobileContact intent={Astro.props.enquiryIntent} reference={Astro.props.enquiryReference} />
   </body>
 </html>

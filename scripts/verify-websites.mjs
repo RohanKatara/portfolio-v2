@@ -108,9 +108,9 @@ const checkStructure = async (page, label) => {
     const demoLinks = article.locator('a[data-demo]');
     const href = await demoLinks.first().getAttribute('href');
     check(`${label}: ${project.id} exact demo URL`, await demoLinks.count() === 1 && new URL(href, BASE).href === new URL(project.url).href, href ?? 'missing');
-    const mailtos = await article.locator('a[href^="mailto:"]').evaluateAll((links) => links.map((link) => link.getAttribute('href')));
-    const expected = `mailto:${EMAIL}?subject=${encodeURIComponent(project.subject)}`;
-    check(`${label}: ${project.id} exact email and subject`, mailtos.includes(expected), mailtos.join(', '));
+    const enquiry = new URL(await article.locator('[data-enquiry="website"]').getAttribute('href'));
+    check(`${label}: ${project.id} contextual WhatsApp enquiry`, enquiry.origin === 'https://wa.me'
+      && enquiry.pathname === '/917984242115' && enquiry.searchParams.get('text').includes(project.subject.replace('A website like ', '')));
     check(`${label}: ${project.id} has screenshot access`, await article.locator('a[data-image-open]').count() > 0);
   }
   const videoIds = await page.locator('a[data-video-open]').evaluateAll((links) => links.map((link) => link.closest('article[data-website]')?.id));
@@ -170,9 +170,12 @@ const checkCase = async (page, project, label) => {
   check(`${label}: page title identifies case`, (await page.title()).includes(project.name));
   check(`${label}: case has its own canonical`, await page.locator('link[rel="canonical"]').getAttribute('href') === `https://rohankatara.com/work/${project.slug}/`);
   check(`${label}: case description is populated`, (await page.locator('meta[name="description"]').getAttribute('content'))?.trim().length > 20);
-  const enquiry = main.locator('.case-enquiry a');
-  check(`${label}: direct project enquiry uses the existing email`, await enquiry.count() === 1
-    && await enquiry.isVisible() && await enquiry.getAttribute('href') === `mailto:${EMAIL}`);
+  const enquiry = main.locator('.case-enquiry [data-enquiry]');
+  const enquiryUrl = new URL(await enquiry.getAttribute('href'));
+  check(`${label}: direct project enquiry uses contextual WhatsApp`, await enquiry.isVisible()
+    && enquiryUrl.origin === 'https://wa.me' && enquiryUrl.pathname === '/917984242115'
+    && enquiryUrl.searchParams.get('text').includes(project.name));
+  check(`${label}: email alternative remains available`, await main.locator('.case-enquiry .case-email').getAttribute('href') === `mailto:${EMAIL}`);
   check(`${label}: Back returns to AI section`, await main.locator('a.case-back').first().getAttribute('href') === '/work/#ai-automations');
   const next = CASES[(CASES.findIndex((entry) => entry.slug === project.slug) + 1) % CASES.length];
   check(`${label}: next case follows the project order`, await main.locator('a.case-next').getAttribute('href') === `/work/${next.slug}/`);

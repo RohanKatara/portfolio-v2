@@ -1,5 +1,4 @@
 import mediaFiles from './website-media.json';
-import { social } from './bio';
 
 export type WebsiteImage = {
   src: string;
@@ -30,9 +29,6 @@ export type Website = {
 const image = (key: keyof typeof mediaFiles, alt: string, caption: string): WebsiteImage => ({
   ...mediaFiles[key], alt, caption,
 });
-
-export const websiteEnquiry = (name?: string) =>
-  `mailto:${social.email}?subject=${encodeURIComponent(name ? `A website like ${name}` : 'My website project')}`;
 
 // This order is shared by the dedicated page and the homepage preview.
 export const websites: Website[] = [
