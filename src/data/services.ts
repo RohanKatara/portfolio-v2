@@ -8,26 +8,20 @@ export type Service = {
 export const services: Service[] = [
   {
     index: '01',
-    title: 'Business & Ecommerce Websites',
-    body: 'Fast, mobile first sites that turn visitors into leads. Landing pages, multi page business sites, online stores, and product catalogs.',
+    title: 'Website development',
+    body: 'Help visitors understand your business and take the next step. Fast, mobile-friendly websites built around enquiries, bookings or online sales.',
     price: 'Starting ₹8,000',
   },
   {
     index: '02',
-    title: 'App Development',
-    body: 'Web and mobile apps built to solve a real business problem: booking, ordering, internal tools, dashboards.',
-    price: 'Quoted after a quick call',
-  },
-  {
-    index: '03',
-    title: 'AI Automation',
-    body: 'Auto reply bots, lead capture & qualification, follow up sequences, and content pipelines that run without you. Save 10 to 20+ hours a week.',
+    title: 'AI workflow creation',
+    body: 'Connect your existing tools and automate repetitive tasks, from qualifying leads and following up to creating content. Use AI where it adds practical value.',
     price: 'Starting ₹10,000',
   },
   {
-    index: '04',
-    title: 'Care & Updates (monthly)',
-    body: 'Hosting, edits, fixes, and improvements so your site/app keeps working and growing.',
-    price: 'From ₹2,000/month',
+    index: '03',
+    title: 'Workflow optimisation',
+    body: 'Find bottlenecks, remove unnecessary steps and improve an existing process. Clearer handoffs and better use of your current tools can be enough. AI is optional.',
+    price: 'Quoted after a process review',
   },
 ];

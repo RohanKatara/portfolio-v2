@@ -7,14 +7,14 @@ import { primaryCta } from '../../data/cta';
     <header class="services-header">
       <p class="font-eyebrow" data-fade>Services / 003</p>
       <h2 class="services-heading font-display" data-fade>
-        What I can <span class="services-heading-italic">build</span> for you
+        How I can <span class="services-heading-italic">help</span> your business
       </h2>
     </header>
 
     <div class="services-grid">
       {services.map((s) => (
         <article class="service-card" data-service-card>
-          <span class="service-index font-mono">{s.index} / 04</span>
+          <span class="service-index font-mono">{s.index} / {String(services.length).padStart(2, '0')}</span>
           <h3 class="service-title font-display">{s.title}</h3>
           <p class="service-body">{s.body}</p>
           <p class="service-price font-mono">{s.price}</p>
@@ -22,10 +22,15 @@ import { primaryCta } from '../../data/cta';
       ))}
     </div>
 
+    <div class="services-support" data-fade>
+      <p><strong>Support after launch.</strong> Optional hosting, maintenance and updates to keep things running smoothly.</p>
+      <span class="font-mono">From ₹2,000/month</span>
+    </div>
+
     <p class="services-note" data-fade>
-      Not sure what you need?
+      Not sure where to start?
       <a href={primaryCta.href}>Email me</a>
-      and I'll tell you honestly what will actually move the needle. No jargon.
+      about what you want to build or improve, and we’ll work out the next step.
     </p>
   </div>
 </section>
@@ -53,13 +58,14 @@ import { primaryCta } from '../../data/cta';
   .services-heading-italic {
     font-style: italic;
     color: var(--accent);
+    margin-right: 0.12em;
   }
   .services-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
   }
-  @media (max-width: 720px) {
+  @media (max-width: 900px) {
     .services-grid { grid-template-columns: 1fr; }
   }
   .service-card {
@@ -104,8 +110,24 @@ import { primaryCta } from '../../data/cta';
     letter-spacing: 0.06em;
     color: var(--accent);
   }
+  .services-support {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .services-support p { margin: 0; max-width: 640px; }
+  .services-support strong { color: var(--ink); font-weight: 500; }
+  .services-support > span { font-size: 11px; }
   .services-note {
-    margin: 48px 0 0;
+    margin: 28px 0 0;
     font-size: 15px;
     line-height: 1.6;
     color: var(--muted);
