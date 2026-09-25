@@ -1,7 +1,6 @@
 ---
 import { websites } from '../../data/websites';
 import { projects } from '../../data/projects';
-const cover = websites[0].cover;
 ---
 <section class="selected-work" id="work" aria-labelledby="selected-work-title">
   <div class="container">
@@ -11,8 +10,16 @@ const cover = websites[0].cover;
     </div>
     <div class="selected-work-grid">
       <a class="selected-work-card" href="/work/#websites">
-        <div class="selected-work-visual website-visual">
-          <img src={cover.src} srcset={cover.srcset} sizes="(min-width: 760px) 520px, calc(100vw - 48px)" width={cover.width} height={cover.height} alt="ODD Care Co. skincare storefront, from the website collection" loading="lazy" decoding="async" />
+        <div class="selected-work-visual website-visual" role="img" aria-label="Website design collection: ODD Care Co., Kindred Coffee and 404 Energy in layered browser previews">
+          <span class="website-art-label font-mono" aria-hidden="true">Designed. Developed. Distinct.</span>
+          <div class="website-frames" aria-hidden="true">
+            {websites.map((project) => (
+              <div class={`website-window website-window-${project.theme}`}>
+                <div class="window-bar"><span class="window-dots"><i></i><i></i><i></i></span><span>{project.name}</span></div>
+                <img src={project.cover.src} srcset={project.cover.srcset} sizes={project.theme === 'odd' ? '(min-width: 760px) 360px, 66vw' : '(min-width: 760px) 240px, 44vw'} width={project.cover.width} height={project.cover.height} alt="" loading="lazy" decoding="async" />
+              </div>
+            ))}
+          </div>
           <span class="card-arrow" aria-hidden="true">↗</span>
         </div>
         <div class="selected-work-meta"><span class="font-mono">01 / {String(websites.length).padStart(2, '0')} projects</span><h3 class="font-display">Websites</h3><p>Distinctive websites for brands with something to say.</p><span class="card-caption">ODD Care Co. · Kindred Coffee · 404 Energy</span></div>
@@ -40,7 +47,19 @@ const cover = websites[0].cover;
   .selected-work-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 28px; }
   .selected-work-card { min-width: 0; display: block; }
   .selected-work-visual { position: relative; overflow: hidden; border: 1px solid var(--line); background: var(--surface); aspect-ratio: 1.95; border-radius: 5px; }
-  .selected-work-visual img { width: 100%; height: 100%; object-fit: cover; object-position: top left; transition: transform 600ms var(--ease-out); }
+  .website-visual { isolation: isolate; background: radial-gradient(ellipse at 48% 70%, #3d5c9650, transparent 72%), #101722; }
+  .website-visual::before { content: ''; position: absolute; inset: 0; z-index: -1; background-image: linear-gradient(#a9c2ff08 1px, transparent 1px), linear-gradient(90deg, #a9c2ff08 1px, transparent 1px); background-size: 28px 28px; mask-image: linear-gradient(transparent, #000); }
+  .website-art-label { position: absolute; top: 7%; left: 5%; color: #acbcd6; font-size: clamp(7px, .7vw, 9px); letter-spacing: .12em; text-transform: uppercase; }
+  .website-frames { position: absolute; inset: 0; }
+  .website-window { position: absolute; overflow: hidden; border: 1px solid #c8d6f344; border-radius: 5px; background: #e9e9e7; box-shadow: 0 14px 30px #0008; transform: rotate(var(--window-angle)); }
+  .website-window-odd { --window-angle: -4deg; top: 29%; left: 5%; width: 68%; z-index: 2; }
+  .website-window-kindred { --window-angle: 6deg; top: 16%; right: 5%; width: 46%; z-index: 1; }
+  .website-window-energy { --window-angle: 5deg; bottom: 8%; right: 4%; width: 41%; z-index: 3; }
+  .window-bar { display: flex; align-items: center; gap: 8px; padding: 4px 7px; color: #adb8cb; background: #1c2433; font: 7px/1.3 var(--font-mono); }
+  .window-dots { display: flex; gap: 3px; }
+  .window-dots i { width: 3px; height: 3px; border-radius: 50%; background: #7d8da7; }
+  .website-window img { display: block; width: 100%; height: auto; }
+  .website-visual .card-arrow { z-index: 4; }
   .card-arrow { position: absolute; right: 12px; bottom: 12px; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; background: #10131cf2; border: 1px solid #ffffff28; color: var(--ink); }
   .selected-work-meta { padding-top: 20px; }
   .selected-work-meta > .font-mono { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
@@ -56,7 +75,11 @@ const cover = websites[0].cover;
   .flow-footnote { font-size: 8px; color: var(--muted); }
   .flow-footnote i { display: inline-block; width: 5px; height: 5px; background: var(--accent-hi); border-radius: 50%; margin-right: 6px; }
   a:focus-visible { outline: 2px solid var(--accent-hi); outline-offset: 6px; border-radius: 3px; }
-  @media (hover:hover) and (pointer:fine) { .selected-work-card:hover img { transform: scale(1.035); } .selected-work-card:hover h3, .view-all:hover { color: var(--accent-hi); } }
+  @media (hover:hover) and (pointer:fine) {
+    .selected-work-card:hover h3, .view-all:hover { color: var(--accent-hi); }
+    :global(html[data-motion='full']) .website-window { transition: transform 600ms var(--ease-out); }
+    :global(html[data-motion='full']) .selected-work-card:hover .website-window { transform: translateY(-4px) rotate(var(--window-angle)); }
+  }
   @media (max-width:760px) {
     .selected-work { padding-block: 48px; }
     .selected-work-heading { display: block; margin-bottom: 26px; }

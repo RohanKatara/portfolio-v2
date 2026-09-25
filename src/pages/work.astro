@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/chrome/Nav.astro';
 import Footer from '../components/chrome/Footer.astro';
+import MotionControls from '../components/chrome/MotionControls.astro';
 import WebsiteShowcase from '../components/work/WebsiteShowcase.astro';
 import ProjectRow from '../components/work/ProjectRow.astro';
 import { websites } from '../data/websites';
@@ -18,7 +19,7 @@ const total = String(websites.length + projects.length).padStart(2, '0');
       <div class="work-hero-top work-label"><span>Selected work / {total} projects</span><a href={primaryCta.href}>Let’s talk <span aria-hidden="true">↗</span></a></div>
       <div class="work-hero-heading">
         <h1>Good ideas.<br /><em>Built to work.</em></h1>
-        <div class="work-intro"><span class="intro-mark" aria-hidden="true">↘</span><p>Websites with personality. AI with a purpose.<br />A selection of what I design and build, from a brand’s first impression to the work behind the scenes.</p></div>
+        <div class="work-intro"><p>Websites with personality. AI with a purpose.<br />A selection of what I design and build, from a brand’s first impression to the work behind the scenes.</p></div>
       </div>
     </header>
     <nav class="work-categories" aria-label="Work categories">
@@ -42,6 +43,7 @@ const total = String(websites.length + projects.length).padStart(2, '0');
         <p>Voice experiences, smarter lead handling and content workflows. Open a project to see the thinking and the build.</p>
       </header>
       <div class="project-list">{projects.map((project) => <ProjectRow project={project} />)}</div>
+      <MotionControls variant="prompt" />
     </section>
     <section id="work-enquiry" class="work-enquiry work-container" aria-labelledby="enquiry-title">
       <div class="work-label"><span class="availability-dot" aria-hidden="true"></span> Your project could be next</div>

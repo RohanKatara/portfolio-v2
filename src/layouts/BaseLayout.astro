@@ -5,6 +5,7 @@ import SmoothScroll from '../islands/SmoothScroll.tsx';
 import SpaceStarfield from '../islands/SpaceStarfield.tsx';
 import MotionBootstrap from '../components/chrome/MotionBootstrap.astro';
 import { brandIconVersion } from '../data/brand.mjs';
+import { social } from '../data/bio';
 
 interface Props {
   title?: string;
@@ -96,7 +97,7 @@ const mobileLegacy = import.meta.env.PUBLIC_MOBILE_LEGACY === '1';
       'url': identityUrl,
       'jobTitle': 'Freelance Software Developer',
       'description': description,
-      'email': 'mailto:rohankatara3@gmail.com',
+      'email': `mailto:${social.email}`,
       'address': {
         '@type': 'PostalAddress',
         'addressLocality': 'Ahmedabad',

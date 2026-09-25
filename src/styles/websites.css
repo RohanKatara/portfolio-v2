@@ -13,7 +13,6 @@
 .work-hero h1 em { color: var(--accent-hi); font-weight: 400; }
 .work-hero h1 sup { font: 12px/1 var(--font-mono); vertical-align: top; letter-spacing: 0; display: inline-block; margin: 14px 0 0 18px; color: var(--muted); }
 .work-intro { max-width: 360px; padding-bottom: 4px; }
-.intro-mark { font: 44px/1 var(--font-display); color: var(--accent-hi); }
 .work-intro p { font-size: 15px; line-height: 1.8; color: var(--muted); margin: 20px 0 20px; }
 .project-index { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); border-block: 1px solid var(--line); }
 .project-index a { display: grid; grid-template-columns: 22px 1fr 20px; align-items: center; gap: 16px; padding: 20px 24px; font-size: 13px; min-height: 68px; transition: background 200ms; }
@@ -115,7 +114,6 @@ html[data-motion='full'] .work-hero-heading { animation: work-arrive 700ms var(-
   .work-hero h1 { font-size: clamp(58px,15vw,82px); }
   .work-hero h1 sup { font-size: 9px; margin-left: 12px; margin-top: 8px; }
   .work-intro { max-width: 100%; margin-top: 24px; }
-  .intro-mark { display: none; }
   .work-intro p { font-size: 14px; line-height: 1.75; margin: 0 0 14px; max-width: 320px; }
   .work-intro .work-label { font-size: 10px; letter-spacing: .06em; }
   .project-index { grid-template-columns: repeat(3,minmax(0,1fr)); }

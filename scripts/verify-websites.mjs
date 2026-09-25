@@ -15,7 +15,7 @@ const engine = args.includes('--webkit') ? 'webkit' : 'chrome';
 const onlyScenario = args.find((arg) => arg.startsWith('--only='))?.slice(7);
 const OUTPUT = resolve(process.env.QA_OUTPUT_DIR ?? '../qa', engine);
 const ORIGIN = new URL(BASE).origin;
-const EMAIL = 'rohankatara3@gmail.com';
+const EMAIL = 'rohankatara750@gmail.com';
 const PROJECTS = [
   { id: 'odd-care', url: 'https://odd-care-co.vercel.app', subject: 'A website like ODD Care Co.' },
   { id: 'kindred-coffee', url: 'https://kindred-coffee.vercel.app', subject: 'A website like Kindred Coffee' },
@@ -187,6 +187,56 @@ const run = async () => {
   browser = engine === 'webkit'
     ? await webkit.launch({ headless: true })
     : await chromium.launch({ channel: 'chrome', headless: true });
+
+  await scenario('contact-and-selection', { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true, reducedMotion: 'reduce' }, async (page) => {
+    // Case-study email changes are server-rendered. Inspect their actual HTML
+    // without exercising unrelated native video controls in this focused check.
+    for (const project of CASES) {
+      const response = await page.request.get(`${BASE}/work/${project.slug}/`);
+      const html = await response.text();
+      const emails = [...html.matchAll(/href="mailto:([^"?]+)/g)].map(match => match[1]);
+      check(`${project.slug}: rendered case-study contacts use the updated inbox`, response.ok() && emails.length > 0 && emails.every(email => email === EMAIL));
+      const schema = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+      check(`${project.slug}: structured contact email matches`, schema.email === `mailto:${EMAIL}`);
+    }
+    for (const path of ['/', '/work/']) {
+      await visit(page, path);
+      const emailLinks = await page.locator('a[href^="mailto:"]').evaluateAll(links => links.map(link => link.getAttribute('href')));
+      check(`${path}: contact links use the updated inbox`, emailLinks.length > 0 && emailLinks.every(href => new URL(href).pathname === EMAIL));
+      const schema = JSON.parse(await page.locator('script[type="application/ld+json"]').first().textContent());
+      check(`${path}: structured contact email matches`, schema.email === `mailto:${EMAIL}`);
+    }
+    await visit(page, '/work/');
+    check('work: introduction has no decorative arrow', await page.locator('.intro-mark').count() === 0);
+    await visit(page, '/');
+    check('home: displayed email and copy source match new inbox', await page.locator('[data-copy-email]').textContent() === EMAIL && await page.locator('[data-copy-email]').getAttribute('href') === `mailto:${EMAIL}`);
+    for (const width of [360, 390, 768, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      const card = page.locator('#work .selected-work-card[href="/work/#websites"]');
+      await card.scrollIntoViewIfNeeded();
+      await page.waitForFunction(() => [...document.querySelectorAll('.website-visual img')].every(img => img.complete && img.naturalWidth > 0));
+      check(`selection ${width}: all three real website previews load`, await card.locator('img').count() === 3);
+      await checkOverflow(page, `selection ${width}`);
+      await screenshot(page, `selection-${width}`);
+    }
+    await page.locator('#work .selected-work-card[href="/work/#websites"]').click();
+    await page.waitForURL(url => isWorkUrl(url, '#websites'));
+    check('selection: thumbnail opens website collection', await page.locator('#websites h2').isVisible());
+    await page.setViewportSize({ width: 390, height: 844 });
+    // Astro preview does not apply the existing Vercel legacy asset rewrites.
+    // Forward to real local files; production exercises Vercel without interception.
+    if (['localhost', '127.0.0.1'].includes(new URL(BASE).hostname)) {
+      for (const directory of ['models', 'draco']) {
+        await page.route(`${ORIGIN}/${directory}/**`, route => route.continue({
+          url: route.request().url().replace(`/${directory}/`, `/legacy/${directory}/`),
+        }));
+      }
+    }
+    await visit(page, '/legacy/');
+    const legacyContact = page.locator(`a[href="https://mail.google.com/mail/?view=cm&to=${EMAIL}"]`);
+    await legacyContact.waitFor({ state: 'visible' });
+    check('legacy: loaded contact action uses new inbox', await legacyContact.count() === 1);
+  });
 
   for (const viewport of [{ width: 360, height: 800 }, { width: 390, height: 844 }, { width: 768, height: 1024 }, { width: 1440, height: 900 }]) {
     const mobile = viewport.width < 720;

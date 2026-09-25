@@ -325,6 +325,33 @@ try {
     await checkMode(page, 'system', 'reduced', 'phone system');
   });
 
+  for (const mobile of [false, true]) {
+    const label = `work-opt-in-${mobile ? 'phone' : 'desktop'}`;
+    await scenario(label, { os: 'reduce', mobile }, async (page) => {
+      await visit(page, '/work/?source=motion-check#ai-automations');
+      await checkMode(page, 'system', 'reduced', label);
+      const prompt = page.locator('#ai-automations [data-motion-prompt]');
+      const button = prompt.locator('[data-enable-motion]');
+      check(`${label}: prompt is below all four projects`, await prompt.isVisible()
+        && await page.locator('#ai-automations [data-project-row]').count() === 4
+        && await page.locator('#ai-automations .project-list + [data-motion-prompt]').count() === 1);
+      await button.scrollIntoViewIfNeeded();
+      const box = await button.boundingBox();
+      check(`${label}: opt-in has a 48px touch target`, box.height >= 48 && box.width >= 48);
+      await screenshot(page, `${label}-reduced`);
+      if (!mobile) await checkWorkHover(page, 'reduced', label);
+      await reloadBy(page, button, { mobile });
+      await checkMode(page, 'full', 'full', `${label} enabled`);
+      check(`${label}: preference persists and invitation hides`, await prompt.isHidden()
+        && await page.evaluate(key => localStorage.getItem(key), KEY) === 'full');
+      if (!mobile) await checkWorkHover(page, 'full', label);
+      await applyFooter(page, 'reduced', { mobile });
+      await checkMode(page, 'reduced', 'reduced', `${label} reset`);
+      check(`${label}: invitation returns after disabling animations`, await prompt.isVisible());
+      await checkReadable(page, label, '#ai-automations h2, #ai-automations [data-project-row]');
+    });
+  }
+
   for (const os of ['reduce', 'no-preference']) {
     await scenario(`invalid-storage-${os}`, { os, preference: 'unexpected-value' }, async (page) => {
       await visit(page);
