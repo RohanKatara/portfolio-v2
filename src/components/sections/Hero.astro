@@ -3,11 +3,14 @@ import HeroWireframe from '../../islands/HeroWireframe.tsx';
 import CtaButton from '../ui/CtaButton.astro';
 import { primaryCta } from '../../data/cta';
 import MotionControls from '../chrome/MotionControls.astro';
+import BrandMark from '../ui/BrandMark.astro';
 ---
 <section id="hero" class="hero">
   <HeroWireframe client:only="react" />
   <div class="hero-scanlines" aria-hidden="true"></div>
-  <div class="hero-fallback" aria-hidden="true"></div>
+  <div class="hero-fallback" aria-hidden="true">
+    <BrandMark class="hero-fallback-mark" />
+  </div>
   <div class="container hero-content">
     <h1 class="hero-name font-display" data-hero-name>
       <span class="sr-only">Rohan Katara</span>
@@ -69,6 +72,15 @@ import MotionControls from '../chrome/MotionControls.astro';
   }
   .hero[data-webgl="on"] .hero-fallback {
     display: none;
+  }
+  .hero-fallback :global(.hero-fallback-mark) {
+    position: absolute;
+    width: min(60vw, 640px);
+    left: 68%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--accent-hi);
+    opacity: 0.08;
   }
   .hero-content {
     position: relative;
@@ -176,6 +188,9 @@ import MotionControls from '../chrome/MotionControls.astro';
     50% { transform: scaleY(0.4); transform-origin: top; }
   }
 
+  @media (max-width: 900px) {
+    .hero-fallback :global(.hero-fallback-mark) { left: 50%; width: 82vw; }
+  }
   @media (max-width: 720px) {
     .hero-content {
       padding-top: 88px;

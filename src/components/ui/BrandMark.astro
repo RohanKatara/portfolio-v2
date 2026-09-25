@@ -1,0 +1,8 @@
+---
+import { rkPath, rkViewBox } from '../../data/brand.mjs';
+interface Props { class?: string }
+const { class: className } = Astro.props;
+---
+<svg class={className} viewBox={rkViewBox} fill="currentColor" aria-hidden="true" focusable="false" data-rk-mark>
+  <path d={rkPath} fill-rule="evenodd" />
+</svg>
