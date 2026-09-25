@@ -7,6 +7,7 @@ const output = resolve(import.meta.dirname, '../public');
 const svg = Buffer.from(faviconSvg);
 await writeFile(resolve(output, 'favicon.svg'), svg);
 await sharp(svg).resize(32, 32).png().toFile(resolve(output, 'favicon-32.png'));
+await sharp(svg).resize(192, 192).png().toFile(resolve(output, 'favicon-192.png'));
 await sharp(svg).resize(180, 180).png().toFile(resolve(output, 'apple-touch-icon.png'));
 
 // ICO directory with lossless PNG entries for small browser/Windows sizes.
