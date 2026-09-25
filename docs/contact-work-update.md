@@ -4,7 +4,7 @@
 
 - [x] 1. Replace Rohan's contact email throughout the current and legacy site with rohankatara750@gmail.com, including links, copy actions and structured data.
 - [x] 2. Reuse the existing Enable animations control beneath the AI & Automations project list, visible only in reduced-motion mode.
-- [ ] 3. Remove the decorative arrow above “Websites with personality” in the Work introduction.
+- [x] 3. Remove the decorative arrow above “Websites with personality” in the Work introduction.
 - [ ] 4. Redesign the homepage Websites thumbnail as a layered composition of the actual ODD, Kindred and 404 websites.
 
 ## Implementation
