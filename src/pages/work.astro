@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/chrome/Nav.astro';
 import Footer from '../components/chrome/Footer.astro';
+import MotionControls from '../components/chrome/MotionControls.astro';
 import WebsiteShowcase from '../components/work/WebsiteShowcase.astro';
 import ProjectRow from '../components/work/ProjectRow.astro';
 import { websites } from '../data/websites';
@@ -42,6 +43,7 @@ const total = String(websites.length + projects.length).padStart(2, '0');
         <p>Voice experiences, smarter lead handling and content workflows. Open a project to see the thinking and the build.</p>
       </header>
       <div class="project-list">{projects.map((project) => <ProjectRow project={project} />)}</div>
+      <MotionControls variant="prompt" />
     </section>
     <section id="work-enquiry" class="work-enquiry work-container" aria-labelledby="enquiry-title">
       <div class="work-label"><span class="availability-dot" aria-hidden="true"></span> Your project could be next</div>
