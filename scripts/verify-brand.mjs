@@ -105,14 +105,17 @@ async function checkFallback(page, label) {
 
 async function checkIcons(page, context) {
   const links = await page.locator('link[rel="icon"], link[rel="apple-touch-icon"]').evaluateAll(elements => elements.map(element => ({ href: element.href, type: element.type, sizes: element.sizes.value })));
-  check('icons: versioned SVG, PNG and Apple touch links', links.length === 3 && links.every(link => new URL(link.href).searchParams.get('v') === brandIconVersion));
+  const searchIcon = links.find(link => new URL(link.href).pathname === '/favicon-192.png');
+  check('icons: stable high-resolution PNG for search crawlers', searchIcon?.type === 'image/png' && searchIcon.sizes === '192x192' && new URL(searchIcon.href).search === '');
+  const versioned = links.filter(link => link !== searchIcon);
+  check('icons: versioned SVG, PNG and Apple touch links', versioned.length === 3 && versioned.every(link => new URL(link.href).searchParams.get('v') === brandIconVersion));
   for (const link of links) {
     const response = await context.request.get(link.href);
     check(`icons: ${new URL(link.href).pathname} loads`, response.ok(), response.status());
     const body = await response.body();
     if (link.type === 'image/svg+xml') check('icons: favicon contains shared RK', body.toString().includes(`d="${rkPath}"`));
     else {
-      const size = link.sizes === '32x32' ? 32 : 180;
+      const size = Number(link.sizes.split('x')[0]);
       check(`icons: PNG ${size}px has expected dimensions`, body.subarray(1, 4).toString() === 'PNG' && body.readUInt32BE(16) === size && body.readUInt32BE(20) === size);
     }
   }

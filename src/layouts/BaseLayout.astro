@@ -63,6 +63,8 @@ const mobileLegacy = import.meta.env.PUBLIC_MOBILE_LEGACY === '1';
       })();
     </script>
     <link rel="icon" type="image/png" sizes="32x32" href={`/favicon-32.png?v=${brandIconVersion}`} />
+    <!-- Keep this high-resolution raster URL stable for search crawlers. -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
     <link rel="icon" type="image/svg+xml" sizes="any" href={`/favicon.svg?v=${brandIconVersion}`} />
     <link rel="apple-touch-icon" sizes="180x180" href={`/apple-touch-icon.png?v=${brandIconVersion}`} />
     <title>{title}</title>

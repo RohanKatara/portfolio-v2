@@ -6,7 +6,11 @@ The server-rendered mark remains available without JavaScript, with reduced moti
 
 ## Updating the mark
 
-Run `node scripts/generate-brand-icons.mjs` after editing the shared geometry. This uses Sharp already installed with Astro to generate the SVG, 32px PNG, ICO (16/32/48) and 180px Apple touch icon. Increment `brandIconVersion` when replacing generated icons to invalidate cached browser icons. The navigation mark is decorative inside the existing accessible home link.
+Run `node scripts/generate-brand-icons.mjs` after editing the shared geometry. This uses Sharp already installed with Astro to generate the SVG, 32px and 192px PNGs, ICO (16/32/48) and 180px Apple touch icon. Increment `brandIconVersion` when replacing generated browser icons to invalidate their cache. Keep `/favicon-192.png` stable without a version query: the homepage advertises this larger raster icon for search crawlers. The navigation mark is decorative inside the existing accessible home link.
+
+## Google search favicon
+
+Google's search result may retain an older icon until the homepage and favicon are recrawled. The shared layout advertises a crawlable 192px square RK PNG at a stable URL; `robots.txt` permits both homepage and image crawling. The old `/legacy/` coffee assets do not define the domain homepage's favicon. Request homepage indexing in Search Console after deployment. Google controls the final search appearance and refresh timing (several days to several weeks), so successful deployment is not confirmation of an updated search result. See https://developers.google.com/search/docs/appearance/favicon-in-search.
 
 ## Verification commands
 
