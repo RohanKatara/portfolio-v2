@@ -1,0 +1,53 @@
+---
+const demos = [
+  { number: '01', route: 'quotes', title: 'Enquiry to quotation', input: 'A customer enquiry', output: 'A reviewed quote + follow-up', description: 'Turn scattered requirements into a checked quotation. Resolve missing details, assign an owner and keep the next follow-up visible.', tags: ['Missing-detail checks', 'Approval', 'Follow-up tracking'] },
+  { number: '02', route: 'orders', title: 'Purchase order review', input: 'An incoming customer PO', output: 'A checked sales-order draft', description: 'Catch price mismatches, unfamiliar item codes and duplicate orders before they reach your team. Review exceptions, then export the draft.', tags: ['Price checks', 'Duplicate prevention', 'CSV export'] },
+  { number: '03', route: 'receivables', title: 'Receivables follow-up', input: 'Overdue invoices + replies', output: 'The right next action', description: 'Track payment promises, missing documents and disputes in one queue. Pause inappropriate reminders and follow up when a promise is missed.', tags: ['Reply handling', 'Promise tracking', 'Activity trail'] },
+];
+---
+<div class="automation-demos" aria-labelledby="demos-title">
+  <div class="demos-intro">
+    <div><p class="work-label">Try it yourself / 03 interactive demos</p><h3 id="demos-title">See the workflow.<br /><em>Make the decisions.</em></h3></div>
+    <div><p>Explore everyday work for manufacturers, suppliers and growing businesses. Run an example, review what needs attention and see the result.</p><p class="sample-note">Fictional sample data. Simulated AI processing. No sign-up or live messages.</p></div>
+  </div>
+  <div class="demo-cards">
+    {demos.map(demo => (
+      <a class="demo-card" href={`/automation-demos/#/${demo.route}`}>
+        <div class="demo-card-top"><span class="work-label">{demo.number} / Interactive demo</span><span class="demo-arrow" aria-hidden="true">↗</span></div>
+        <div class="demo-flow" aria-hidden="true"><span>{demo.input}</span><span class="flow-down">↓</span><strong>{demo.output}</strong></div>
+        <h4>{demo.title}</h4>
+        <p>{demo.description}</p>
+        <ul>{demo.tags.map(tag => <li>{tag}</li>)}</ul>
+        <span class="demo-open">Try {demo.title.toLowerCase()} <span aria-hidden="true">→</span></span>
+      </a>
+    ))}
+  </div>
+  <a class="all-demos" href="/automation-demos/#/">Explore all three demos <span aria-hidden="true">↗</span></a>
+</div>
+<style>
+  .automation-demos { margin-bottom: 72px; }
+  .demos-intro { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:end; margin-bottom:28px; }
+  h3 { font: 400 clamp(34px,4vw,52px)/1.06 var(--font-display); margin:12px 0 0; }
+  h3 em { color:var(--accent-hi); }
+  .demos-intro p:not(.work-label) { color:var(--muted); font-size:13px; line-height:1.8; margin:0; max-width:470px; }
+  .demos-intro p.sample-note { font-size:11px; margin-top:12px; }
+  .demo-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+  .demo-card { display:flex; flex-direction:column; min-width:0; padding:24px; border:1px solid var(--line); border-radius:6px; background:var(--surface); }
+  .demo-card-top { display:flex; justify-content:space-between; gap:8px; align-items:center; }
+  .demo-card-top .work-label { font-size:9px; }
+  .demo-arrow { color:var(--accent-hi); font-size:22px; }
+  .demo-flow { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; min-height:155px; margin:22px 0; padding:18px 10px; border:1px solid var(--line); border-radius:4px; background:radial-gradient(ellipse at bottom,#273e773e,transparent 85%),var(--bg); text-align:center; font:10px/1.6 var(--font-mono); color:var(--muted); }
+  .flow-down { color:var(--accent-hi); font-size:20px; }
+  .demo-flow strong { color:var(--ink); font-weight:400; }
+  h4 { font:400 clamp(26px,2.5vw,34px)/1.1 var(--font-display); margin:0 0 14px; }
+  .demo-card p { color:var(--muted); font-size:12px; line-height:1.9; margin:0 0 18px; }
+  ul { list-style:none; display:flex; gap:6px; flex-wrap:wrap; padding:0; margin:0 0 26px; }
+  li { padding:5px 7px; border:1px solid var(--line); border-radius:3px; font-size:9px; color:var(--muted); }
+  .demo-open { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:44px; margin-top:auto; border-top:1px solid var(--line); padding-top:14px; font-size:11px; color:var(--ink); }
+  .demo-open span { color:var(--accent-hi); font-size:20px; }
+  .all-demos { display:inline-flex; align-items:center; gap:24px; min-height:44px; font-size:12px; margin-top:18px; color:var(--muted); }
+  a:focus-visible { outline:2px solid var(--accent-hi); outline-offset:5px; }
+  @media (hover:hover) { .demo-card:hover { border-color:var(--accent-hi); } .demo-card:hover h4,.all-demos:hover { color:var(--accent-hi); } }
+  @media(max-width:900px) { .demo-cards { grid-template-columns:1fr; } .demo-card { padding:22px; } .demo-flow { min-height:120px; } }
+  @media(max-width:600px) { .demos-intro { grid-template-columns:1fr; gap:22px; } .automation-demos { margin-bottom:48px; } }
+</style>

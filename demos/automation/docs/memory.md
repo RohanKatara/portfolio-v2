@@ -1,0 +1,24 @@
+# Project handoff
+- Portfolio-matched redesign approved: navy/blue palette and portfolio fonts, but explicitly NO RK logo or personal-name branding. Use Automation demos. See portfolio-ui-plan.md. Portfolio integration/publication remains a later phase.
+- If the side panel shows navigation but blank workflow content, verify the local preview server before editing routes. In the reported incident port 4173 had no listener and reloading showed ERR_CONNECTION_REFUSED. Restarting Vite preview restored both pages; purchase-order approval and receivables promise handling were verified in the actual in-app browser with no console errors. Keep the preview process running; it is not a hosted website.
+- Research-led extension requested by Rohan: see research-upgrade-plan.md. Strengthen the existing three demos with ownership, dated actions, item mapping/export and collections blocker resolution. Do not add unrelated workflow products or claim measured savings.
+- Upgrade uses session schema version 2; version 1 intentionally reseeds. New required fields must be validated against missing/undefined data.
+- Collections document requests now pause routine reminders until provision. Resolving a blocker never clears a balance. Promise eligibility uses the explicit sample date and resumes the day after the promised date. Due actions and invoice ageing are different measures.
+- Quote customer decisions close follow-up within that demo; acceptance does not create an order in another module. The PO CSV is a generic sample handoff, not a native ERP integration.
+- Use React Router lazy routes, not render-time React.lazy/Suspense: the latter intermittently delayed WebKit views despite loaded assets. The full 48-test browser suite passed after the switch with original deadlines and two workers.
+- Style native selects explicitly with appearance:none and a visible arrow. WebKit's native light background made the owner text unreadable; inspect mobile screenshots after control styling changes.
+- This is a sales demonstration, not a live AI product. Preserve visible simulation disclosure.
+- No external requests in demo interactions. All fonts and assets are bundled.
+- Hash routes allow standalone static hosting without server rewrite rules.
+- Session storage is versioned and validated. State is per tab; reset and incompatible schemas reseed.
+- All strings-to-dates go through src/lib/dates.ts. Money is integer paise.
+- No model/provider setup is needed or desired for this version.
+- The writing-plans skill was not installed in the skill roots or plugin cache; the approved detailed build plan serves as the implementation plan.
+- All three flows are implemented. Browser coverage includes desktop Chromium and iPhone 13 sized WebKit, not a physical iPhone. See verification.md for results and limits.
+- Storage initialization must remain read-only. React retried the lazy screen render in WebKit; writing a recovered seed inside the state initializer erased the recovery notice on the second render. Only user actions persist state now.
+- Print CSS must hide the source panel without a later generic workspace rule overriding display:none. The root print background overrides :root at equal specificity. Both cases have browser regressions.
+- The skip link uses clipping until keyboard focus. Translating a fixed element above the viewport leaked into full-page and element screenshots.
+- After rebuilding dist while a preview tab is open, force a full reload (or cache-busted document URL). Hash-only navigation can retain an old entry bundle whose lazy chunk was removed by the rebuild.
+- Final runtime: Node 24.18.0; versions are pinned in package-lock.json. ESLint 10 with matching supported plugins; audit reported zero vulnerabilities.
+- Final build is static. No service worker or offline installation guarantee. An already loaded workflow continues offline; first load and lazy route loads need the host.
+- Public hosting and portfolio integration have not been performed. Deliverables include the static site, source archive, screenshots, and a pitch guide.

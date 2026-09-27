@@ -27,3 +27,6 @@ pnpm-debug.log*
 lighthouse.html
 
 .vercel
+
+.env.*
+!.env.example
