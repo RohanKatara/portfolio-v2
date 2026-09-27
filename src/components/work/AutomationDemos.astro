@@ -8,46 +8,56 @@ const demos = [
 <div class="automation-demos" aria-labelledby="demos-title">
   <div class="demos-intro">
     <div><p class="work-label">Try it yourself / 03 interactive demos</p><h3 id="demos-title">See the workflow.<br /><em>Make the decisions.</em></h3></div>
-    <div><p>Explore everyday work for manufacturers, suppliers and growing businesses. Run an example, review what needs attention and see the result.</p><p class="sample-note">Fictional sample data. Simulated AI processing. No sign-up or live messages.</p></div>
+    <div class="demos-copy"><p>Explore everyday work for manufacturers, suppliers and growing businesses. Run an example, review what needs attention and see the result.</p><p class="sample-note">Fictional sample data. Simulated AI processing. No sign-up or live messages.</p></div>
   </div>
   <div class="demo-cards">
     {demos.map(demo => (
       <a class="demo-card" href={`/automation-demos/#/${demo.route}`}>
-        <div class="demo-card-top"><span class="work-label">{demo.number} / Interactive demo</span><span class="demo-arrow" aria-hidden="true">↗</span></div>
-        <div class="demo-flow" aria-hidden="true"><span>{demo.input}</span><span class="flow-down">↓</span><strong>{demo.output}</strong></div>
+        <span class="work-label">{demo.number} / Interactive demo</span>
+        <div class="demo-flow" aria-hidden="true"><span>{demo.input}</span><span class="flow-connector"></span><strong>{demo.output}</strong></div>
         <h4>{demo.title}</h4>
         <p>{demo.description}</p>
         <ul>{demo.tags.map(tag => <li>{tag}</li>)}</ul>
-        <span class="demo-open">Try {demo.title.toLowerCase()} <span aria-hidden="true">→</span></span>
+        <span class="demo-open">Try {demo.title.toLowerCase()}</span>
       </a>
     ))}
   </div>
-  <a class="all-demos" href="/automation-demos/#/">Explore all three demos <span aria-hidden="true">↗</span></a>
+  <a class="all-demos" href="/automation-demos/#/">Explore all three demos</a>
 </div>
 <style>
-  .automation-demos { margin-bottom: 72px; }
-  .demos-intro { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:end; margin-bottom:28px; }
-  h3 { font: 400 clamp(34px,4vw,52px)/1.06 var(--font-display); margin:12px 0 0; }
+  /* Sub-band of section 02: hairline + one step smaller heading so it never reads as a second section hero.
+     The intro grid mirrors .category-heading (websites.css) so both copy columns share one left edge. */
+  .automation-demos { margin: 32px 0 72px; padding-top: 56px; border-top: 1px solid var(--line); }
+  .demos-intro { display:grid; grid-template-columns:1.4fr 1fr; gap:64px; align-items:end; padding-bottom:40px; }
+  .demos-intro .work-label { margin:0 0 16px; }
+  h3 { font: 400 clamp(30px,3.2vw,44px)/1.06 var(--font-display); letter-spacing:-.02em; margin:0; }
   h3 em { color:var(--accent-hi); }
-  .demos-intro p:not(.work-label) { color:var(--muted); font-size:13px; line-height:1.8; margin:0; max-width:470px; }
-  .demos-intro p.sample-note { font-size:11px; margin-top:12px; }
+  .demos-copy p { color:var(--muted); font-size:14px; line-height:1.8; margin:0; max-width:350px; }
+  .demos-copy p.sample-note { font-size:11px; line-height:1.7; margin-top:12px; }
   .demo-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
-  .demo-card { display:flex; flex-direction:column; min-width:0; padding:24px; border:1px solid var(--line); border-radius:6px; background:var(--surface); }
-  .demo-card-top { display:flex; justify-content:space-between; gap:8px; align-items:center; }
-  .demo-card-top .work-label { font-size:9px; }
-  .demo-arrow { color:var(--accent-hi); font-size:22px; }
-  .demo-flow { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; min-height:155px; margin:22px 0; padding:18px 10px; border:1px solid var(--line); border-radius:4px; background:radial-gradient(ellipse at bottom,#273e773e,transparent 85%),var(--bg); text-align:center; font:10px/1.6 var(--font-mono); color:var(--muted); }
-  .flow-down { color:var(--accent-hi); font-size:20px; }
+  .demo-card { display:flex; flex-direction:column; min-width:0; padding:24px; border:1px solid var(--line); border-radius:6px; background:var(--surface); transition:border-color 320ms ease; }
+  .demo-card > .work-label { font-size:9px; }
+  .demo-flow { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; min-height:155px; margin:20px 0 22px; padding:18px 10px; border:1px solid var(--line); border-radius:4px; background:radial-gradient(ellipse at bottom,#273e773e,transparent 85%),var(--bg); text-align:center; font:10px/1.6 var(--font-mono); color:var(--muted); }
+  .flow-connector { position:relative; width:1px; height:28px; background:linear-gradient(var(--line),var(--accent-hi)); }
+  .flow-connector::before, .flow-connector::after { content:''; position:absolute; left:50%; width:5px; height:5px; border-radius:50%; transform:translateX(-50%); }
+  .flow-connector::before { top:-3px; background:var(--muted); }
+  .flow-connector::after { bottom:-3px; background:var(--accent-hi); box-shadow:0 0 8px var(--accent-hi); }
   .demo-flow strong { color:var(--ink); font-weight:400; }
-  h4 { font:400 clamp(26px,2.5vw,34px)/1.1 var(--font-display); margin:0 0 14px; }
+  h4 { font:400 clamp(26px,2.5vw,34px)/1.1 var(--font-display); margin:0 0 14px; transition:color 320ms ease; }
   .demo-card p { color:var(--muted); font-size:12px; line-height:1.9; margin:0 0 18px; }
   ul { list-style:none; display:flex; gap:6px; flex-wrap:wrap; padding:0; margin:0 0 26px; }
   li { padding:5px 7px; border:1px solid var(--line); border-radius:3px; font-size:9px; color:var(--muted); }
-  .demo-open { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:44px; margin-top:auto; border-top:1px solid var(--line); padding-top:14px; font-size:11px; color:var(--ink); }
-  .demo-open span { color:var(--accent-hi); font-size:20px; }
-  .all-demos { display:inline-flex; align-items:center; gap:24px; min-height:44px; font-size:12px; margin-top:18px; color:var(--muted); }
+  .demo-open { display:flex; align-items:center; min-height:44px; margin-top:auto; border-top:1px solid var(--line); padding-top:14px; font-size:11px; color:var(--ink); transition:color 320ms ease; }
+  .all-demos { display:inline-flex; align-items:center; min-height:44px; font-size:12px; margin-top:18px; color:var(--muted); text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:5px; transition:color 200ms, text-decoration-color 200ms; }
   a:focus-visible { outline:2px solid var(--accent-hi); outline-offset:5px; }
-  @media (hover:hover) { .demo-card:hover { border-color:var(--accent-hi); } .demo-card:hover h4,.all-demos:hover { color:var(--accent-hi); } }
-  @media(max-width:900px) { .demo-cards { grid-template-columns:1fr; } .demo-card { padding:22px; } .demo-flow { min-height:120px; } }
-  @media(max-width:600px) { .demos-intro { grid-template-columns:1fr; gap:22px; } .automation-demos { margin-bottom:48px; } }
+  @media (hover:hover) { .demo-card:hover { border-color:var(--accent-hi); } .demo-card:hover h4, .demo-card:hover .demo-open, .all-demos:hover { color:var(--accent-hi); } .all-demos:hover { text-decoration-color:currentColor; } }
+  @media(max-width:900px) { .demo-cards { grid-template-columns:1fr; } .demo-card { padding:22px; } .demo-flow { min-height:120px; } .demos-intro { gap:32px; } }
+  @media(max-width:720px) {
+    .automation-demos { margin:20px 0 48px; padding-top:40px; }
+    .demos-intro { display:block; padding-bottom:28px; }
+    .demos-intro .work-label { margin-bottom:14px; }
+    h3 { font-size:clamp(30px,8vw,44px); }
+    .demos-copy { margin-top:20px; }
+    .demos-copy p { font-size:13px; max-width:360px; }
+  }
 </style>

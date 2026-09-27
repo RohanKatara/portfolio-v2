@@ -28,7 +28,7 @@ const { slug, index, title, tagline, year, role, accent, metrics, cover, demo, n
   <div class="case-panel">
     <header class="case-header">
       <button class="case-back font-mono" data-close-case type="button">
-        <span aria-hidden="true">←</span> Back to Work
+        Back to Work
       </button>
       <button class="case-close" data-close-case type="button" aria-label="Close case study">
         <span aria-hidden="true">×</span>
@@ -67,7 +67,7 @@ const { slug, index, title, tagline, year, role, accent, metrics, cover, demo, n
         {next && (
           <a class="case-next" href={`#${next.slug}`} data-open-case={next.slug}>
             <span class="font-eyebrow">Next case study</span>
-            <span class="case-next-name font-display">{next.name} →</span>
+            <span class="case-next-name font-display">{next.name}</span>
           </a>
         )}
       </div>

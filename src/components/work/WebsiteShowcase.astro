@@ -12,7 +12,7 @@ const { project } = Astro.props;
   <div class="project-heading">
     <h3>{project.name}</h3>
     <a class="preview-link" href={project.url} target="_blank" rel="noopener noreferrer" data-demo>
-      View website preview <span aria-hidden="true">↗</span>
+      View website preview
       <span class="work-sr-only"> for {project.name} (opens in a new tab)</span>
     </a>
   </div>
@@ -23,7 +23,7 @@ const { project } = Astro.props;
     </div>
     <a href={project.cover.src} data-image-open data-title={`${project.name} · ${project.cover.caption}`} class="cover-link" aria-label={`Enlarge ${project.name} homepage screenshot`}>
       <img src={project.cover.src} srcset={project.cover.srcset} sizes="(min-width: 1400px) 1280px, calc(100vw - 48px)" width={project.cover.width} height={project.cover.height} alt={project.cover.alt} loading={project.index === '01' ? 'eager' : 'lazy'} fetchpriority={project.index === '01' ? 'high' : 'auto'} decoding="async" />
-      <span class="enlarge-hint" aria-hidden="true">Enlarge screenshot <span>↗</span></span>
+      <span class="enlarge-hint" aria-hidden="true">Enlarge screenshot</span>
     </a>
     <figcaption>
       <span>{project.cover.caption}</span>
@@ -53,7 +53,7 @@ const { project } = Astro.props;
       <figure class="gallery-item">
         <a href={item.src} data-image-open data-title={`${project.name} · ${item.caption}`} aria-label={`Enlarge ${item.caption}`}>
           <img src={item.src} srcset={item.srcset} sizes="(min-width: 760px) 620px, calc(100vw - 48px)" width={item.width} height={item.height} alt={item.alt} loading="lazy" decoding="async" />
-          <span class="gallery-expand" aria-hidden="true">↗</span>
+          <span class="gallery-expand" aria-hidden="true">Enlarge</span>
         </a>
         <figcaption>{item.caption}</figcaption>
       </figure>

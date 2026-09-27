@@ -1,4 +1,5 @@
 ---
+import Chevron from './Chevron.astro';
 interface Props {
   href: string;
   label: string;
@@ -8,7 +9,7 @@ const { href, label, variant = 'primary' } = Astro.props;
 ---
 <a class:list={['cta-button', 'font-mono', variant]} href={href}>
   <span>{label}</span>
-  <span class="cta-arrow" aria-hidden="true">→</span>
+  <Chevron />
 </a>
 
 <style>
@@ -36,10 +37,6 @@ const { href, label, variant = 'primary' } = Astro.props;
     background: transparent;
     color: var(--muted);
   }
-  .cta-arrow {
-    font-size: 14px;
-    transition: transform 320ms var(--ease-out);
-  }
   @media (hover: hover) and (pointer: fine) {
     .cta-button.primary:hover {
       background: var(--accent);
@@ -50,9 +47,6 @@ const { href, label, variant = 'primary' } = Astro.props;
       border-color: var(--accent);
       color: var(--ink);
       transform: translateY(-2px);
-    }
-    .cta-button:hover .cta-arrow {
-      transform: translateX(4px);
     }
   }
 </style>

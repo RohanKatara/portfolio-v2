@@ -1,0 +1,10 @@
+---
+// Small drawn chevron for pill buttons. Replaces the old Unicode arrow glyphs;
+// it nudges right when its parent link/button is hovered or focused.
+---
+<svg class="chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.5 2.5 8 6l-3.5 3.5" /></svg>
+<style>
+  .chevron { flex-shrink: 0; color: var(--accent-hi); }
+  :global(html[data-motion='full']) .chevron { transition: transform 320ms var(--ease-out); }
+  :global(html[data-motion='full'] :is(a, button):is(:hover, :focus-visible)) .chevron { transform: translateX(3px); }
+</style>
