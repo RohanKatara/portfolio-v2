@@ -8,7 +8,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const demo = resolve(root, 'demos/automation');
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const run = args => {
-  const result = spawnSync(npm, args, { cwd: demo, stdio: 'inherit', shell: process.platform === 'win32' });
+  const result = spawnSync(npm, args, { cwd: demo, stdio: 'inherit', shell: process.platform === 'win32', env: { ...process.env, DEMO_BASE_PATH: '/automation-demos/' } });
   if (result.error) throw result.error;
   if (result.status !== 0) process.exit(result.status ?? 1);
 };

@@ -1,5 +1,25 @@
 import { test, expect } from "@playwright/test";
 
+test("shared demo URLs load with or without a trailing slash", async ({ page, baseURL }) => {
+  test.skip(!baseURL?.includes("/automation-demos/"), "Requires the integrated portfolio build");
+  const origin = new URL(baseURL!).origin;
+  const errors: string[] = [];
+  page.on("pageerror", error => errors.push(error.message));
+  page.on("response", response => {
+    if (new URL(response.url()).origin === origin && response.status() >= 400)
+      errors.push(`${response.status()} ${response.url()}`);
+  });
+  for (const suffix of ["", "/"]) {
+    await page.goto(`${origin}/automation-demos${suffix}#/orders`);
+    await expect(page.locator('link[rel="icon"]')).toHaveAttribute("href", "/automation-demos/favicon.svg");
+    await expect(page.getByRole("button", { name: "Run scenario", exact: true })).toBeVisible();
+    await page.getByRole("button", { name: "Run scenario", exact: true }).click();
+    await expect(page.getByText("Example processed", { exact: true })).toBeVisible();
+    await page.getByRole("button", { name: "Reset demo", exact: true }).click();
+  }
+  expect(errors).toEqual([]);
+});
+
 test("portfolio visitors can open all three working demos", async ({ page, baseURL }) => {
   test.skip(!baseURL?.includes("/automation-demos/"), "Requires the integrated portfolio build");
   const origin = new URL(baseURL!).origin;

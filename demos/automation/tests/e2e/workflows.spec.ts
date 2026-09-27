@@ -20,6 +20,7 @@ test("gallery navigation, disclosure and mobile layout", async ({ page }) => {
     page.getByRole("heading", { name: "Take the next step yourself." }),
   ).toBeInViewport();
   await page.getByRole("link", { name: /01 SALES OPERATIONS/ }).click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("From enquiry to quotation.", { timeout: 15000 });
   await expect(
     page.getByText("Interactive simulation", { exact: true }),
   ).toBeVisible();

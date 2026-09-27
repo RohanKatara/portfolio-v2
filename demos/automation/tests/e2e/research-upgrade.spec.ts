@@ -251,6 +251,13 @@ test("business explanation and extended screens fit narrow viewports", async ({
 }) => {
   for (const route of ["quotes", "orders", "receivables"]) {
     await page.goto(`./#/${route}`);
+    const titles: Record<string, string> = {
+      quotes: "From enquiry to quotation.",
+      orders: "A checked order. A cleaner handoff.",
+      receivables: "Every invoice, a next step.",
+    };
+    // Hash navigation can retain the previous screen while a lazy chunk loads.
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(titles[route], { timeout: 15000 });
     await page
       .getByText("Where this helps the business", { exact: true })
       .click();
