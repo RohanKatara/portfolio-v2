@@ -1,0 +1,54 @@
+@font-face {
+  font-family: "Inter";
+  src: url("./assets/fonts/inter-latin-wght-normal.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("./assets/fonts/instrument-serif-latin-400-normal.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("./assets/fonts/instrument-serif-latin-400-italic.woff2")
+    format("woff2");
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fira Code";
+  src: url("./assets/fonts/fira-code-latin-400-normal.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("./assets/fonts/space-grotesk-latin-wght-normal.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+}
+:root {
+  --bg: oklch(14.68% 0.01 262);
+  --panel: oklch(16.75% 0.011 262);
+  --surface-hi: oklch(20% 0.012 262);
+  --line: oklch(28% 0.012 262);
+  --text: oklch(93.66% 0.027 262);
+  --muted: oklch(70% 0.025 262);
+  --accent: oklch(61.53% 0.1675 262);
+  --accent-hi: oklch(70% 0.18 262);
+  --accent-soft: oklch(61.53% 0.1675 262 / 0.18);
+  --sage: #a5c8a3;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-display: "Instrument Serif", Georgia, serif;
+  --mono: "Fira Code", ui-monospace, monospace;
+  --font-num: "Space Grotesk", system-ui, sans-serif;
+}
