@@ -6,7 +6,7 @@ import { projects } from '../../data/projects';
   <div class="container">
     <div class="selected-work-heading">
       <div><p class="font-eyebrow">Selected work</p><h2 id="selected-work-title" class="font-display">Ideas, made <em>real.</em></h2></div>
-      <a class="view-all" href="/work/">Explore all work <span aria-hidden="true">↗</span></a>
+      <a class="view-all" href="/work/">Explore all work</a>
     </div>
     <div class="selected-work-grid">
       <a class="selected-work-card" href="/work/#websites">
@@ -20,7 +20,6 @@ import { projects } from '../../data/projects';
               </div>
             ))}
           </div>
-          <span class="card-arrow" aria-hidden="true">↗</span>
         </div>
         <div class="selected-work-meta"><span class="font-mono">01 / {String(websites.length).padStart(2, '0')} projects</span><h3 class="font-display">Websites</h3><p>Distinctive websites for brands with something to say.</p><span class="card-caption">ODD Care Co. · Kindred Coffee · 404 Energy</span></div>
       </a>
@@ -29,7 +28,6 @@ import { projects } from '../../data/projects';
           <span class="flow-label font-mono">Less busywork. More possibility.</span>
           <div class="flow-system"><span class="flow-node">Your input</span><span class="flow-line"></span><span class="flow-core">AI</span><span class="flow-line"></span><span class="flow-node">In motion</span></div>
           <span class="flow-footnote font-mono"><i></i> Workflows, working for you.</span>
-          <span class="card-arrow">↗</span>
         </div>
         <div class="selected-work-meta"><span class="font-mono">02 / {String(projects.length).padStart(2, '0')} projects + 3 demos</span><h3 class="font-display">AI &amp; Automations</h3><p>Useful AI experiences and workflows that take work off your plate.</p><span class="card-caption">Try it: Quotations · Purchase orders · Receivables</span></div>
       </a>
@@ -42,8 +40,7 @@ import { projects } from '../../data/projects';
   .selected-work-heading .font-eyebrow { font-size: 10px; margin: 0 0 18px; }
   h2 { font-size: clamp(44px,5vw,68px); line-height: 1.05; margin: 0; }
   h2 em { color: var(--accent-hi); }
-  .view-all { display: inline-flex; gap: 22px; align-items: center; min-height: 44px; font-size: 12px; border-bottom: 1px solid var(--muted); flex-shrink: 0; }
-  .view-all span { font-size: 22px; color: var(--accent-hi); }
+  .view-all { display: inline-flex; align-items: center; min-height: 44px; font-size: 12px; border-bottom: 1px solid var(--muted); flex-shrink: 0; transition: color 200ms, border-color 200ms; }
   .selected-work-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 28px; }
   .selected-work-card { min-width: 0; display: block; }
   .selected-work-visual { position: relative; overflow: hidden; border: 1px solid var(--line); background: var(--surface); aspect-ratio: 1.95; border-radius: 5px; }
@@ -59,8 +56,7 @@ import { projects } from '../../data/projects';
   .window-dots { display: flex; gap: 3px; }
   .window-dots i { width: 3px; height: 3px; border-radius: 50%; background: #7d8da7; }
   .website-window img { display: block; width: 100%; height: auto; }
-  .website-visual .card-arrow { z-index: 4; }
-  .card-arrow { position: absolute; right: 12px; bottom: 12px; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; background: #10131cf2; border: 1px solid #ffffff28; color: var(--ink); }
+  .selected-work-visual { transition: border-color 320ms ease; }
   .selected-work-meta { padding-top: 20px; }
   .selected-work-meta > .font-mono { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
   h3 { margin: 8px 0; font-size: clamp(31px,3vw,40px); line-height: 1.1; }
@@ -77,6 +73,8 @@ import { projects } from '../../data/projects';
   a:focus-visible { outline: 2px solid var(--accent-hi); outline-offset: 6px; border-radius: 3px; }
   @media (hover:hover) and (pointer:fine) {
     .selected-work-card:hover h3, .view-all:hover { color: var(--accent-hi); }
+    .view-all:hover { border-color: var(--accent-hi); }
+    .selected-work-card:hover .selected-work-visual { border-color: #82a7ff80; }
     :global(html[data-motion='full']) .website-window { transition: transform 600ms var(--ease-out); }
     :global(html[data-motion='full']) .selected-work-card:hover .website-window { transform: translateY(-4px) rotate(var(--window-angle)); }
   }

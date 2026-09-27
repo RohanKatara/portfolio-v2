@@ -6,6 +6,7 @@ import MotionControls from '../components/chrome/MotionControls.astro';
 import WebsiteShowcase from '../components/work/WebsiteShowcase.astro';
 import ProjectRow from '../components/work/ProjectRow.astro';
 import AutomationDemos from '../components/work/AutomationDemos.astro';
+import Chevron from '../components/ui/Chevron.astro';
 import { websites } from '../data/websites';
 import { projects } from '../data/projects';
 import { primaryCta, emailCta } from '../data/cta';
@@ -17,7 +18,7 @@ const total = String(websites.length + projects.length).padStart(2, '0');
   <Nav />
   <main id="main" class="website-main unified-work" tabindex="-1" data-page-content>
     <header class="work-hero work-container">
-      <div class="work-hero-top work-label"><span>Selected work / {total} projects + 3 demos</span><a href={primaryCta.href}>Let’s talk <span aria-hidden="true">↗</span></a></div>
+      <div class="work-hero-top work-label"><span>Selected work / {total} projects + 3 demos</span><a href={primaryCta.href}>Let’s talk</a></div>
       <div class="work-hero-heading">
         <h1>Good ideas.<br /><em>Built to work.</em></h1>
         <div class="work-intro"><p>Websites with personality. AI with a purpose.<br />A selection of what I design and build, from a brand’s first impression to the work behind the scenes.</p></div>
@@ -25,8 +26,8 @@ const total = String(websites.length + projects.length).padStart(2, '0');
     </header>
     <nav class="work-categories" aria-label="Work categories">
       <div class="work-container category-inner">
-        <a href="#websites"><span>Websites</span><span class="category-count">{String(websites.length).padStart(2, '0')}</span><span class="category-arrow" aria-hidden="true">↘</span></a>
-        <a href="#ai-automations"><span>AI &amp; Automations</span><span class="category-count">{String(projects.length + 3).padStart(2, '0')}</span><span class="category-arrow" aria-hidden="true">↘</span></a>
+        <a href="#websites"><span>Websites</span><span class="category-count">{String(websites.length).padStart(2, '0')}</span></a>
+        <a href="#ai-automations"><span>AI &amp; Automations</span><span class="category-count">{String(projects.length + 3).padStart(2, '0')}</span></a>
         <span class="category-note work-label">From concept to code</span>
       </div>
     </nav>
@@ -35,7 +36,7 @@ const total = String(websites.length + projects.length).padStart(2, '0');
         <div><p class="work-label">01 / Websites</p><h2 id="websites-title">Different brands.<br /><em>Distinct experiences.</em></h2></div>
         <p>Three client websites, designed and developed by me. A look at the details before they launch.</p>
       </header>
-      <nav class="project-index" aria-label="Jump to a website project">{websites.map((project) => <a href={`#${project.slug}`}><span class="work-label">{project.index}</span><span>{project.name}</span><span aria-hidden="true">↓</span></a>)}</nav>
+      <nav class="project-index" aria-label="Jump to a website project">{websites.map((project) => <a href={`#${project.slug}`}><span class="work-label">{project.index}</span><span>{project.name}</span></a>)}</nav>
       <div class="projects">{websites.map((project) => <WebsiteShowcase project={project} />)}</div>
     </section>
     <section id="ai-automations" class="work-category work-container" aria-labelledby="ai-title">
@@ -51,7 +52,7 @@ const total = String(websites.length + projects.length).padStart(2, '0');
       <div class="work-label"><span class="availability-dot" aria-hidden="true"></span> Your project could be next</div>
       <div class="enquiry-grid">
         <h2 id="enquiry-title">Something in mind?<br /><em>Let’s build it.</em></h2>
-        <div><p>A new website, an AI workflow, or a better way to get things done. Tell me what you’re working on, and I’ll reply within a day with clear next steps.</p><a class="work-cta" href={primaryCta.href}>Chat on WhatsApp <span aria-hidden="true">↗</span></a><a class="back-home" href={emailCta.href}>Prefer email? Email me <span aria-hidden="true">↗</span></a><a class="back-home" href="/#services">Explore my services <span aria-hidden="true">→</span></a></div>
+        <div><p>A new website, an AI workflow, or a better way to get things done. Tell me what you’re working on, and I’ll reply within a day with clear next steps.</p><a class="work-cta" href={primaryCta.href}>Chat on WhatsApp <Chevron /></a><a class="back-home" href={emailCta.href}>Prefer email? Email me</a><a class="back-home" href="/#services">Explore my services</a></div>
       </div>
     </section>
     <Footer />
@@ -59,7 +60,7 @@ const total = String(websites.length + projects.length).padStart(2, '0');
   <dialog id="media-dialog" class="media-dialog" aria-labelledby="media-title" aria-describedby="media-description">
     <div class="media-topbar"><p id="media-title"></p><button type="button" data-media-close aria-label="Close media preview">Close <span aria-hidden="true">×</span></button></div>
     <div class="media-stage"><img id="showcase-image" alt="" hidden /><video id="showcase-video" controls playsinline preload="none" hidden aria-label="Website screen recording"></video></div>
-    <div class="media-bottom"><p id="media-description"></p><a id="media-original" target="_blank" rel="noopener noreferrer" hidden>Open full-size image <span aria-hidden="true">↗</span></a></div>
+    <div class="media-bottom"><p id="media-description"></p><a id="media-original" target="_blank" rel="noopener noreferrer" hidden>Open full-size image</a></div>
   </dialog>
 </BaseLayout>
 <script>

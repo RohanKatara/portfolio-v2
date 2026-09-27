@@ -33,17 +33,14 @@ import { primaryCta, emailCta } from '../../data/cta';
       <a class="social-card" href={social.github} target="_blank" rel="noopener">
         <p class="font-eyebrow social-label">GitHub</p>
         <p class="social-url font-mono">{social.githubHandle}</p>
-        <span class="social-arrow" aria-hidden="true">→</span>
       </a>
       <a class="social-card" href={social.linkedin} target="_blank" rel="noopener">
         <p class="font-eyebrow social-label">LinkedIn</p>
         <p class="social-url font-mono">{social.linkedinHandle}</p>
-        <span class="social-arrow" aria-hidden="true">→</span>
       </a>
       <a class="social-card" href={social.x} target="_blank" rel="noopener">
         <p class="font-eyebrow social-label">X / Twitter</p>
         <p class="social-url font-mono">{social.xHandle}</p>
-        <span class="social-arrow" aria-hidden="true">→</span>
       </a>
     </div>
   </div>
@@ -142,17 +139,10 @@ import { primaryCta, emailCta } from '../../data/cta';
     font-size: 14px;
     color: var(--muted);
   }
-  .social-arrow {
-    position: absolute;
-    bottom: 24px;
-    right: 24px;
-    font-size: 20px;
-    color: var(--accent);
-    transition: transform 320ms var(--ease-out);
-  }
+  .social-url { transition: color 320ms ease; }
   @media (hover: hover) and (pointer: fine) {
-    .social-card:hover .social-arrow {
-      transform: translate(4px, -4px);
+    .social-card:hover .social-url {
+      color: var(--ink);
     }
   }
 </style>

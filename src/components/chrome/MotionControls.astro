@@ -6,7 +6,7 @@ const errorId = `motion-${variant}-error`;
 {variant === 'prompt' ? (
   <div class="motion-prompt font-mono" data-motion-prompt hidden>
     <span>Viewing with reduced motion.</span>
-    <button type="button" data-enable-motion aria-describedby={`motion-reload-note ${errorId}`}>Enable animations <span aria-hidden="true">↗</span></button>
+    <button type="button" data-enable-motion aria-describedby={`motion-reload-note ${errorId}`}>Enable animations</button>
     <span id="motion-reload-note" class="motion-note">Reloads this page.</span>
     <p id={errorId} class="motion-error" data-motion-error role="status" hidden></p>
   </div>
@@ -18,7 +18,7 @@ const errorId = `motion-${variant}-error`;
       <option value="full">Full animations</option>
       <option value="reduced">Reduced motion</option>
     </select>
-    <button type="submit">Apply &amp; reload <span aria-hidden="true">↗</span></button>
+    <button type="submit">Apply &amp; reload</button>
     <p id={errorId} class="motion-error" data-motion-error role="status" hidden></p>
   </form>
 )}

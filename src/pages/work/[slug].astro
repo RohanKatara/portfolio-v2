@@ -48,7 +48,7 @@ const { title, tagline, role, accent, index, metrics, demo } = study.data;
   <Nav />
   <main id="main" class="case-page" tabindex="-1" data-page-content data-case-study={study.slug} style={`--case-accent: ${accent};`}>
     <article class="case-shell">
-      <a class="case-back font-mono" href="/work/#ai-automations"><span aria-hidden="true">←</span> Back to Work</a>
+      <a class="case-back font-mono" href="/work/#ai-automations">Back to Work</a>
 
       <header class="case-intro">
         <p class="case-index font-eyebrow">AI &amp; Automations / {index}</p>
@@ -80,7 +80,7 @@ const { title, tagline, role, accent, index, metrics, demo } = study.data;
               <source src={demo} type="video/mp4" />
               <a href={demo}>Open the {project.name} walkthrough video</a>
             </video>
-            <a class="case-video-link font-mono" href={demo}>Open the video <span aria-hidden="true">↗</span></a>
+            <a class="case-video-link font-mono" href={demo}>Open the video</a>
           </section>
         )}
 
@@ -89,16 +89,16 @@ const { title, tagline, role, accent, index, metrics, demo } = study.data;
           <p>Tell me what you want to build or improve. Start a conversation on WhatsApp, or send me an email.</p>
           <div class="case-enquiry-actions">
             <EnquiryButton intent={project.enquiry} reference={project.name} />
-            <a class="case-email" href={emailCta.href}>Email me <span aria-hidden="true">↗</span></a>
+            <a class="case-email" href={emailCta.href}>Email me</a>
           </div>
         </section>
 
         <nav class="case-pagination" aria-label="Case study navigation">
           <a class="case-next" href={`/work/${next.slug}/`}>
             <span class="font-eyebrow">Next case study</span>
-            <span class="case-next-name font-display">{next.name} <span aria-hidden="true">→</span></span>
+            <span class="case-next-name font-display">{next.name}</span>
           </a>
-          <a class="case-back font-mono" href="/work/#ai-automations"><span aria-hidden="true">←</span> All AI &amp; automation projects</a>
+          <a class="case-back font-mono" href="/work/#ai-automations">All AI &amp; automation projects</a>
         </nav>
       </div>
     </article>
@@ -132,10 +132,13 @@ const { title, tagline, role, accent, index, metrics, demo } = study.data;
   .case-video-link {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
     min-height: 44px;
     color: var(--muted);
     font-size: 12px;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 4px;
+    transition: color 200ms ease, text-decoration-color 200ms ease;
   }
   .case-page a:focus-visible,
   .case-skip:focus-visible {
@@ -292,8 +295,7 @@ const { title, tagline, role, accent, index, metrics, demo } = study.data;
   }
   .case-video-link {
     margin-top: 8px;
-    text-decoration: underline;
-    text-underline-offset: 4px;
+    text-decoration-color: currentColor;
   }
   .case-pagination {
     margin-top: 48px;
@@ -313,11 +315,13 @@ const { title, tagline, role, accent, index, metrics, demo } = study.data;
   .case-email {
     display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 24px;
     min-height: 48px;
     padding: 12px 20px;
     color: var(--accent-hi);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 4px;
+    transition: text-decoration-color 200ms ease;
   }
   .case-next {
     display: flex;
@@ -337,7 +341,8 @@ const { title, tagline, role, accent, index, metrics, demo } = study.data;
   }
   @media (hover: hover) and (pointer: fine) {
     .case-back:hover,
-    .case-video-link:hover { color: var(--ink); }
+    .case-video-link:hover { color: var(--ink); text-decoration-color: currentColor; }
+    .case-email:hover { text-decoration-color: currentColor; }
     .case-next:hover { border-color: var(--case-accent); }
   }
   @media (max-width: 720px) {

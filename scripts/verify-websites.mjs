@@ -211,6 +211,20 @@ const run = async () => {
     }
     await visit(page, '/work/');
     check('work: introduction has no decorative arrow', await page.locator('.intro-mark').count() === 0);
+    // Arrow glyphs were replaced by hover states and one SVG chevron site-wide.
+    const ARROWS = /[↗↘↓→←↳]/;
+    for (const path of ['/', '/work/']) {
+      await visit(page, path);
+      const text = await page.locator('body').innerText();
+      check(`${path}: no decorative arrow glyphs`, !ARROWS.test(text), text.match(new RegExp(`.{0,30}${ARROWS.source}.{0,30}`))?.[0] ?? '');
+    }
+    await page.setViewportSize({ width: 1440, height: 900 });
+    const copyEdges = await page.evaluate(() => [
+      document.querySelector('#ai-automations .category-heading > p')?.getBoundingClientRect().left,
+      document.querySelector('.demos-copy p')?.getBoundingClientRect().left,
+    ]);
+    check('work 1440: AI heading and demos intro copy share one column edge', copyEdges.every(Number.isFinite) && Math.abs(copyEdges[0] - copyEdges[1]) <= 2, copyEdges.join(' vs '));
+    await page.setViewportSize({ width: 390, height: 844 });
     await visit(page, '/');
     check('home: displayed email and copy source match new inbox', await page.locator('[data-copy-email]').textContent() === EMAIL && await page.locator('[data-copy-email]').getAttribute('href') === `mailto:${EMAIL}`);
     for (const width of [360, 390, 768, 1440]) {
