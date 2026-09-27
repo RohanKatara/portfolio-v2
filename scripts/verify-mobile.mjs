@@ -4,6 +4,10 @@
  *
  * Drives the system Chrome headless via playwright-core against the local
  * dev server. Run: node scripts/verify-mobile.mjs [baseUrl]
+ *
+ * Project rows live on /work/ and open static case pages at /work/<slug>/
+ * (the homepage overlay and #slug deep links were retired; legacy hashes
+ * redirect). Homepage checks cover layout and the starfield only.
  */
 import { chromium } from 'playwright-core';
 
@@ -34,9 +38,13 @@ const measure = (page) =>
     navStatusDisplay: getComputedStyle(document.querySelector('.nav-status')).display,
     heroNameSize: getComputedStyle(document.querySelector('.hero-name')).fontSize,
     servicesPadTop: getComputedStyle(document.querySelector('.services')).paddingTop,
-    rowGrid: getComputedStyle(document.querySelector('.project-row')).gridTemplateColumns,
     pinSpacer: !!document.querySelector('.pin-spacer'),
   }));
+
+const workRowGrid = async (page) => {
+  await page.goto(`${BASE}/work/`, { waitUntil: 'networkidle' });
+  return page.evaluate(() => getComputedStyle(document.querySelector('.project-row')).gridTemplateColumns);
+};
 
 const run = async () => {
   const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -62,7 +70,6 @@ const run = async () => {
     check('390: nav status pill hidden', m.navStatusDisplay === 'none', m.navStatusDisplay);
     check('390: hero name uses mobile clamp (~52.6px)', Math.abs(parseFloat(m.heroNameSize) - 52.65) < 1, m.heroNameSize);
     check('390: section top padding eased (<160px)', parseFloat(m.servicesPadTop) < 160, m.servicesPadTop);
-    check('390: project row single column', !m.rowGrid.trim().includes(' '), m.rowGrid);
     check('390: manifesto NOT pinned (no pin-spacer)', !m.pinSpacer);
 
     // Scroll to bottom, re-check overflow (lazy content / reveals)
@@ -78,38 +85,25 @@ const run = async () => {
     check('390: starfield init logged', sfLogs.length > 0);
     check('390: starfield reduced particle count (1000)', sf.includes('1000'), sf.slice(0, 120));
 
-    // Case overlay flow via tap
-    await page.evaluate(() => window.scrollTo(0, 0));
+    // Work rows: single column, and a tap opens the static case page
+    const rowGrid = await workRowGrid(page);
+    check('390: work project row single column', !rowGrid.trim().includes(' '), rowGrid);
     const firstRow = page.locator('[data-project-row]').first();
+    const rowHref = await firstRow.getAttribute('href');
     await firstRow.scrollIntoViewIfNeeded();
     await page.waitForTimeout(800);
     await firstRow.tap();
-    await page.waitForTimeout(900);
-    const overlayOpen = await page.evaluate(() => document.body.getAttribute('data-overlay-open'));
-    check('390: overlay opens on tap', !!overlayOpen, String(overlayOpen));
+    await page.waitForURL((url) => url.pathname === rowHref);
+    check('390: row tap opens case page', await page.locator('h1').first().isVisible(), rowHref);
+    const caseOverflow = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);
+    check('390: case page no horizontal overflow', caseOverflow);
 
-    const canScrollInner = await page.evaluate(() => {
-      const sc = document.querySelector(
-        `[data-case-overlay="${document.body.getAttribute('data-overlay-open')}"] .case-scroll`,
-      );
-      if (!sc) return false;
-      sc.scrollTop = 300;
-      return sc.scrollTop > 0;
-    });
-    check('390: overlay inner scroll works', canScrollInner);
-
-    await page.locator(`[data-case-overlay="${overlayOpen}"] .case-close`).tap();
-    await page.waitForTimeout(700);
-    const overlayClosed = await page.evaluate(() => !document.body.hasAttribute('data-overlay-open'));
-    check('390: overlay closes via X', overlayClosed);
-
-    // Cold deep link
+    // Legacy homepage deep link redirects to the case page
     const page2 = await ctx.newPage();
     watchErrors(page2, 'mobile-deeplink');
     await page2.goto(`${BASE}/#mocktalk`, { waitUntil: 'networkidle' });
-    await page2.waitForTimeout(1500);
-    const deepOpen = await page2.evaluate(() => document.body.getAttribute('data-overlay-open'));
-    check('390: cold #mocktalk deep link opens overlay', deepOpen === 'mocktalk', String(deepOpen));
+    await page2.waitForURL((url) => url.pathname === '/work/mocktalk/');
+    check('390: legacy #mocktalk redirects to case page', new URL(page2.url()).pathname === '/work/mocktalk/', page2.url());
     await ctx.close();
   }
 
@@ -149,9 +143,11 @@ const run = async () => {
     const vis = await page.evaluate(() => ({
       heroName: getComputedStyle(document.querySelector('[data-hero-name]')).opacity,
       heroRole: getComputedStyle(document.querySelector('.hero-role')).opacity,
-      row: getComputedStyle(document.querySelector('[data-project-row]')).opacity,
       email: getComputedStyle(document.querySelector('[data-contact-email]')).opacity,
     }));
+    await page.goto(`${BASE}/work/`, { waitUntil: 'networkidle' });
+    await page.waitForTimeout(800);
+    vis.row = await page.evaluate(() => getComputedStyle(document.querySelector('[data-project-row]')).opacity);
     check(
       'reduced-motion: hero/rows/email all visible',
       Object.values(vis).every((o) => parseFloat(o) === 1),
@@ -175,10 +171,13 @@ const run = async () => {
     check('1440: nav status pill visible', d.navStatusDisplay === 'flex', d.navStatusDisplay);
     check('1440: hero name desktop size (120px)', parseFloat(d.heroNameSize) === 120, d.heroNameSize);
     check('1440: section top padding still 160px', d.servicesPadTop === '160px', d.servicesPadTop);
-    check('1440: project row 3-col grid', d.rowGrid.trim().split(' ').length === 3, d.rowGrid);
     check('1440: manifesto IS pinned (pin-spacer present)', d.pinSpacer);
     const sf = sfLogs.join(' ');
     check('1440: starfield full particle count (2500)', sf.includes('2500'), sf.slice(0, 120));
+
+    const rowGrid = await workRowGrid(page);
+    await page.waitForTimeout(1500);
+    check('1440: work project row 3-col grid', rowGrid.trim().split(' ').length === 3, rowGrid);
 
     // Hover preview still enabled on fine pointer: thumbnail child rendered
     const hoverThumb = await page.evaluate(
