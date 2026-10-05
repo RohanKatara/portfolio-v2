@@ -17,9 +17,9 @@ const OUTPUT = resolve(process.env.QA_OUTPUT_DIR ?? '../qa', engine);
 const ORIGIN = new URL(BASE).origin;
 const EMAIL = 'rohankatara750@gmail.com';
 const PROJECTS = [
-  { id: 'odd-care', url: 'https://odd-care-co.vercel.app', subject: 'A website like ODD Care Co.' },
   { id: 'kindred-coffee', url: 'https://kindred-coffee.vercel.app', subject: 'A website like Kindred Coffee' },
   { id: '404-energy', url: 'https://404-energy-drink.vercel.app', subject: 'A website like 404 Energy' },
+  { id: 'odd-care', url: 'https://odd-care-co.vercel.app', subject: 'A website like ODD Care Co.' },
 ];
 const CASES = [
   { slug: 'mocktalk', name: 'MockTalk', heading: 'MockTalk', year: '2026', role: 'Solo build', body: 'audio loop' },
@@ -114,7 +114,7 @@ const checkStructure = async (page, label) => {
     check(`${label}: ${project.id} has screenshot access`, await article.locator('a[data-image-open]').count() > 0);
   }
   const videoIds = await page.locator('a[data-video-open]').evaluateAll((links) => links.map((link) => link.closest('article[data-website]')?.id));
-  check(`${label}: videos only for ODD and 404`, JSON.stringify(videoIds) === JSON.stringify(['odd-care', '404-energy']), videoIds.join(', '));
+  check(`${label}: videos only for ODD and 404`, JSON.stringify(videoIds) === JSON.stringify(['404-energy', 'odd-care']), videoIds.join(', '));
   const caseLinks = await page.locator('#ai-automations [data-project-row]').evaluateAll((links) => links.map((link) => ({ href: link.getAttribute('href'), opensOverlay: link.hasAttribute('data-open-case') })));
   check(`${label}: four AI rows link directly to static case pages`,
     JSON.stringify(caseLinks.map((link) => link.href)) === JSON.stringify(CASES.map((project) => `/work/${project.slug}/`))
