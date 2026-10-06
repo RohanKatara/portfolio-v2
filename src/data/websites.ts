@@ -33,17 +33,7 @@ const image = (key: keyof typeof mediaFiles, alt: string, caption: string): Webs
 // This order is shared by the dedicated page and the homepage preview.
 export const websites: Website[] = [
   {
-    slug: 'kindred-coffee', index: '01', name: 'Kindred Coffee', category: 'Hospitality · Café',
-    theme: 'kindred', url: 'https://kindred-coffee.vercel.app', domain: 'kindred-coffee.vercel.app',
-    headline: 'The atmosphere, before the first cup.',
-    description: 'A warm, editorial website that brings the café experience to the screen. Immersive photography, considered typography and a story from origin to cup give visitors a feel for the brand before they visit.',
-    disciplines: ['Art direction', 'Website design', 'Development', 'Responsive design'],
-    cover: image('kindred-home', 'Kindred Coffee homepage with oversized serif typography over rich coffee photography', 'A story in every cup'),
-    gallery: [image('kindred-collection', 'Kindred coffee collection displayed with warm photography and editorial product cards', 'The collection · From story to discovery')],
-    mobile: image('kindred-mobile', 'Kindred Coffee homepage adapted to a narrow phone screen', 'The same atmosphere, on a smaller screen'),
-  },
-  {
-    slug: '404-energy', index: '02', name: '404 Energy', category: 'Brand website · Beverage',
+    slug: '404-energy', index: '01', name: '404 Energy', category: 'Brand website · Beverage',
     theme: 'energy', url: 'https://404-energy-drink.vercel.app', domain: '404-energy-drink.vercel.app',
     headline: 'A little unexpected. By design.',
     description: 'An energetic product experience built around the can. Pixel typography, bold colour and motion carry the brand’s personality through flavour discovery and the story behind the drink.',
@@ -54,6 +44,16 @@ export const websites: Website[] = [
       src: '/website-work/energy-walkthrough.mp4', label: 'Watch the walkthrough',
       description: 'A silent walkthrough of the 404 Energy website, including the product animation and flavour presentation.',
     },
+  },
+  {
+    slug: 'kindred-coffee', index: '02', name: 'Kindred Coffee', category: 'Hospitality · Café',
+    theme: 'kindred', url: 'https://kindred-coffee.vercel.app', domain: 'kindred-coffee.vercel.app',
+    headline: 'The atmosphere, before the first cup.',
+    description: 'A warm, editorial website that brings the café experience to the screen. Immersive photography, considered typography and a story from origin to cup give visitors a feel for the brand before they visit.',
+    disciplines: ['Art direction', 'Website design', 'Development', 'Responsive design'],
+    cover: image('kindred-home', 'Kindred Coffee homepage with oversized serif typography over rich coffee photography', 'A story in every cup'),
+    gallery: [image('kindred-collection', 'Kindred coffee collection displayed with warm photography and editorial product cards', 'The collection · From story to discovery')],
+    mobile: image('kindred-mobile', 'Kindred Coffee homepage adapted to a narrow phone screen', 'The same atmosphere, on a smaller screen'),
   },
   {
     slug: 'odd-care', index: '03', name: 'ODD Care Co.', category: 'Ecommerce · Skincare',

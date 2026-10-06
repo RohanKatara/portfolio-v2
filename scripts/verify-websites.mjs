@@ -17,8 +17,8 @@ const OUTPUT = resolve(process.env.QA_OUTPUT_DIR ?? '../qa', engine);
 const ORIGIN = new URL(BASE).origin;
 const EMAIL = 'rohankatara750@gmail.com';
 const PROJECTS = [
-  { id: 'kindred-coffee', url: 'https://kindred-coffee.vercel.app', subject: 'A website like Kindred Coffee' },
   { id: '404-energy', url: 'https://404-energy-drink.vercel.app', subject: 'A website like 404 Energy' },
+  { id: 'kindred-coffee', url: 'https://kindred-coffee.vercel.app', subject: 'A website like Kindred Coffee' },
   { id: 'odd-care', url: 'https://odd-care-co.vercel.app', subject: 'A website like ODD Care Co.' },
 ];
 const CASES = [
